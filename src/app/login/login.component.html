@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="form-horizontal">
+    <h2>Iniciar Sesión</h2>
+    <p>Por favor ingresa tus datos para entrar</p>
+    <hr />
+    <form [formGroup]= "loginForm" (ngSubmit) ="validData()">
+      <ngb-alert *ngIf="dangerMessage" type="danger" (close)="dangerMessage = null">{{ dangerMessage }}</ngb-alert>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Nombre Usuario</label>
+        <input formControlName="usuario" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu usuario">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Contraseña</label>
+        <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Ingresa tu contraseña">
+      </div>
+      <div class="form-group form-check">
+        <input formControlName="recordarPassword" type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Recordar contraseña</label>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Ingresar</button>
+    </form>
+  </div>
+</div>

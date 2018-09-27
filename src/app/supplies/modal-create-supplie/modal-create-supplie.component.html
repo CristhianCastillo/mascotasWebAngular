@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Registrar Suministro</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label for="nombreSuministro">Nombre Suministro</label>
+      <input type="text" class="form-control" id="nombreSuministro" placeholder="Nombre del suministro">
+    </div>
+    <div class="form-group">
+      <label for="cantidadSuministro">Cantidad Suministro</label>
+      <input type="number" class="form-control" id="cantidadSuministro" placeholder="Cantidad del suministro">
+    </div>
+    <div class="form-group">
+      <label for="unidadDeMedida">Unidad de Medida</label>
+      <select class="form-control" id="unidadDeMedida">
+        <option>Unidades</option>
+        <option>Kg</option>
+        <option>g</option>
+        <option>m</option>
+        <option>cm</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Fecha Compra</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="fechaCompra" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">Seleccionar</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="precioSuministro">Precio</label>
+      <input type="number" class="form-control" id="precioSuministro" placeholder="Precio del suministro">
+    </div>
+    <div class="form-group">
+      <label for="nombreTienda">Nombre Tienda</label>
+      <input type="text" class="form-control" id="nombreTienda" placeholder="Nombre de tienda">
+    </div>
+    <div class="form-group">
+      <label for="consumoDiario">Consumo Diario</label>
+      <input type="text" class="form-control" id="consumoDiario" placeholder="Consumo Diario">
+    </div>
+    <div class="form-group">
+      <label for="comentarios">Comentarios</label>
+      <textarea name="comentariosSuministro" class="form-control" id="comentarios" placeholder="Agrega algun comentario"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="open('Registro Suministro', 'Suministro registrado correctamente!')">Guardar Suministro</button>
+    </div>
+  </form>
+</div>

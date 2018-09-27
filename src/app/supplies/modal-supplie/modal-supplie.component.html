@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Nombre Del Suminstro</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-group">
+      <label for="nombreSuministro">Nombre Suministro</label>
+      <input type="text" class="form-control" id="nombreSuministro" name="nombreSuministro" [ngModel]="nombreSuministro" placeholder="Nombre del suministro">
+    </div>
+    <div class="form-group">
+      <label for="cantidadSuministro">Cantidad Suministro</label>
+      <input type="number" class="form-control" id="cantidadSuministro" name="cantidadSuministro" [ngModel]="cantidadSuministro" placeholder="Cantidad del suministro">
+    </div>
+    <div class="form-group">
+      <label for="unidadDeMedida">Unidad de Medida</label>
+      <select class="form-control" name="unidadMedida" [ngModel]="unidadMedida" id="unidadDeMedida">
+        <option>Unidades</option>
+        <option>Kg</option>
+        <option>g</option>
+        <option>m</option>
+        <option>cm</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Fecha Compra</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="fechaModelo" ngbDatepicker #d="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">Seleccionar</button>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="precioSuministro">Precio</label>
+      <input type="number" class="form-control" name="precioSuministro" [ngModel]="precioSuministro" id="precioSuministro" placeholder="Precio del suministro">
+    </div>
+    <div class="form-group">
+      <label for="nombreTienda">Nombre Tienda</label>
+      <input type="text" class="form-control" name="nombreTienda" [ngModel]="nombreTienda" id="nombreTienda" placeholder="Nombre de tienda">
+    </div>
+    <div class="form-group">
+      <label for="consumoDiario">Consumo Diario</label>
+      <input type="text" class="form-control" name="consumoDiario" [ngModel]="consumoDiario" id="consumoDiario" placeholder="Consumo Diario">
+    </div>
+    <div class="form-group">
+      <label for="comentarios">Comentarios</label>
+      <textarea name="comentariosSuministro" [name]="comentarios" [ngModel]="comentarios" class="form-control" id="comentarios" placeholder="Agrega algun comentario"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="openModalUpdate('Actualizar Suministro', 'Suministro actualizado correctamente!')">Actualizar Suministro</button>
+      <button type="submit" class="btn btn-outline-dark" (click)=" openModalConfirm('Eliminar Suministro', 'Suministro eliminado correctamente!')">Eliminar Suministro</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,67 @@
+ <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Crear Mascota</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]= "petForm" (ngSubmit) ="open('Registro Mascota', 'Mascota registrada correctamente!')">
+      <div class="form-group">
+        <label for="exampleFormControlFile1">Seleccionar foto</label>
+        <input formControlName="fotoMascota" id="fotoMascota" type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
+      <div class="form-group">
+        <label for="nombreMascota">Nombre Mascota</label>
+        <input formControlName="nombre" type="text" class="form-control" id="nombreMascota" placeholder="Nombre de tu mascota">
+      </div>
+      <div class="form-group">
+        <label for="tipoMascota">Tipo Mascota</label>
+        <select formControlName="tipoMascota" class="form-control" id="tipoMascota">
+          <option>Perro</option>
+          <option>Gato</option>
+          <option>Loro</option>
+          <option>Conejo</option>
+          <option>Aguila</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="generoMascota">Genero</label>
+        <select formControlName="genero" class="form-control" id="generoMascota">
+          <option>Macho</option>
+          <option>Hembra</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="generoMascota">Fecha Nacimiento</label>
+        <div class="input-group">
+          <input formControlName="fechaNacimiento" class="form-control" placeholder="yyyy-mm-dd" name="dp"  ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">Seleccionar</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="razaMascota">Raza</label>
+        <input formControlName="raza" type="text" class="form-control" id="razaMascota" placeholder="Raza de tu mascota">
+      </div>
+      <div class="form-group">
+        <label for="mascotaEsterilizada">Esterilizado</label>
+        <select formControlName="esterilizado" class="form-control" id="mascotaEsterilizada">
+          <option>Si</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="colorMascota">Color</label>
+        <input formControlName="color" type="text" class="form-control" id="colorMascota" placeholder="Color de tu mascota">
+      </div>
+      <div class="form-group">
+        <label for="descripcionMascota">Descripción Mascota</label>
+        <textarea formControlName="descripcion" name="descripcionDelEstablecimiento" class="form-control" id="descripcionMascota" placeholder="Descripción"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-dark">Registrar</button>
+      </div>
+    </form>
+  </div>
+

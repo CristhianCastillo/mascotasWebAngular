@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="form-horizontal">
+    <h2>Registrarse en Mascotas.ga</h2>
+    <p>Por favor ingresa algunos datos para crear una cuenta</p>
+    <a class="btn btn-primary float-md-right " routerLink="/registerAdmin">Registarse como propietario</a>
+    <hr />
+    <form>
+      <div class="form-group">
+        <label for="nombreUsuario">Nombre Usuario</label>
+        <input type="text" class="form-control" id="nombreUsuario" placeholder="Ingresa un nombre de usuario">
+      </div>
+      <div class="form-group">
+        <label for="nombres">Nombres</label>
+        <input type="text" class="form-control" id="nombres" placeholder="Ingresa tus nombres">
+      </div>
+      <div class="form-group">
+        <label for="apellidosUsuarios">Apellidos</label>
+        <input type="text" class="form-control" id="apellidosUsuarios" placeholder="Ingresa tus apellidos">
+      </div>
+      <div class="form-group">
+        <label for="correoUsuario">Correo Electronico</label>
+        <input type="email" class="form-control" id="correoUsuario" placeholder="Ingresa tu email">
+      </div>
+      <div class="form-group">
+        <label for="passwordUsuario">Contraseña</label>
+        <input type="password" class="form-control" id="passwordUsuario" placeholder="Ingresa una contraseña">
+      </div>
+      <div class="form-group">
+        <label for="passwordConfirmacion">Confirmación Constraseña</label>
+        <input type="password" class="form-control" id="passwordConfirmacion" placeholder="Confirma tu contraseña">
+      </div>
+      <button type="submit" (click)="loginUser()" class="btn btn-success">Crear Cuenta</button>
+    </form>
+  </div>
+</div>

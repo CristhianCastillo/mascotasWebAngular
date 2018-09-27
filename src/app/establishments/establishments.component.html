@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="form-horizontal">
+    <h2>Mi Establecimiento</h2>
+    <p>Por favor verifica que tus datos son correctos, asi te podran encontrar mas fcil.</p>
+    <hr />
+    <form>
+      <div class="form-group">
+        <label for="nombreEstablecimiento">Nombre Establecimiento</label>
+        <input type="text" class="form-control" name="nombreEstablecimiento" [ngModel]="datosEstablecimiento.nombre" id="nombreEstablecimiento"
+          placeholder="Nombre establecimiento">
+      </div>
+      <div class="form-group">
+        <label for="telefonoEstablecimiento">Telefono</label>
+        <input type="text" class="form-control" name="telf" [ngModel]="datosEstablecimiento.telefono" id="telefonoEstablecimiento"
+          placeholder="Telefono">
+      </div>
+      <div class="form-group">
+        <label for="direccionEstablecimiento">Dirección</label>
+        <input type="text" class="form-control" name="direccion" [ngModel]="datosEstablecimiento.direccion" id="direccionEstablecimiento"
+          placeholder="Dirección">
+      </div>
+      <div class="form-group">
+        <label for="correoUsuario">Correo Electronico</label>
+        <input type="email" class="form-control" name="correoElectronico" [ngModel]="datosEstablecimiento.correo" id="correoUsuario"
+          placeholder="Ingresa el email del establecimiento">
+      </div>
+      <div class="form-group">
+        <label for="paginaWeb">Pagina Web</label>
+        <input type="url" class="form-control" name="paginaWeb" [ngModel]="datosEstablecimiento.paginaWeb" id="paginaWeb" placeholder="Ingresa la URL de la pagina Web">
+      </div>
+      <div class="form-group">
+        <label for="servicios">Servicios</label>
+        <select class="form-control" id="servicios" [ngModel]="datosEstablecimiento.servicios" name="servicios">
+          <option>Hopital</option>
+          <option>Tienda</option>
+          <option>Comida</option>
+          <option>Peluqueria</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="horarios">Horarios</label>
+        <select class="form-control" id="horarios" [ngModel]="datosEstablecimiento.horarios" name="horarios">
+          <option>24 Horas</option>
+          <option>Establecido</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Desde</label>
+        <ngb-timepicker name="horaInicial" [(ngModel)]="datosEstablecimiento.horaInicial"></ngb-timepicker>
+      </div>
+      <div class="form-group">
+        <label>Hasta</label>
+        <ngb-timepicker name="horaFinal" [(ngModel)]="datosEstablecimiento.horaFinal"></ngb-timepicker>
+      </div>
+      <div class="form-group">
+        <label for="descripcionEstablecimiento">Descripción</label>
+        <textarea name="descripcionDelEstablecimiento" class="form-control" [ngModel]="datosEstablecimiento.descripcion" id="descripcionEstablecimiento"
+          placeholder="Ingresa una descripción breve de tu establecimiento" style="width: 100%; height: 150px;"></textarea>
+      </div>
+      <button type="submit" (click)="saveInformation('Establecimiento', 'Datos del establecimiento actualizados correctamente!!')"
+        class="btn btn-success">Actualizar Datos</button>
+    </form>
+  </div>
+</div>
