@@ -24,7 +24,6 @@ import { ModalSupplieComponent } from './supplies/modal-supplie/modal-supplie.co
 import { EstablishmentsComponent } from './establishments/establishments.component';
 import { ErrorComponent } from './error/error.component';
 
-import { UserService } from './user.service';
 import { LoginAdminGuard } from './guards/login-admin.guard';
 import { NoLoginAdminGuard } from './guards/no-login-admin.guard';
 import { LoginUserGuard } from './guards/login-user.guard';
@@ -42,6 +41,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './services/login/login.service';
 import { PetService } from './services/pets/pet.service';
 import { GlobalErrorHandler } from './global-error-handler.service';
+import { ScrollTopService } from './services/scroll-top.service';
 
 
 @NgModule({
@@ -79,7 +79,7 @@ import { GlobalErrorHandler } from './global-error-handler.service';
     NgbModule
   ],
   providers: [{ provide: ErrorHandler, useClass: GlobalErrorHandler },
-    UserService, LoginAdminGuard, NoLoginAdminGuard, LoginUserGuard, LoginService, PetService],
+    LoginAdminGuard, NoLoginAdminGuard, LoginUserGuard, LoginService, PetService, ScrollTopService],
   bootstrap: [AppComponent],
   entryComponents: [
     ModalCreatePetComponent,

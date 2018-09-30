@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import { UserService } from '../user.service';
-
+import { ScrollTopService } from '../services/scroll-top.service';
 
 @Component({
   selector: 'app-register-admin',
@@ -10,9 +9,11 @@ import { UserService } from '../user.service';
 })
 export class RegisterAdminComponent implements OnInit {
 
-  constructor(public servicio: UserService, private activateRoute: ActivatedRoute, private router: Router) { }
+  constructor(private activateRoute: ActivatedRoute, private router: Router,
+              private scrollTop: ScrollTopService) { }
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
   }
   loginUser() {
     const persona = {

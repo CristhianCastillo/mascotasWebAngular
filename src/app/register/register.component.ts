@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import { ScrollTopService } from '../services/scroll-top.service';
 
 @Component({
   selector: 'app-register',
@@ -8,9 +9,10 @@ import {Router} from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private scrollTop: ScrollTopService) { }
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
   }
 
   loginUser() {

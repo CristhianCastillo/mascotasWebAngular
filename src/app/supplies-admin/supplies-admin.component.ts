@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ModalCreateSupplieAdminComponent} from './modal-create-supplie-admin/modal-create-supplie-admin.component';
 import {ModalSupplieAdminComponent} from './modal-supplie-admin/modal-supplie-admin.component';
+import { ScrollTopService } from '../services/scroll-top.service';
 
 @Component({
   selector: 'app-supplies-admin',
@@ -58,7 +59,7 @@ export class SuppliesAdminComponent implements OnInit {
       ]
     }
   ];
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private scrollTop: ScrollTopService) { }
 
   public highlightRow(emp) {
     console.log(emp.nombreSuministro);
@@ -66,6 +67,7 @@ export class SuppliesAdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
   }
 
   goToCreateSupplie() {

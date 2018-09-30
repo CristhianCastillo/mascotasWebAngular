@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ScrollTopService } from '../services/scroll-top.service';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -7,8 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardAdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(private scrollTop: ScrollTopService) { }
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
   }
 }

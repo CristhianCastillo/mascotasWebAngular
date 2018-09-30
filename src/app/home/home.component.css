@@ -14,17 +14,20 @@
 /* Declare heights because of positioning of img element */
 .carousel-item {
   height: 32rem;
-  background-color: #777;
+  max-width:100%;
+  background-color: #FFFFFF;
+}
+.carousel-item p, h1{
+  color: black;
+  font-weight: bold;
 }
 .carousel-item > img {
   position: absolute;
+  max-width:100%;
   top: 0;
   left: 0;
-  max-width:100%;
-  /**height: 32rem;**/
-  width:auto;
-  height:auto;
-  min-width: 50%;
+
+  /*min-width: 100%;*/
 }
 
 

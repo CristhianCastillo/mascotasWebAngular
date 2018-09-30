@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../user.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -9,8 +8,9 @@ import {Router} from '@angular/router';
 })
 export class HeaderMenuComponent implements OnInit {
 
+  isExpanded = false;
   tipoMenu: string;
-  constructor(public userService: UserService, private router: Router) {}
+  constructor(private router: Router) {}
   ngOnInit() {
   }
 
@@ -39,5 +39,16 @@ export class HeaderMenuComponent implements OnInit {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
+
+  collapse() {
+    this.isExpanded = false;
+    console.log('Intentando cerrar');
+  }
+
+  toggle() {
+    this.isExpanded = !this.isExpanded;
+  }
+
+
 
 }

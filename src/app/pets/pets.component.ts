@@ -3,6 +3,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ModalCreatePetComponent } from './modal-create-pet/modal-create-pet.component';
 import { ModalPetComponent } from './modal-pet/modal-pet.component';
 import { PetService } from '../services/pets/pet.service';
+import { ScrollTopService } from '../services/scroll-top.service';
 
 @Component({
   selector: 'app-pets',
@@ -88,9 +89,10 @@ export class PetsComponent implements OnInit {
 
   mascotasAny;
 
-  constructor(private modalService: NgbModal, public petService: PetService) {}
+  constructor(private modalService: NgbModal, public petService: PetService, private scrollTop: ScrollTopService) {}
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
     console.log('cargando mascotas...');
     this.petService.getAllPets().subscribe(
       (data) => {

@@ -5,54 +5,54 @@
   <!--</div>-->
   <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-danger">
     <div class="container">
-      <a class="navbar-brand " href="#">Mascotas.ga</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand " [routerLink]="['/home']">Mascotas.ga</a>
+      <button class="navbar-toggler" type="button" (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" *ngIf="tipoUsuario();" id="navbarCollapse" [ngSwitch]="tipoMenu">
+      <div  class="navbar-collapse collapse" id="navbarContent" *ngIf="tipoUsuario();" [ngSwitch]="tipoMenu" [ngClass]="{ 'show': isExpanded }">
         <ul class="navbar-nav ml-auto " *ngSwitchCase="'menuPublico'">
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/home">Home</a>
+            <a class="nav-link" routerLink="/home" (click)='collapse()'>Home</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/login">Iniciar Sesión</a>
+            <a class="nav-link" routerLink="/login"(click)='collapse()' >Iniciar Sesión</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/register">Registrarse</a>
+            <a class="nav-link" routerLink="/register" (click)='collapse()'>Registrarse</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto " *ngSwitchCase="'menuPropietario'">
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="/home">Home</a>
+              <a class="nav-link" routerLink="/home" (click)='collapse()'>Home</a>
             </li>
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="/establishment">Mi Establecimiento</a>
+              <a class="nav-link" routerLink="/establishment" (click)='collapse()'>Mi Establecimiento</a>
             </li>
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="/suppliesAdmin">Suministros</a>
+              <a class="nav-link" routerLink="/suppliesAdmin" (click)='collapse()'>Suministros</a>
             </li>
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" routerLink="/dashboardAdmin">Estadisticas</a>
+              <a class="nav-link" routerLink="/dashboardAdmin" (click)='collapse()'>Estadisticas</a>
             </li>
             <li class="nav-item" routerLinkActive="active">
-              <a class="nav-link" (click)="goToLogout()">Salir</a>
+              <a class="nav-link" (click)="goToLogout()" (click)='collapse()'>Salir</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto " *ngSwitchCase="'menuUsuario'">
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/home">Home</a>
+            <a class="nav-link" routerLink="/home" (click)='collapse()'>Home</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/myPets">Mis Mascotas</a>
+            <a class="nav-link" routerLink="/myPets" (click)='collapse()'>Mis Mascotas</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/agenda">Mi Agenda</a>
+            <a class="nav-link" routerLink="/agenda" (click)='collapse()'>Mi Agenda</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" routerLink="/supplies">Suministros</a>
+            <a class="nav-link" routerLink="/supplies" (click)='collapse()'>Suministros</a>
           </li>
           <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" (click)="goToLogout()">Salir</a>
+            <a class="nav-link" (click)="goToLogout()" (click)='collapse()'>Salir</a>
           </li>
         </ul>
       </div>

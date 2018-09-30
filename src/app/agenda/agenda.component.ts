@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ModalCreateAgendaComponent } from './modal-create-agenda/modal-create-agenda.component';
 import { ModalAgendaComponent } from './modal-agenda/modal-agenda.component';
+import { ScrollTopService } from '../services/scroll-top.service';
 
 @Component({
   selector: 'app-agenda',
@@ -77,9 +78,10 @@ export class AgendaComponent implements OnInit {
       ]
     }
   ];
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private scrollTop: ScrollTopService) { }
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
   }
 
   public highlightRow(emp) {

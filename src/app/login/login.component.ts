@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 
 import { LoginService } from '../services/login/login.service';
+import { ScrollTopService } from '../services/scroll-top.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
@@ -16,11 +17,13 @@ export class LoginComponent implements OnInit {
   staticAlertClosed = false;
   dangerMessage: string;
   loginForm: FormGroup;
-  constructor(private router: Router, public serviceLogin: LoginService, private formBuilder: FormBuilder) {
+  constructor(private router: Router, public serviceLogin: LoginService, private formBuilder: FormBuilder,
+              private scrollTop: ScrollTopService) {
     this.loginForm = this.createForm();
   }
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
     setTimeout(() => this.staticAlertClosed = true, 20000);
     this._success.subscribe((message) => this.dangerMessage = message);
     this._success.pipe(
