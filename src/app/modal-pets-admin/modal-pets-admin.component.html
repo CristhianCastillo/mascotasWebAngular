@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h4 class="modal-title">Actividades</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ngb-accordion [closeOthers]="true">
+    <ngb-panel *ngFor="let servicio of servicios" [ngSwitch]="servicio.estado">
+      <ng-template ngbPanelTitle >
+        <i class="fa fa-calendar-check-o" *ngSwitchCase="'Finalizada'" style="font-size:30px;color:blue"></i>
+        <i class="fa fa-calendar-times-o" *ngSwitchCase="'No Finalizada'" style="font-size:30px;color:red"></i>
+        <span> &bull; <b>{{servicio.fecha}}</b></span> - {{servicio.estado}}
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <h5>Tipo Actividad: {{servicio.tipoServicio}}</h5>
+        <strong>Mensaje: </strong>{{servicio.mensaje}}
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cerrar</button>
+</div>

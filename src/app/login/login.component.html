@@ -8,7 +8,11 @@
       <ngb-alert *ngIf="dangerMessage" type="danger" (close)="dangerMessage = null">{{ dangerMessage }}</ngb-alert>
       <div class="form-group">
         <label for="exampleInputEmail1">Nombre Usuario</label>
+        <i class="fa fa-check-circle check" *ngIf="!(loginForm.get('usuario').hasError('required'))"></i>
+        <i class="fa fa-exclamation-circle uncheck" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched"></i>
         <input formControlName="usuario" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu usuario">
+        <p class="alert alert-danger" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched">Por favor introduzca una dirección de
+          correo correcta</p>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Contraseña</label>

@@ -7,14 +7,14 @@ import { ReactiveFormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderMenuComponent } from './header-menu/header-menu.component';
-import { LoginComponent } from './login/login.component';
+//import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FooterComponent } from './footer/footer.component';
 import { RegisterAdminComponent } from './register-admin/register-admin.component';
-import { PetsComponent } from './pets/pets.component';
-import { ModalCreatePetComponent } from './pets/modal-create-pet/modal-create-pet.component';
+//import { PetsComponent } from './pets/pets.component';
+//import { ModalCreatePetComponent } from './pets/modal-create-pet/modal-create-pet.component';
 import { ModalOutMessageComponent } from './modal-out-message/modal-out-message.component';
-import { ModalPetComponent } from './pets/modal-pet/modal-pet.component';
+//import { ModalPetComponent } from './pets/modal-pet/modal-pet.component';
 import { AgendaComponent } from './agenda/agenda.component';
 import { ModalCreateAgendaComponent } from './agenda/modal-create-agenda/modal-create-agenda.component';
 import { ModalAgendaComponent } from './agenda/modal-agenda/modal-agenda.component';
@@ -42,20 +42,21 @@ import { LoginService } from './services/login/login.service';
 import { PetService } from './services/pets/pet.service';
 import { GlobalErrorHandler } from './global-error-handler.service';
 import { ScrollTopService } from './services/scroll-top.service';
+import { ModalPetsAdminComponent } from './modal-pets-admin/modal-pets-admin.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderMenuComponent,
-    LoginComponent,
+    //LoginComponent,
     RegisterComponent,
     FooterComponent,
     RegisterAdminComponent,
-    PetsComponent,
-    ModalCreatePetComponent,
+    //PetsComponent,
+    //ModalCreatePetComponent,
     ModalOutMessageComponent,
-    ModalPetComponent,
+    //ModalPetComponent,
     AgendaComponent,
     ModalCreateAgendaComponent,
     ModalAgendaComponent,
@@ -68,7 +69,8 @@ import { ScrollTopService } from './services/scroll-top.service';
     ModalSupplieAdminComponent,
     DashboardAdminComponent,
     HomeComponent,
-    ErrorComponent
+    ErrorComponent,
+    ModalPetsAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -82,15 +84,16 @@ import { ScrollTopService } from './services/scroll-top.service';
     LoginAdminGuard, NoLoginAdminGuard, LoginUserGuard, LoginService, PetService, ScrollTopService],
   bootstrap: [AppComponent],
   entryComponents: [
-    ModalCreatePetComponent,
+    //ModalCreatePetComponent,
     ModalOutMessageComponent,
-    ModalPetComponent,
+    //ModalPetComponent,
     ModalCreateAgendaComponent,
     ModalAgendaComponent,
     ModalCreateSupplieComponent,
     ModalSupplieComponent,
     ModalCreateSupplieAdminComponent,
-    ModalSupplieAdminComponent
+    ModalSupplieAdminComponent,
+    ModalPetsAdminComponent
   ]
 })
 export class AppModule { }

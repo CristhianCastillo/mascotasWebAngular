@@ -28,6 +28,14 @@
             <li class="nav-item" routerLinkActive="active">
               <a class="nav-link" routerLink="/establishment" (click)='collapse()'>Mi Establecimiento</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle "  routerLinkActive="active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mascotas</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" routerLinkActive="active" routerLink="/myPetsAdmin" (click)='collapse()'>Dueños</a>
+                <!--<div class="dropdown-divider"></div>-->
+                <a class="dropdown-item" routerLinkActive="active" routerLink="/myPetsAdminPets" (click)='collapse()'>Mascotas</a>
+              </div>
+            </li>
             <li class="nav-item" routerLinkActive="active">
               <a class="nav-link" routerLink="/suppliesAdmin" (click)='collapse()'>Suministros</a>
             </li>

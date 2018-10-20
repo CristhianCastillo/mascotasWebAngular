@@ -1,0 +1,34 @@
+<div class="container py-2">
+  <h2 class="text-center text-muted py-3">Dueños</h2>
+    <!-- timeline item 1 -->
+    <div class="row" *ngFor="let cliente of clientes;" (mouseover)="highlightRow(cliente)" (click)="goToViewEvent(cliente.id)">
+      <!-- timeline item 1 left dot -->
+      <div class="col-auto text-center flex-column d-none d-sm-flex">
+        <div class="row h-50">
+          <div class="col border-right">&nbsp;</div>
+          <div class="col">&nbsp;</div>
+        </div>
+        <h5 class="m-2">
+          <span class="badge badge-pill" [ngClass]="{'bg-success': (cliente.id == idCliente),
+                'bg-light border': (!(cliente.id == idCliente))}">&nbsp;</span>
+        </h5>
+        <div class="row h-50">
+          <div class="col border-right">&nbsp;</div>
+          <div class="col">&nbsp;</div>
+        </div>
+      </div>
+      <!-- timeline item 1 event content -->
+      <div class="col py-2">
+        <div class="card" [ngClass]="{'border-success shadow': (cliente.id == idCliente),
+                '': (!(cliente.id == idCliente) || !(cliente.id == idCliente))}">
+          <div class="card-body">
+            <div class="float-right" [ngClass]="{'text-success': (cliente.id == idCliente),
+                'text-muted': (!(cliente.id == idCliente))}">Visitas: {{cliente.numerovisitas}}</div>
+            <h4 class="card-title" [ngClass]="{'text-success': (cliente.id == idCliente),
+                'text-muted': (!(cliente.id == idCliente))}">{{cliente.nombreCliente}}</h4>
+            <p>Ultima Solicitud: {{cliente.ultimaSolicitud}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

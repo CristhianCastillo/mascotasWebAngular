@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalCreatePetComponent } from './modal-create-pet/modal-create-pet.component';
 import { ModalPetComponent } from './modal-pet/modal-pet.component';
 import { PetService } from '../services/pets/pet.service';

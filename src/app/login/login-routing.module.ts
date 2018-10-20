@@ -1,13 +1,13 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PetsAdminPetsComponent } from './pets-admin-pets.component';
+import { LoginComponent } from './login.component';
 
 const routers: Routes = [
-  {path:  '', component: PetsAdminPetsComponent}
+    {path:  "", component: LoginComponent}
 ];
 
 @NgModule({
   exports: [ RouterModule ],
   imports: [RouterModule.forChild(routers)]
 })
-export class PetsAdminPetsRoutingModule {}
+export class LoginRoutingModule {}
