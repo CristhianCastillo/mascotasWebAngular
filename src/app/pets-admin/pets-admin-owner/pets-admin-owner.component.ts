@@ -14,7 +14,6 @@ export class PetsAdminOwnerComponent implements OnInit {
   public idCliente: number;
   public nombreCliente: string;
   private sub: any;
-
   public mascotas: any = [
     {
       id: 1,

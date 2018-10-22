@@ -12,8 +12,8 @@
           <div class="col">&nbsp;</div>
         </div>
         <h5 class="m-2">
-          <span class="badge badge-pill bg-light" [ngClass]="{'bg-info border': (detalle.nombre == nombreSuministro),
-                'bg-light': (!(detalle.nombre == nombreSuministro))}">&nbsp;</span>
+          <span class="badge badge-pill" [ngClass]="{'bg-info': (detalle.nombre == nombreSuministro),
+                'bg-light border': (!(detalle.nombre == nombreSuministro))}">&nbsp;</span>
         </h5>
         <div class="row h-50">
           <div class="col border-right">&nbsp;</div>
@@ -23,7 +23,7 @@
       <!-- timeline item 1 event content -->
       <div class="col py-2">
         <div class="card" [ngClass]="{'border-info shadow': (detalle.nombre == nombreSuministro),
-                'card': (!(detalle.nombre == nombreSuministro))}">
+                '': (!(detalle.nombre == nombreSuministro))}">
           <div class="card-body">
             <div class="float-right" [ngClass]="{'text-info': (detalle.nombre == nombreSuministro),
                 'text-muted': (!(detalle.nombre == nombreSuministro))}">{{detalle.fecha}}</div>

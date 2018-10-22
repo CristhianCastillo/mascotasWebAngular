@@ -8,8 +8,8 @@ import {Router} from '@angular/router';
 })
 export class HeaderMenuComponent implements OnInit {
 
-  isExpanded = false;
-  tipoMenu: string;
+  public isExpanded = false;
+  public tipoMenu: string;
   constructor(private router: Router) {}
   ngOnInit() {
   }
@@ -48,7 +48,4 @@ export class HeaderMenuComponent implements OnInit {
   toggle() {
     this.isExpanded = !this.isExpanded;
   }
-
-
-
 }

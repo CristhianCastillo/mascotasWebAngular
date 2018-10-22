@@ -10,7 +10,6 @@ export class PetsAdminComponent implements OnInit {
 
   public idCliente: number ;
   public fechaEvento: string ;
-
   public clientes: any = [
     {
       id: 1,

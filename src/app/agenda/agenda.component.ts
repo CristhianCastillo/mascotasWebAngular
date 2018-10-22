@@ -14,7 +14,6 @@ export class AgendaComponent implements OnInit {
 
   public idEvento: number ;
   public fechaEvento: string ;
-
   public agenda = [
     {
       idMascota: 1,

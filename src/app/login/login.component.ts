@@ -15,9 +15,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class LoginComponent implements OnInit {
   private _success = new Subject<string>();
-  staticAlertClosed = false;
-  dangerMessage: string;
-  loginForm: FormGroup;
+  public staticAlertClosed = false;
+  public dangerMessage: string;
+  public loginForm: FormGroup;
   constructor(private router: Router, public serviceLogin: LoginService, private formBuilder: FormBuilder,
               private scrollTop: ScrollTopService, private spinner: NgxSpinnerService) {
     this.loginForm = this.createForm();
@@ -65,5 +65,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
 }
