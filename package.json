@@ -24,6 +24,8 @@
     "@types/chart.js": "^2.7.34",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.4",
+    "ng-multiselect-dropdown": "^0.2.1",
+    "ngx-spinner": "^6.1.2",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.3.2",
     "zone.js": "~0.8.26"

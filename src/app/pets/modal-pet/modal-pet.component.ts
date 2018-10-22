@@ -6,6 +6,7 @@ import {ModalOutMessageComponent} from '../../modal-out-message/modal-out-messag
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { PetService } from '../../services/pets/pet.service';
 import {Mascota} from '../../models/Mascota';
+import {DateConvert} from '../../models/DateConvert';
 
 @Component({
   selector: 'app-modal-pet',
@@ -15,18 +16,9 @@ import {Mascota} from '../../models/Mascota';
 export class ModalPetComponent implements OnInit {
 
   @Input() mascota: Mascota;
-  petForm: FormGroup;
-  id: number;
-  urlImagen: string;
-  nombre: string;
-  tipoMascota: string;
-  genero: string;
-  fechaNacimiento: FechaConvert;
-  raza: string;
-  esterilizado: string;
-  color: string;
-  descripcion: string;
-  modeloNuevo: Date;
+  public petForm: FormGroup;
+  public fechaNacimiento: DateConvert;
+  public modeloNuevo: Date;
 
   constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
     , private modalService: NgbModal, public servicePet: PetService, private formBuilder: FormBuilder) {
@@ -35,20 +27,11 @@ export class ModalPetComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.mascota);
-    this.id = this.mascota.id;
-    this.fechaNacimiento = new FechaConvert();
-    this.urlImagen = this.mascota.imagen;
-    this.nombre = this.mascota.nombre;
-    this.tipoMascota = this.mascota.tipoMascota;
-    this.genero = this.mascota.genero;
+    this.fechaNacimiento = new DateConvert();
     this.modeloNuevo = new Date(this.mascota.fechaNacimiento);
     this.fechaNacimiento.year = this.modeloNuevo.getUTCFullYear();
     this.fechaNacimiento.month = (this.modeloNuevo.getUTCMonth() + 1);
     this.fechaNacimiento.day = this.modeloNuevo.getUTCDate();
-    this.raza = this.mascota.raza;
-    this.esterilizado = this.mascota.esterilizado;
-    this.color = this.mascota.color;
-    this.descripcion = this.mascota.descripcion;
     console.log(this.mascota);
     this.petForm = this.createForm();
   }
@@ -56,7 +39,7 @@ export class ModalPetComponent implements OnInit {
   private createForm() {
     return this.formBuilder.group({
       fotoMascota: [''],
-      nombre : [this.nombre + '', Validators.required],
+      nombre : [this.mascota.nombre + '', Validators.required],
       tipoMascota: [this.mascota.tipoMascota, Validators.required],
       genero: [this.mascota.genero, Validators.required],
       fechaNacimiento: [this.fechaNacimiento, Validators.required],
@@ -79,7 +62,6 @@ export class ModalPetComponent implements OnInit {
 
   openModalUpdate(titulo, mensaje) {
     const fechaJ = this.petForm.value['fechaNacimiento'];
-    const fecha: string = fechaJ.year + '-' +  fechaJ.month + '-' + fechaJ.day;
     let fechaDate: Date = new Date(Date.UTC(fechaJ.year, fechaJ.month - 1, fechaJ.day, 1, 0, 0, 0))
     console.log(fechaDate.toISOString().slice(0, 10));
     const mascota = {
@@ -134,10 +116,4 @@ export class ModalPetComponent implements OnInit {
       }
     );
   }
-}
-
-export class FechaConvert {
-  public year: number;
-  public month: number;
-  public day: number;
 }

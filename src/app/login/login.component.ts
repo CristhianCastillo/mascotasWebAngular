@@ -6,6 +6,7 @@ import { ScrollTopService } from '../services/scroll-top.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   dangerMessage: string;
   loginForm: FormGroup;
   constructor(private router: Router, public serviceLogin: LoginService, private formBuilder: FormBuilder,
-              private scrollTop: ScrollTopService) {
+              private scrollTop: ScrollTopService, private spinner: NgxSpinnerService) {
     this.loginForm = this.createForm();
   }
 
@@ -49,13 +50,16 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser(data) {
+    this.spinner.show();
     this.serviceLogin.loginUser(data).subscribe(
       (result: boolean) => {
         console.log(result);
         if (result) {
           localStorage.setItem('user', JSON.stringify( data )) ;
           this.router.navigate(['/myPets']) ;
+          this.spinner.hide();
         } else {
+          this.spinner.hide();
           this._success.next('Usuario y/o contraseña no validos.');
         }
       }

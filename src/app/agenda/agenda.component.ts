@@ -3,6 +3,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { ModalCreateAgendaComponent } from './modal-create-agenda/modal-create-agenda.component';
 import { ModalAgendaComponent } from './modal-agenda/modal-agenda.component';
 import { ScrollTopService } from '../services/scroll-top.service';
+import {Cita} from '../models/Cita';
 
 @Component({
   selector: 'app-agenda',
@@ -11,73 +12,84 @@ import { ScrollTopService } from '../services/scroll-top.service';
 })
 export class AgendaComponent implements OnInit {
 
-  public nombreEvento: string ;
+  public idEvento: number ;
   public fechaEvento: string ;
-  agenda = [
+
+  public agenda = [
     {
+      idMascota: 1,
       nombre: 'Muñeca',
       citas: [
         {
-          nombreEvento: 'Corte de pelo',
-          ubicacion: 'Kr 45 F',
-          tipoActividad: 'Peluqueria',
-          fecha: '2018-01-01',
-          hora: '12:00',
-          descripcionActividad: 'Corte de pelo semestral.'
+          id: 1,
+          nombre: "Corte de pelo",
+          ubicacion: "Kr 45 F",
+          tipoActividad: "Peluqueria",
+          fechaEvento: "2018-01-01",
+          horaEvento: "12:00",
+          descripcionEvento: "Corte de pelo semestral."
         },
         {
-          nombreEvento: 'Vacuna anual',
-          ubicacion: 'Calle 34 F 34',
-          tipoActividad: 'Vacuna B2',
-          fecha: '2019-05-01',
-          hora: '12:00',
-          descripcionActividad: 'Vacuna anual contra la rabia'
+          id: 2,
+          nombre: "Vacuna anual",
+          ubicacion: "Calle 34 F 34",
+          tipoActividad: "Vacuna",
+          fechaEvento: "2019-05-01",
+          horaEvento: "12:00",
+          descripcionEvento: "Vacuna anual contra la rabia"
         }
       ]
     },
     {
+      idMascota: 2,
       nombre: 'Maxi',
       citas: [
         {
-          nombreEvento: 'Baño en casa',
-          ubicacion: 'Kr 45 F',
-          tipoActividad: 'Baño',
-          fecha: '2018-08-10',
-          hora: '12:00',
-          descripcionActividad: 'Baño semanal.'
+          id: 3,
+          nombre: "Baño en casa",
+          ubicacion: "Kr 45 F",
+          tipoActividad: "Baño",
+          fechaEvento: "2018-08-10",
+          horaEvento: "12:00",
+          descripcionEvento: "Baño semanal."
         },
         {
-          nombreEvento: 'Vacuna anual',
-          ubicacion: 'Calle 34 F 34',
-          tipoActividad: 'Vacuna B2',
-          fecha: '2019-08-01',
-          hora: '12:00',
-          descripcionActividad: 'Vacuna anual contra la rabia'
+          id: 4,
+          nombre: "Vacuna anual",
+          ubicacion: "Calle 34 F 34",
+          tipoActividad: "Vacuna",
+          fechaEvento: "2019-05-01",
+          horaEvento: "12:00",
+          descripcionEvento: "Vacuna anual contra la rabia"
         }
       ]
     },
     {
+      idMascota: 3,
       nombre: 'Remy',
       citas: [
         {
-          nombreEvento: 'Ir al veterinario',
-          ubicacion: 'Kr 45 F',
-          tipoActividad: 'Veterinaria',
-          fecha: '2018-08-10',
-          hora: '12:00',
-          descripcionActividad: 'Control medico semestral.'
+          id: 5,
+          nombre: "Ir al veterinario",
+          ubicacion: "Kr 45 F",
+          tipoActividad: "Veterinario",
+          fechaEvento: "2018-08-10",
+          horaEvento: "12:00",
+          descripcionEvento: "Control medico semestral."
         },
         {
-          nombreEvento: 'Cepillado de dientes',
-          ubicacion: 'Calle 34 F 34',
-          tipoActividad: 'Peluqueria',
-          fecha: '2019-05-01',
-          hora: '15:00',
-          descripcionActividad: 'Cepillado de dientes'
+          id: 6,
+          nombre: "Cepillado de dientes",
+          ubicacion: "Calle 34 F 34",
+          tipoActividad: "Dientes",
+          fechaEvento: "2019-05-01",
+          horaEvento: "15:00",
+          descripcionEvento: "Cepillado de dientes"
         }
       ]
     }
   ];
+
   constructor(private modalService: NgbModal, private scrollTop: ScrollTopService) { }
 
   ngOnInit() {
@@ -85,16 +97,17 @@ export class AgendaComponent implements OnInit {
   }
 
   public highlightRow(emp) {
-    console.log(emp.nombreEvento);
-    this.nombreEvento = emp.nombreEvento;
-    this.fechaEvento = emp.fecha;
+    console.log(emp.nombre);
+    this.idEvento = emp.id;
+    this.fechaEvento = emp.fechaEvento;
   }
 
   goToCreateEvent() {
     const modalRef = this.modalService.open(ModalCreateAgendaComponent);
     modalRef.componentInstance.agenda = this.agenda;
   }
-  goToViewEvent(evento, mascotaSeleccionada) {
+
+  goToViewEvent(evento: Cita, mascotaSeleccionada) {
     const modalRef = this.modalService.open(ModalAgendaComponent);
     modalRef.componentInstance.eventoSeleccionado = evento;
     modalRef.componentInstance.mascotaSeleccionada = mascotaSeleccionada;

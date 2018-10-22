@@ -1,22 +1,33 @@
 <br>
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-running-dots">
+  <p style="font-size: 20px; color: white">Autentificando...</p>
+</ngx-spinner>
 <div class="container">
   <div class="form-horizontal">
     <h2>Iniciar Sesión</h2>
     <p>Por favor ingresa tus datos para entrar</p>
     <hr />
-    <form [formGroup]= "loginForm" (ngSubmit) ="validData()">
+    <form [formGroup]= "loginForm" (ngSubmit)="validData()">
       <ngb-alert *ngIf="dangerMessage" type="danger" (close)="dangerMessage = null">{{ dangerMessage }}</ngb-alert>
       <div class="form-group">
-        <label for="exampleInputEmail1">Nombre Usuario</label>
+        <label for="exampleInputEmail1">Nombre Usuario </label>
         <i class="fa fa-check-circle check" *ngIf="!(loginForm.get('usuario').hasError('required'))"></i>
         <i class="fa fa-exclamation-circle uncheck" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched"></i>
         <input formControlName="usuario" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu usuario">
-        <p class="alert alert-danger" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched">Por favor introduzca una dirección de
-          correo correcta</p>
+        <p class="alert alert-danger" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched">
+          Ingresa un usuario valido</p>
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Contraseña</label>
+        <i class="fa fa-check-circle check" *ngIf="!(loginForm.get('password').hasError('required'))"></i>
+        <i class="fa fa-exclamation-circle uncheck" *ngIf="(loginForm.get('password').hasError('required')) && loginForm.get('password').touched"></i>
         <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Ingresa tu contraseña">
+        <p class="alert alert-danger" *ngIf="(loginForm.get('password').hasError('required')) && loginForm.get('password').touched">
+          Ingresa una contraseña valida</p>
       </div>
       <div class="form-group form-check">
         <input formControlName="recordarPassword" type="checkbox" class="form-check-input" id="exampleCheck1">

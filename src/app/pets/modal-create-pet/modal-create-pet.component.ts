@@ -13,9 +13,9 @@ import { Mascota } from '../../models/Mascota';
   styleUrls: ['./modal-create-pet.component.css']
 })
 export class ModalCreatePetComponent implements OnInit {
-  petForm: FormGroup;
-  model: NgbDateStruct;
-  date: {year: number, month: number};
+
+  public petForm: FormGroup;
+
   constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
   , private modalService: NgbModal, public servicePet: PetService, private formBuilder: FormBuilder) {
     config.backdrop = 'static';
@@ -41,9 +41,7 @@ export class ModalCreatePetComponent implements OnInit {
 
   open(titulo, mensaje) {
     const fechaJ = this.petForm.value['fechaNacimiento'];
-    const fecha: string = fechaJ.year + '-' +  fechaJ.month + '-' + fechaJ.day;
     let fechaDate: Date = new Date(Date.UTC(fechaJ.year, fechaJ.month - 1, fechaJ.day, 1, 0, 0, 0))
-    console.log(fechaDate.toISOString().slice(0, 10));
     const mascota = {
       imagen: '../../assets/imgs/pet - default.png',
       nombre: this.petForm.value['nombre'],
@@ -76,9 +74,5 @@ export class ModalCreatePetComponent implements OnInit {
         }
       }
     );
-  }
-
-  selectToday() {
-    this.model = this.calendar.getToday();
   }
 }

@@ -4,6 +4,8 @@ import { ModalCreatePetComponent } from './modal-create-pet/modal-create-pet.com
 import { ModalPetComponent } from './modal-pet/modal-pet.component';
 import { PetService } from '../services/pets/pet.service';
 import { ScrollTopService } from '../services/scroll-top.service';
+import {Mascota} from '../models/Mascota';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-pets',
@@ -12,7 +14,7 @@ import { ScrollTopService } from '../services/scroll-top.service';
 })
 export class PetsComponent implements OnInit {
 
-  mascotas = [
+  public mascotas = [
     {
       id: 1,
       imagen: '../../assets/imgs/pet - 1.png',
@@ -86,20 +88,23 @@ export class PetsComponent implements OnInit {
       descripcion: 'Es un animal muy veloz.'
     }
   ];
+  public mascotasAny: any;
 
-  mascotasAny;
-
-  constructor(private modalService: NgbModal, public petService: PetService, private scrollTop: ScrollTopService) {}
+  constructor(private modalService: NgbModal, public petService: PetService, private scrollTop: ScrollTopService,
+              private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.scrollTop.setScrollTop();
     console.log('cargando mascotas...');
+    this.spinner.show();
     this.petService.getAllPets().subscribe(
       (data) => {
         console.log(data);
         this.mascotasAny = data;
+        this.spinner.hide();
       },
       (error) => {
+        this.spinner.hide();
         console.error(error);
       }
     );
@@ -109,13 +114,9 @@ export class PetsComponent implements OnInit {
     const modalRef = this.modalService.open(ModalCreatePetComponent);
   }
 
-  goToViewPet(mascota) {
+  goToViewPet(mascota: Mascota) {
     console.log(mascota);
     const modalRef = this.modalService.open(ModalPetComponent)
     modalRef.componentInstance.mascota = mascota;
   }
-
-  buttonPressedSaveItem() {
-      console.log('refrescar al salir del mdodal');
-    }
 }

@@ -1,53 +1,79 @@
 <div class="modal-header">
-  <h4 class="modal-title" id="modal-basic-title">{{nombreEvento}}</h4>
+  <h4 class="modal-title" id="modal-basic-title">{{eventoSeleccionado.nombre}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <form>
+  <form [formGroup]= "agendaForm" (ngSubmit)="getData()">
     <div class="form-group">
-      <label for="nombreMascota">Seleccionar Mascota</label>
-      <select class="form-control" id="nombreMascota" [ngModel]="mascotaSeleccionada" name="nombreDeMascota">
-        <option *ngFor="let mascota of mascotas" [value]="mascota.nombre">{{mascota.nombre}}</option>
+      <label for="idMascota">Seleccionar Mascota</label>
+      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('idMascota').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched"></i>
+      <select formControlName="idMascota" class="form-control" id="idMascota" name="idMascota">
+        <option *ngFor="let mascota of mascotas" [value]="mascota.idMascota">{{mascota.nombre}}</option>
       </select>
+      <p class="alert alert-danger" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched">Selecciona una mascota</p>
     </div>
     <div class="form-group">
-      <label for="nombreEvento">Nombre Evento</label>
-      <input type="text" class="form-control" id="nombreEvento" name="nombreDelEvento" [ngModel]="nombreEvento" placeholder="Asocia un nombre para este evento">
+      <label for="nombre">Nombre</label>
+      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('nombre').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched"></i>
+      <input formControlName="nombre" type="text" class="form-control" id="nombre" name="nombreDelEvento" placeholder="Asocia un nombre para este evento">
+      <p class="alert alert-danger" *ngIf="(agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched">Ingresa un nombre valido</p>
     </div>
     <div class="form-group">
-      <label for="tipoActividad">Tipo Actividad</label>
-      <select class="form-control" id="tipoActividad" [ngModel]="tipoActividad" name="tipoDeActividad">
-        <option>Vacunacion</option>
-        <option>Veterinaria</option>
-        <option>Dientes</option>
-        <option>Jugar</option>
-        <option>Baño</option>
-        <option>Vacuna B2</option>
+      <label for="ubicacion">Ubicación</label>
+      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('ubicacion').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched"></i>
+      <input formControlName="ubicacion" type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Asocia un lugar para este evento">
+      <p class="alert alert-danger" *ngIf="(agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched">Ingresa una ubicación valida</p>
+    </div>
+    <div class="form-group">
+      <label for="tipo">Tipo Evento</label>
+      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('tipo').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched"></i>
+      <select formControlName="tipo" class="form-control" id="tipo" name="tipo">
+        <option>Veterinario</option>
         <option>Peluqueria</option>
+        <option>Vacuna</option>
+        <option>Jugar</option>
+        <option>Dientes</option>
+        <option>Baño</option>
       </select>
+      <p class="alert alert-danger" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched">Selecciona una tipo de evento</p>
     </div>
     <div class="form-group">
       <label>Fecha Evento</label>
+      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('fecha').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched"></i>
       <div class="input-group">
-        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="fechaActividad" ngbDatepicker #d="ngbDatepicker">
+        <input formControlName="fecha" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker">
         <div class="input-group-append">
-          <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">Seleccionar</button>
+          <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">
+            <i class="fa fa-calendar" style="font-size:24px"></i>
+          </button>
         </div>
       </div>
+      <p class="alert alert-danger" *ngIf="(agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched">Selecciona una fecha</p>
     </div>
     <div class="form-group">
       <label>Hora Evento</label>
-      <ngb-timepicker name="Hora" [(ngModel)]="horaActividad"></ngb-timepicker>
+      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('hora').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('hora').hasError('required')) && agendaForm.get('hora').touched"></i>
+      <ngb-timepicker formControlName="hora" name="Hora"></ngb-timepicker>
+      <p class="alert alert-danger" *ngIf="(agendaForm.get('hora').hasError('required')) && agendaForm.get('hora').touched">Selecciona una hora</p>
     </div>
     <div class="form-group">
-      <label for="descripcionEvento">Descripción Evento</label>
-      <textarea name="descripcionDelEvento" class="form-control" id="descripcionEvento" [ngModel]="descripcionActividad" placeholder="Descripción Evento"></textarea>
+      <label for="descripcion">Descripción Evento</label>
+      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('descripcion').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched"></i>
+      <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion" placeholder="Descripción Evento"></textarea>
+      <p class="alert alert-danger" *ngIf="(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched">Ingresa una descripción valida.</p>
     </div>
     <div class="modal-footer">
-      <button type="submit" class="btn btn-outline-success" (click)="openModalUpdate('Actualizar Evento', 'Evento actualizado correctamente!')">Actualizar Evento</button>
-      <button type="submit" class="btn btn-outline-danger" (click)="openModalConfirm('Eliminar Evento', 'Evento eliminado correctamente!')">Eliminar Evento</button>
+      <button type="submit" class="btn btn-outline-success" [disabled]="!agendaForm.valid">Actualizar</button>
+      <button type="button" class="btn btn-outline-danger" (click)="openModalConfirm('Eliminar Evento', 'Evento eliminado correctamente!')">Eliminar</button>
     </div>
   </form>
 </div>

@@ -4,7 +4,7 @@
     <h3>{{suministro.nombreTipoSuministro}}</h3>
     <hr>
     <!-- timeline item 1 -->
-    <div class="row" *ngFor="let detalle of suministro.detales;" (mouseover)="highlightRow(detalle)" (click)="goToViewSupplie(detalle)">
+    <div class="row" *ngFor="let detalle of suministro.detalles;" (mouseover)="highlightRow(detalle)" (click)="goToViewSupplie(detalle)">
       <!-- timeline item 1 left dot -->
       <div class="col-auto text-center flex-column d-none d-sm-flex">
         <div class="row h-50">
@@ -12,8 +12,8 @@
           <div class="col">&nbsp;</div>
         </div>
         <h5 class="m-2">
-          <span class="badge badge-pill" [ngClass]="{'bg-info': (detalle.nombreSuministro == nombreSuministro),
-                'bg-light border': (!(detalle.nombreSuministro == nombreSuministro))}">&nbsp;</span>
+          <span class="badge badge-pill" [ngClass]="{'bg-info': (detalle.nombre == nombreSuministro),
+                'bg-light border': (!(detalle.nombre == nombreSuministro))}">&nbsp;</span>
         </h5>
         <div class="row h-50">
           <div class="col border-right">&nbsp;</div>
@@ -22,15 +22,15 @@
       </div>
       <!-- timeline item 1 event content -->
       <div class="col py-2">
-        <div class="card" [ngClass]="{'border-info shadow': (detalle.nombreSuministro == nombreSuministro),
-                '': (!(detalle.nombreSuministro == nombreSuministro))}">
+        <div class="card" [ngClass]="{'border-info shadow': (detalle.nombre == nombreSuministro),
+                '': (!(detalle.nombre == nombreSuministro))}">
           <div class="card-body">
-            <div class="float-right" [ngClass]="{'text-info': (detalle.nombreSuministro == nombreSuministro),
-                'text-muted': (!(detalle.nombreSuministro == nombreSuministro))}">{{detalle.fechaCompra}}</div>
-            <h4 class="card-title" [ngClass]="{'text-info': (detalle.nombreSuministro == nombreSuministro),
-                '': (!(detalle.nombreSuministro == nombreSuministro))}">{{detalle.nombreSuministro}} {{detalle.cantidadSuministro}} {{detalle.unidadMedida}}</h4>
+            <div class="float-right" [ngClass]="{'text-info': (detalle.nombre == nombreSuministro),
+                'text-muted': (!(detalle.nombre == nombreSuministro))}">{{detalle.fecha}}</div>
+            <h4 class="card-title" [ngClass]="{'text-info': (detalle.nombre == nombreSuministro),
+                '': (!(detalle.nombre == nombreSuministro))}">{{detalle.nombre}} {{detalle.cantidad}} {{detalle.unidadMedida}}</h4>
             <p>Consumo: {{detalle.consumoDiario}}</p>
-            <p>Comentarios: {{detalle.comentarios}}</p>
+            <p>Comentarios: {{detalle.comentario}}</p>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PetsComponent } from './pets.component';
 
 const routers: Routes = [
-    {path:  "", component: PetsComponent}
+  {path:  "", component: PetsComponent}
 ];
 
 @NgModule({

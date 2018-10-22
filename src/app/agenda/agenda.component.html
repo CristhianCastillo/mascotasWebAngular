@@ -4,7 +4,7 @@
     <h3>{{mascota.nombre}}</h3>
     <hr>
     <!-- timeline item 1 -->
-    <div class="row" *ngFor="let cita of mascota.citas;" (mouseover)="highlightRow(cita)" (click)="goToViewEvent(cita, mascota.nombre)">
+    <div class="row" *ngFor="let cita of mascota.citas;" (mouseover)="highlightRow(cita)" (click)="goToViewEvent(cita, mascota.idMascota)">
       <!-- timeline item 1 left dot -->
       <div class="col-auto text-center flex-column d-none d-sm-flex">
         <div class="row h-50">
@@ -12,8 +12,8 @@
           <div class="col">&nbsp;</div>
         </div>
         <h5 class="m-2">
-          <span class="badge badge-pill" [ngClass]="{'bg-success': (cita.nombreEvento == nombreEvento && cita.fecha == fechaEvento),
-                'bg-light border': (!(cita.nombreEvento == nombreEvento) || !(cita.fecha == fechaEvento))}">&nbsp;</span>
+          <span class="badge badge-pill" [ngClass]="{'bg-success': (cita.id == idEvento && cita.fechaEvento == fechaEvento),
+                'bg-light border': (!(cita.id == idEvento) || !(cita.fechaEvento == fechaEvento))}">&nbsp;</span>
         </h5>
         <div class="row h-50">
           <div class="col border-right">&nbsp;</div>
@@ -22,15 +22,15 @@
       </div>
       <!-- timeline item 1 event content -->
       <div class="col py-2">
-        <div class="card" [ngClass]="{'border-success shadow': (cita.nombreEvento == nombreEvento && cita.fecha == fechaEvento),
-                '': (!(cita.nombreEvento == nombreEvento) || !(cita.fecha == fechaEvento))}">
+        <div class="card" [ngClass]="{'border-success shadow': (cita.id == idEvento && cita.fechaEvento == fechaEvento),
+                '': (!(cita.id == idEvento) || !(cita.fechaEvento == fechaEvento))}">
           <div class="card-body">
-            <div class="float-right" [ngClass]="{'text-success': (cita.nombreEvento == nombreEvento && cita.fecha == fechaEvento),
-                'text-muted': (!(cita.nombreEvento == nombreEvento) || !(cita.fecha == fechaEvento))}">{{cita.fecha}} {{cita.hora}}</div>
-            <h4 class="card-title" [ngClass]="{'text-success': (cita.nombreEvento == nombreEvento && cita.fecha == fechaEvento),
-                'text-muted': (!(cita.nombreEvento == nombreEvento) || !(cita.fecha == fechaEvento))}">{{cita.nombreEvento}}</h4>
+            <div class="float-right" [ngClass]="{'text-success': (cita.id == idEvento && cita.fechaEvento == fechaEvento),
+                'text-muted': (!(cita.id == idEvento) || !(cita.fechaEvento == fechaEvento))}">{{cita.fechaEvento}} {{cita.horaEvento}}</div>
+            <h4 class="card-title" [ngClass]="{'text-success': (cita.id == idEvento && cita.fechaEvento == fechaEvento),
+                'text-muted': (!(cita.id == idEvento) || !(cita.fechaEvento == fechaEvento))}">{{cita.nombre}}</h4>
             <p>Ubicación: {{cita.ubicacion}}</p>
-            <p>Descripción: {{cita.descripcionActividad}}</p>
+            <p>Descripción: {{cita.descripcionEvento}}</p>
           </div>
         </div>
       </div>

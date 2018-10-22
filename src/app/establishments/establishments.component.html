@@ -2,64 +2,81 @@
 <div class="container">
   <div class="form-horizontal">
     <h2>Mi Establecimiento</h2>
-    <p>Por favor verifica que tus datos son correctos, asi te podran encontrar mas fcil.</p>
+    <p>Por favor verifica que tus datos son correctos, asi te podran encontrar mas facil.</p>
     <hr />
-    <form>
+    <form [formGroup]= "establishmentForm" (ngSubmit)="getData()">
       <div class="form-group">
-        <label for="nombreEstablecimiento">Nombre Establecimiento</label>
-        <input type="text" class="form-control" name="nombreEstablecimiento" [ngModel]="datosEstablecimiento.nombre" id="nombreEstablecimiento"
+        <label for="nombre">Nombre Establecimiento</label>
+        <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('nombre').hasError('required'))"></i>
+        <i class="fa fa-exclamation-circle uncheck" *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched"></i>
+        <input formControlName="nombre" type="text" class="form-control" name="nombre" id="nombre"
           placeholder="Nombre establecimiento">
+        <p class="alert alert-danger" *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched">Ingresa un nombre valido para el establecimiento.</p>
       </div>
       <div class="form-group">
-        <label for="telefonoEstablecimiento">Telefono</label>
-        <input type="text" class="form-control" name="telf" [ngModel]="datosEstablecimiento.telefono" id="telefonoEstablecimiento"
+        <label for="telefono">Telefono</label>
+        <input formControlName="telefono" type="text" class="form-control" name="telefono" id="telefono"
           placeholder="Telefono">
       </div>
       <div class="form-group">
-        <label for="direccionEstablecimiento">Dirección</label>
-        <input type="text" class="form-control" name="direccion" [ngModel]="datosEstablecimiento.direccion" id="direccionEstablecimiento"
+        <label for="direccion">Dirección</label>
+        <input formControlName="direccion" type="text" class="form-control" name="direccion" id="direccion"
           placeholder="Dirección">
       </div>
       <div class="form-group">
-        <label for="correoUsuario">Correo Electronico</label>
-        <input type="email" class="form-control" name="correoElectronico" [ngModel]="datosEstablecimiento.correo" id="correoUsuario"
+        <label for="correo">Correo Electronico</label>
+        <input formControlName="correo" type="email" class="form-control" name="correo" id="correo"
           placeholder="Ingresa el email del establecimiento">
       </div>
       <div class="form-group">
         <label for="paginaWeb">Pagina Web</label>
-        <input type="url" class="form-control" name="paginaWeb" [ngModel]="datosEstablecimiento.paginaWeb" id="paginaWeb" placeholder="Ingresa la URL de la pagina Web">
+        <input formControlName="paginaWeb" type="url" class="form-control" name="paginaWeb" id="paginaWeb" placeholder="Ingresa la URL de la pagina Web">
       </div>
       <div class="form-group">
-        <label for="servicios">Servicios</label>
-        <select class="form-control" id="servicios" [ngModel]="datosEstablecimiento.servicios" name="servicios">
-          <option>Hopital</option>
-          <option>Tienda</option>
-          <option>Comida</option>
-          <option>Peluqueria</option>
-        </select>
+        <label>Servicios</label>
+        <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('servicios').hasError('required'))"></i>
+        <i class="fa fa-exclamation-circle uncheck" *ngIf="(establishmentForm.get('servicios').hasError('required')) && establishmentForm.get('servicios').touched"></i>
+        <!--<select formControlName="servicios" class="multiselect-ui form-control" multiple="multiple"  id="servicios" name="servicios">-->
+          <!--<option>Hopital</option>-->
+          <!--<option>Tienda</option>-->
+          <!--<option>Comida</option>-->
+          <!--<option>Peluqueria</option>-->
+        <!--</select>-->
+        <ng-multiselect-dropdown
+          name= "servicios"
+          id= "servicios"
+          [placeholder]="'Selecciona un servicio'"
+          formControlName="servicios"
+          [data]="dropdownList"
+          [settings]="dropdownSettings">
+        </ng-multiselect-dropdown>
+        <p class="alert alert-danger" *ngIf="(establishmentForm.get('servicios').hasError('required')) && establishmentForm.get('servicios').touched">Selecciona al menos un servicio.</p>
       </div>
       <div class="form-group">
         <label for="horarios">Horarios</label>
-        <select class="form-control" id="horarios" [ngModel]="datosEstablecimiento.horarios" name="horarios">
+        <select formControlName="horarios" class="form-control" id="horarios" name="horarios">
           <option>24 Horas</option>
           <option>Establecido</option>
         </select>
       </div>
       <div class="form-group">
         <label>Desde</label>
-        <ngb-timepicker name="horaInicial" [(ngModel)]="datosEstablecimiento.horaInicial"></ngb-timepicker>
+        <ngb-timepicker formControlName="horaInicial" name="horaInicial"></ngb-timepicker>
       </div>
       <div class="form-group">
         <label>Hasta</label>
-        <ngb-timepicker name="horaFinal" [(ngModel)]="datosEstablecimiento.horaFinal"></ngb-timepicker>
+        <ngb-timepicker formControlName="horaFinal" name="horaFinal"></ngb-timepicker>
       </div>
       <div class="form-group">
-        <label for="descripcionEstablecimiento">Descripción</label>
-        <textarea name="descripcionDelEstablecimiento" class="form-control" [ngModel]="datosEstablecimiento.descripcion" id="descripcionEstablecimiento"
+        <label for="descripcion">Descripción</label>
+        <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('descripcion').hasError('required'))"></i>
+        <i class="fa fa-exclamation-circle uncheck" *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched"></i>
+        <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion"
           placeholder="Ingresa una descripción breve de tu establecimiento" style="width: 100%; height: 150px;"></textarea>
+        <p class="alert alert-danger" *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched">Ingresa una descripción valida</p>
       </div>
-      <button type="submit" (click)="saveInformation('Establecimiento', 'Datos del establecimiento actualizados correctamente!!')"
-        class="btn btn-success">Actualizar Datos</button>
+      <button type="submit" [disabled]="!establishmentForm.valid"
+        class="btn btn-success">Actualizar</button>
     </form>
   </div>
 </div>

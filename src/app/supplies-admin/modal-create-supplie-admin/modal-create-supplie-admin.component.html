@@ -5,48 +5,88 @@
   </button>
 </div>
 <div class="modal-body">
-  <form>
+  <form [formGroup]= "supplieForm" (ngSubmit)= "getData()">
+    <div class="form-group">
+      <label for="tipoSiministro">Tipo Suministro</label>
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('tipoSuministro').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched"></i>
+      <select formControlName="tipoSuministro" class="form-control" id="tipoSiministro">
+        <option>Juguetes</option>
+        <option>Alimento</option>
+      </select>
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched">Selecciona un tipo.</p>
+    </div>
     <div class="form-group">
       <label for="nombreSuministro">Nombre Suministro</label>
-      <input type="text" class="form-control" id="nombreSuministro" placeholder="Nombre del suministro">
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('nombre').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('nombre').hasError('required')) && supplieForm.get('nombre').touched"></i>
+      <input formControlName="nombre" type="text" class="form-control" id="nombreSuministro" placeholder="Nombre del suministro">
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('nombre').hasError('required')) && supplieForm.get('nombre').touched">Ingresa un nombre valido.</p>
     </div>
     <div class="form-group">
       <label for="cantidadSuministro">Cantidad Suministro</label>
-      <input type="number" class="form-control" id="cantidadSuministro" placeholder="Cantidad del suministro">
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('cantidad').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('cantidad').hasError('required')) && supplieForm.get('cantidad').touched"></i>
+      <input formControlName="cantidad" type="number" class="form-control" id="cantidadSuministro" placeholder="Cantidad del suministro">
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('cantidad').hasError('required')) && supplieForm.get('cantidad').touched">Ingresa una cantidad valida.</p>
     </div>
     <div class="form-group">
       <label for="unidadDeMedida">Unidad de Medida</label>
-      <select class="form-control" id="unidadDeMedida">
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('unidad').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('unidad').hasError('required')) && supplieForm.get('unidad').touched"></i>
+      <select formControlName="unidad" class="form-control" id="unidadDeMedida">
         <option>Unidades</option>
         <option>Kg</option>
         <option>g</option>
         <option>m</option>
         <option>cm</option>
       </select>
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('unidad').hasError('required')) && supplieForm.get('unidad').touched">Selecciona una unidad.</p>
     </div>
     <div class="form-group">
       <label>Fecha Compra</label>
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('fechaCompra').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('fechaCompra').hasError('required')) && supplieForm.get('fechaCompra').touched"></i>
       <div class="input-group">
-        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="fechaCompra" ngbDatepicker #d="ngbDatepicker">
+        <input formControlName="fechaCompra" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker">
         <div class="input-group-append">
-          <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">Seleccionar</button>
+          <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">
+            <i class="fa fa-calendar" style="font-size:24px"></i>
+          </button>
         </div>
       </div>
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('fechaCompra').hasError('required')) && supplieForm.get('fechaCompra').touched">Ingresa una fecha valida.</p>
     </div>
     <div class="form-group">
       <label for="precioSuministro">Precio</label>
-      <input type="number" class="form-control" id="precioSuministro" placeholder="Precio del suministro">
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('precio').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('precio').hasError('required')) && supplieForm.get('precio').touched"></i>
+      <input formControlName="precio" type="number" class="form-control" id="precioSuministro" placeholder="Precio del suministro">
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('precio').hasError('required')) && supplieForm.get('precio').touched">Ingresa un precio valido.</p>
     </div>
     <div class="form-group">
-      <label for="proveedorTienda">Proveedor</label>
-      <input type="text" class="form-control" id="proveedorTienda" placeholder="Nombre de tienda">
+      <label for="proveedor">Proveedor</label>
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('proveedor').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('proveedor').hasError('required')) && supplieForm.get('proveedor').touched"></i>
+      <input formControlName="proveedor" type="text" class="form-control" id="proveedor" placeholder="Nombre de tienda">
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('proveedor').hasError('required')) && supplieForm.get('proveedor').touched">Ingresa el nombre de proveedor valido.</p>
+    </div>
+    <div class="form-group">
+      <label for="consumoDiario">Consumo Diario</label>
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('consumoDiario').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched"></i>
+      <input formControlName="consumoDiario" type="text" class="form-control" id="consumoDiario" placeholder="Consumo Diario">
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched">Ingresa un consumo diario valido.</p>
     </div>
     <div class="form-group">
       <label for="comentarios">Comentarios</label>
-      <textarea name="comentariosSuministro" class="form-control" id="comentarios" placeholder="Agrega algun comentario"></textarea>
+      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('comentarios').hasError('required'))"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('comentarios').hasError('required')) && supplieForm.get('comentarios').touched"></i>
+      <textarea formControlName="comentarios" name="comentariosSuministro" class="form-control" id="comentarios" placeholder="Agrega algun comentario"></textarea>
+      <p class="alert alert-danger" *ngIf="(supplieForm.get('comentarios').hasError('required')) && supplieForm.get('comentarios').touched">Ingresa un comentario valido.</p>
     </div>
     <div class="modal-footer">
-      <button type="submit" class="btn btn-outline-dark" (click)="open('Registro Suministro', 'Suministro registrado correctamente!')">Guardar Suministro</button>
+      <button type="submit" class="btn btn-outline-success" [disabled]="!supplieForm.valid">Crear</button>
     </div>
   </form>
 </div>

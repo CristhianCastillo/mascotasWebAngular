@@ -6,6 +6,7 @@ import { PetsAdminOwnerComponent} from './pets-admin-owner/pets-admin-owner.comp
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     PetsAdminRoutingModule,
     NgbModule,
+    NgxSpinnerModule
   ],
   declarations: [PetsAdminComponent, PetsAdminOwnerComponent],
 })

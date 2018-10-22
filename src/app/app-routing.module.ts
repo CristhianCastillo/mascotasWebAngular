@@ -1,21 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-//import { LoginComponent} from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { RegisterAdminComponent } from './register-admin/register-admin.component';
-//import { PetsComponent } from './pets/pets.component';
-import { AgendaComponent } from './agenda/agenda.component';
-import { SuppliesComponent } from './supplies/supplies.component';
-
-
-import { EstablishmentsComponent } from './establishments/establishments.component';
-import { SuppliesAdminComponent } from './supplies-admin/supplies-admin.component';
-
-
 import { LoginAdminGuard } from './guards/login-admin.guard';
 import { NoLoginAdminGuard } from './guards/no-login-admin.guard';
 import { LoginUserGuard } from './guards/login-user.guard';
-import { DashboardAdminComponent } from './dashboard-admin/dashboard-admin.component';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './error/error.component';
 
@@ -27,18 +14,36 @@ const routes: Routes = [
     loadChildren: '../app/login/login.module#LoginModule',
     canActivate: [NoLoginAdminGuard]
   },
-  //{path: 'login', component: LoginComponent, canActivate: [NoLoginAdminGuard]},
-  {path: 'register', component: RegisterComponent, canActivate: [NoLoginAdminGuard]},
-  {path: 'registerAdmin', component: RegisterAdminComponent, canActivate: [NoLoginAdminGuard]},
+  {
+    path: 'register',
+    loadChildren: '../app/register/register.module#RegisterModule',
+    canActivate: [NoLoginAdminGuard]
+  },
+  {
+    path: 'registerAdmin',
+    loadChildren: '../app/register-admin/register-admin.module#RegisterAdminModule',
+    canActivate: [NoLoginAdminGuard]
+  },
   {
     path: 'myPets',
     loadChildren: '../app/pets/pets.module#PetsModule',
     canActivate: [LoginUserGuard]
   },
-  //{path: 'myPets', component: PetsComponent, canActivate: [LoginUserGuard]},
-  {path: 'agenda', component: AgendaComponent, canActivate: [LoginUserGuard]},
-  {path: 'supplies', component: SuppliesComponent, canActivate: [LoginUserGuard]},
-  {path: 'establishment', component: EstablishmentsComponent, canActivate: [LoginAdminGuard]},
+  {
+    path: 'agenda',
+    loadChildren: '../app/agenda/agenda.module#AgendaModule',
+    canActivate: [LoginUserGuard]
+  },
+  {
+    path: 'supplies',
+    loadChildren: '../app/supplies/supplies.module#SuppliesModule',
+    canActivate: [LoginUserGuard]
+  },
+  {
+    path: 'establishment',
+    loadChildren: '../app/establishments/establishments.module#EstablishmentsModule',
+    canActivate: [LoginAdminGuard]
+  },
   {
     path: 'myPetsAdmin',
     loadChildren: '../app/pets-admin/pets-admin.module#PetsAdminModule',
@@ -49,8 +54,16 @@ const routes: Routes = [
     loadChildren: '../app/pets-admin-pets/pets-admin-pets.module#PetsAdminPetsModule',
     canActivate: [LoginAdminGuard]
   },
-  {path: 'suppliesAdmin', component: SuppliesAdminComponent, canActivate: [LoginAdminGuard]},
-  {path: 'dashboardAdmin', component: DashboardAdminComponent, canActivate: [LoginAdminGuard]},
+  {
+    path: 'suppliesAdmin',
+    loadChildren: '../app/supplies-admin/supplies-admin.module#SuppliesAdminModule',
+    canActivate: [LoginAdminGuard]
+  },
+  {
+    path: 'dashboardAdmin',
+    loadChildren: '../app/dashboard-admin/dashboard-admin.module#DashboardAdminModule',
+    canActivate: [LoginAdminGuard]
+  },
   {path: 'error', component: ErrorComponent},
   {path: '**', component: HomeComponent}
 ];
