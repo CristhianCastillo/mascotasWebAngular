@@ -7,10 +7,10 @@
   <div class="modal-body">
     <form [formGroup]= "petForm" (ngSubmit) ="open('Registro Mascota', 'Mascota registrada correctamente!')">
       <div class="form-group">
-        <label for="exampleFormControlFile1">Seleccionar foto</label>
+        <label for="fotoMascota">Seleccionar foto</label>
         <i class="fa fa-check-circle check" *ngIf="!(petForm.get('fotoMascota').hasError('required'))"></i>
         <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('fotoMascota').hasError('required')) && petForm.get('fotoMascota').touched"></i>
-        <input formControlName="fotoMascota" id="fotoMascota" type="file" class="form-control-file" id="exampleFormControlFile1">
+        <input formControlName="fotoMascota" id="fotoMascota" type="file" class="form-control-file" (change)="onFileChange($event)">
         <p class="alert alert-danger" *ngIf="(petForm.get('fotoMascota').hasError('required')) && petForm.get('fotoMascota').touched">Selecciona una foto.</p>
       </div>
       <div class="form-group">

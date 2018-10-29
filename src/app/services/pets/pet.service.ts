@@ -10,9 +10,21 @@ import { Mascota } from '../../models/Mascota';
 export class PetService {
 
   constructor(public http: HttpClient) { }
+
   getAllPets() {
-    //return this.http.get('http://localhost:8080/pets');
     return this.http.get('https://mascotas.ga/application/mascotas/obtenerTodos');
+  }
+
+  createImage(data: String): Observable<boolean> {
+    return this.http.post<boolean>('http://localhost:8080/images', data, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  getImagen(id: string){
+    return this.http.get(`http://localhost:8080/images/${id}`);
   }
 
   createPet(data: Mascota): Observable<Mascota> {

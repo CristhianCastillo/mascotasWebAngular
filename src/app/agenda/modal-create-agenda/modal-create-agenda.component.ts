@@ -46,8 +46,7 @@ export class ModalCreateAgendaComponent implements OnInit {
       nombre: this.agendaForm.value['nombre'],
       ubicacion: this.agendaForm.value['ubicacion'],
       tipo: this.agendaForm.value['tipo'],
-      fecha: fechaDate.toISOString().slice(0, 10),
-      hora: fechaDate.toISOString().slice(11, 16),
+      fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
       descripcion: this.agendaForm.value['descripcion']
     }
     this.createEvent(evento);

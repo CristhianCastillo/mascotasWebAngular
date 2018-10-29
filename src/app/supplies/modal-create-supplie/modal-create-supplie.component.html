@@ -11,8 +11,8 @@
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('tipoSuministro').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched"></i>
       <select formControlName="tipoSuministro" class="form-control" id="tipoSiministro">
-        <option>Juguetes</option>
-        <option>Alimento</option>
+        <option value="dbasdjsad67d69a87sd">Juguetes</option>
+        <option value="hfdgfdfj4683247gdhdf">Alimento</option>
       </select>
       <p class="alert alert-danger" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched">Selecciona un tipo.</p>
     </div>

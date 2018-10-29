@@ -15,10 +15,13 @@ import { Mascota } from '../../models/Mascota';
 export class ModalCreatePetComponent implements OnInit {
 
   public petForm: FormGroup;
+  public selectedFile: File;
+  public value: any;
 
   constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
   , private modalService: NgbModal, public servicePet: PetService, private formBuilder: FormBuilder) {
     config.backdrop = 'static';
+    this.selectedFile = null;
     this.petForm = this.createForm();
   }
 
@@ -27,7 +30,7 @@ export class ModalCreatePetComponent implements OnInit {
 
   private createForm() {
     return this.formBuilder.group({
-      fotoMascota: [''],
+      fotoMascota: ['', Validators.required],
       nombre : ['', Validators.required],
       tipoMascota: ['', Validators.required],
       genero: ['', Validators.required],
@@ -39,11 +42,20 @@ export class ModalCreatePetComponent implements OnInit {
     });
   }
 
+  onFileChange(event) {
+    this.selectedFile = <File>event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(this.selectedFile);
+    reader.onload = () => {
+      this.value = reader.result.split(',')[1];
+    };
+  }
+
   open(titulo, mensaje) {
     const fechaJ = this.petForm.value['fechaNacimiento'];
     let fechaDate: Date = new Date(Date.UTC(fechaJ.year, fechaJ.month - 1, fechaJ.day, 1, 0, 0, 0))
     const mascota = {
-      imagen: '../../assets/imgs/pet - default.png',
+      imagen: this.value,
       nombre: this.petForm.value['nombre'],
       tipoMascota: this.petForm.value['tipoMascota'],
       genero: this.petForm.value['genero'],
@@ -54,7 +66,8 @@ export class ModalCreatePetComponent implements OnInit {
       descripcion: this.petForm.value['descripcion'],
       idDuenio: 2
     }
-    this.createPet(mascota, titulo, mensaje);
+    console.log(mascota);
+    //this.createPet(mascota, titulo, mensaje);
   }
 
   createPet(data, titulo, mensaje) {
