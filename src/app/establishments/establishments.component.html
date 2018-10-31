@@ -1,82 +1,97 @@
 <br>
 <div class="container">
-  <div class="form-horizontal">
+  <div class="text-center">
     <h2>Mi Establecimiento</h2>
     <p>Por favor verifica que tus datos son correctos, asi te podran encontrar mas facil.</p>
-    <hr />
-    <form [formGroup]= "establishmentForm" (ngSubmit)="getData()">
-      <div class="form-group">
-        <label for="nombre">Nombre Establecimiento</label>
-        <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('nombre').hasError('required'))"></i>
-        <i class="fa fa-exclamation-circle uncheck" *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched"></i>
-        <input formControlName="nombre" type="text" class="form-control" name="nombre" id="nombre"
-          placeholder="Nombre establecimiento">
-        <p class="alert alert-danger" *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched">Ingresa un nombre valido para el establecimiento.</p>
-      </div>
-      <div class="form-group">
-        <label for="telefono">Telefono</label>
-        <input formControlName="telefono" type="text" class="form-control" name="telefono" id="telefono"
-          placeholder="Telefono">
-      </div>
-      <div class="form-group">
-        <label for="direccion">Dirección</label>
-        <input formControlName="direccion" type="text" class="form-control" name="direccion" id="direccion"
-          placeholder="Dirección">
-      </div>
-      <div class="form-group">
-        <label for="correo">Correo Electronico</label>
-        <input formControlName="correo" type="email" class="form-control" name="correo" id="correo"
-          placeholder="Ingresa el email del establecimiento">
-      </div>
-      <div class="form-group">
-        <label for="paginaWeb">Pagina Web</label>
-        <input formControlName="paginaWeb" type="url" class="form-control" name="paginaWeb" id="paginaWeb" placeholder="Ingresa la URL de la pagina Web">
-      </div>
-      <div class="form-group">
-        <label>Servicios</label>
-        <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('servicios').hasError('required'))"></i>
-        <i class="fa fa-exclamation-circle uncheck" *ngIf="(establishmentForm.get('servicios').hasError('required')) && establishmentForm.get('servicios').touched"></i>
-        <!--<select formControlName="servicios" class="multiselect-ui form-control" multiple="multiple"  id="servicios" name="servicios">-->
-          <!--<option>Hopital</option>-->
-          <!--<option>Tienda</option>-->
-          <!--<option>Comida</option>-->
-          <!--<option>Peluqueria</option>-->
-        <!--</select>-->
-        <ng-multiselect-dropdown
-          name= "servicios"
-          id= "servicios"
-          [placeholder]="'Selecciona un servicio'"
-          formControlName="servicios"
-          [data]="dropdownList"
-          [settings]="dropdownSettings">
-        </ng-multiselect-dropdown>
-        <p class="alert alert-danger" *ngIf="(establishmentForm.get('servicios').hasError('required')) && establishmentForm.get('servicios').touched">Selecciona al menos un servicio.</p>
-      </div>
-      <div class="form-group">
-        <label for="horarios">Horarios</label>
-        <select formControlName="horarios" class="form-control" id="horarios" name="horarios">
-          <option>24 Horas</option>
-          <option>Establecido</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Desde</label>
-        <ngb-timepicker formControlName="horaInicial" name="horaInicial"></ngb-timepicker>
-      </div>
-      <div class="form-group">
-        <label>Hasta</label>
-        <ngb-timepicker formControlName="horaFinal" name="horaFinal"></ngb-timepicker>
-      </div>
-      <div class="form-group">
-        <label for="descripcion">Descripción</label>
-        <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('descripcion').hasError('required'))"></i>
-        <i class="fa fa-exclamation-circle uncheck" *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched"></i>
-        <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion"
-          placeholder="Ingresa una descripción breve de tu establecimiento" style="width: 100%; height: 150px;"></textarea>
-        <p class="alert alert-danger" *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched">Ingresa una descripción valida</p>
-      </div>
-      <button type="submit" [disabled]="!establishmentForm.valid"
-        class="btn btn-success">Actualizar</button>
-    </form>
+    <hr/>
   </div>
+  <form [formGroup]="establishmentForm" (ngSubmit)="getData()">
+    <div class="form-group">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="nombre">Nombre Establecimiento</label>
+          <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('nombre').hasError('required'))"></i>
+          <i class="fa fa-exclamation-circle uncheck"
+             *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched"></i>
+          <input formControlName="nombre" type="text" class="form-control" name="nombre" id="nombre"
+                 placeholder="Nombre establecimiento"
+                 [ngClass]="{'is-invalid': (establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched, 'is-valid': !(establishmentForm.get('nombre').hasError('required'))}">
+          <div class="invalid-feedback">Ingresa un nombre valido.</div>
+          <!--<p class="alert alert-danger" *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched">Ingresa un nombre valido para el establecimiento.</p>-->
+        </div>
+        <div class="form-group col-md-6">
+          <label>Servicios</label>
+          <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('servicios').hasError('required'))"></i>
+          <i class="fa fa-exclamation-circle uncheck"
+             *ngIf="(establishmentForm.get('servicios').hasError('required'))"></i>
+          <ng-multiselect-dropdown
+            name="servicios" id="servicios" [placeholder]="'Selecciona un servicio'" formControlName="servicios"
+            [data]="dropdownList" [settings]="dropdownSettings">
+          </ng-multiselect-dropdown>
+          <div class="invalid-list" *ngIf="(establishmentForm.get('servicios').hasError('required'))">Selecciona al
+            menos un servicio.
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="telefono">Telefono</label>
+          <input formControlName="telefono" type="text" class="form-control" name="telefono" id="telefono"
+                 placeholder="Telefono">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="direccion">Dirección</label>
+          <input formControlName="direccion" type="text" class="form-control" name="direccion" id="direccion"
+                 placeholder="Dirección">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="horarios">Horarios</label>
+          <select formControlName="horarios" class="form-control" id="horarios" name="horarios">
+            <option>24 Horas</option>
+            <option>Establecido</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="paginaWeb">Pagina Web</label>
+          <input formControlName="paginaWeb" type="url" class="form-control" name="paginaWeb" id="paginaWeb"
+                 placeholder="Ingresa la URL de la pagina Web">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="correo">Correo Electronico</label>
+          <input formControlName="correo" type="email" class="form-control" name="correo" id="correo"
+                 placeholder="Ingresa el email del establecimiento">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label>Abre a las</label>
+          <ngb-timepicker formControlName="horaInicial" name="horaInicial"></ngb-timepicker>
+        </div>
+        <div class="form-group col-md-3">
+          <label>Cierra a las</label>
+          <ngb-timepicker formControlName="horaFinal" name="horaFinal"></ngb-timepicker>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="descripcion">Descripción</label>
+          <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('descripcion').hasError('required'))"></i>
+          <i class="fa fa-exclamation-circle uncheck"
+             *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched"></i>
+          <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion"
+                    placeholder="Ingresa una descripción breve de tu establecimiento"
+                    style="width: 100%; height: 100px;"
+                    [ngClass]="{'is-invalid': (establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched, 'is-valid': !(establishmentForm.get('descripcion').hasError('required'))}"></textarea>
+          <div class="invalid-feedback">Ingresa una descripcion valida.</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+
+      <!--<p class="alert alert-danger" *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched">Ingresa una descripción valida</p>-->
+    </div>
+    <button type="submit" [disabled]="!establishmentForm.valid"
+            class="btn btn-success">Actualizar
+    </button>
+  </form>
 </div>

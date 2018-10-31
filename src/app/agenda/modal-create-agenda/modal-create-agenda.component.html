@@ -10,30 +10,37 @@
       <label for="idMascota">Seleccionar Mascota</label>
       <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('idMascota').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched"></i>
-      <select formControlName="idMascota" class="form-control" id="idMascota" name="idMascota">
+      <select formControlName="idMascota" class="form-control" id="idMascota" name="idMascota"
+      [ngClass]="{'is-invalid': (agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched, 'is-valid': !(agendaForm.get('idMascota').hasError('required'))}">
         <option *ngFor="let mascota of agenda" [value]="mascota.idMascota">{{mascota.nombre}}</option>
       </select>
-      <p class="alert alert-danger" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched">Selecciona una mascota</p>
+      <div class="invalid-feedback">Selecciona una mascota.</div>
+      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched">Selecciona una mascota</p>-->
     </div>
     <div class="form-group">
       <label for="nombre">Nombre</label>
       <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('nombre').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched"></i>
-      <input formControlName="nombre" type="text" class="form-control" id="nombre" name="nombreDelEvento" placeholder="Asocia un nombre para este evento">
-      <p class="alert alert-danger" *ngIf="(agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched">Ingresa un nombre valido</p>
+      <input formControlName="nombre" type="text" class="form-control" id="nombre" name="nombreDelEvento" placeholder="Asocia un nombre para este evento"
+      [ngClass]="{'is-invalid': (agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched, 'is-valid': !(agendaForm.get('nombre').hasError('required'))}">
+      <div class="invalid-feedback">Ingresa un nombre valido.</div>
+      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched">Ingresa un nombre valido</p>-->
     </div>
     <div class="form-group">
       <label for="ubicacion">Ubicación</label>
       <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('ubicacion').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched"></i>
-      <input formControlName="ubicacion" type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Asocia un lugar para este evento">
-      <p class="alert alert-danger" *ngIf="(agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched">Ingresa una ubicación valida</p>
+      <input formControlName="ubicacion" type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Asocia un lugar para este evento"
+      [ngClass]="{'is-invalid': (agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched, 'is-valid': !(agendaForm.get('ubicacion').hasError('required'))}">
+      <div class="invalid-feedback">Ingresa una ubicación valida.</div>
+      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched">Ingresa una ubicación valida</p>-->
     </div>
     <div class="form-group">
       <label for="tipo">Tipo Evento</label>
       <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('tipo').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched"></i>
-      <select formControlName="tipo" class="form-control" id="tipo" name="tipo">
+      <select formControlName="tipo" class="form-control" id="tipo" name="tipo"
+      [ngClass]="{'is-invalid': (agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched, 'is-valid': !(agendaForm.get('tipo').hasError('required'))}">
         <option>Veterinario</option>
         <option>Peluqueria</option>
         <option>Vacuna</option>
@@ -41,21 +48,24 @@
         <option>Dientes</option>
         <option>Baño</option>
       </select>
-      <p class="alert alert-danger" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched">Selecciona una tipo de evento</p>
+      <div class="invalid-feedback">Selecciona un tipo de evento.</div>
+      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched">Selecciona una tipo de evento</p>-->
     </div>
     <div class="form-group">
       <label>Fecha Evento</label>
       <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('fecha').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched"></i>
       <div class="input-group">
-        <input formControlName="fecha" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker">
+        <input formControlName="fecha" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker"
+        [ngClass]="{'is-invalid': (agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched,'is-valid': !(agendaForm.get('fecha').hasError('required'))}">
         <div class="input-group-append">
           <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">
             <i class="fa fa-calendar" style="font-size:24px"></i>
           </button>
         </div>
+        <div class="invalid-feedback">Selecciona una fecha.</div>
       </div>
-      <p class="alert alert-danger" *ngIf="(agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched">Selecciona una fecha</p>
+      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched">Selecciona una fecha</p>-->
     </div>
     <div class="form-group">
       <label>Hora Evento</label>
@@ -68,8 +78,10 @@
       <label for="descripcion">Descripción Evento</label>
       <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('descripcion').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched"></i>
-      <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion" placeholder="Descripción Evento"></textarea>
-      <p class="alert alert-danger" *ngIf="(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched">Ingresa una descripción valida.</p>
+      <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion" placeholder="Descripción Evento"
+      [ngClass]="{'is-invalid': (agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched, 'is-valid': !(agendaForm.get('descripcion').hasError('required'))}"></textarea>
+      <div class="invalid-feedback">Ingresa una descripción valida.</div>
+      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched">Ingresa una descripción valida.</p>-->
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-outline-success" [disabled]="!agendaForm.valid">Crear</button>

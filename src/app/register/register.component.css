@@ -1,3 +1,17 @@
+.form-register {
+  width: 100%;
+  max-width: 500px;
+  padding: 5px;
+  margin: auto;
+}
+
+.invalid-item{
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
 .btn-primary {
   margin-bottom: 10px;
 }

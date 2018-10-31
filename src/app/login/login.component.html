@@ -7,33 +7,49 @@
   <p style="font-size: 20px; color: white">Autentificando...</p>
 </ngx-spinner>
 <div class="container">
-  <div class="form-horizontal">
-    <h2>Iniciar Sesión</h2>
-    <p>Por favor ingresa tus datos para entrar</p>
-    <hr />
+  <div class="form-signin">
+    <div class="text-center">
+      <h2>Iniciar Sesión</h2>
+      <p>Por favor ingresa tus datos para entrar</p>
+      <hr />
+    </div>
     <form [formGroup]= "loginForm" (ngSubmit)="validData()">
       <ngb-alert *ngIf="dangerMessage" type="danger" (close)="dangerMessage = null">{{ dangerMessage }}</ngb-alert>
       <div class="form-group">
         <label for="exampleInputEmail1">Nombre Usuario </label>
         <i class="fa fa-check-circle check" *ngIf="!(loginForm.get('usuario').hasError('required'))"></i>
         <i class="fa fa-exclamation-circle uncheck" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched"></i>
-        <input formControlName="usuario" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu usuario">
-        <p class="alert alert-danger" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched">
-          Ingresa un usuario valido</p>
+        <input formControlName="usuario" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingresa tu usuario"
+        [ngClass]="{'is-invalid': (loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched, 'is-valid': !(loginForm.get('usuario').hasError('required'))}">
+        <div class="invalid-feedback">Ingresa un usuario valido.</div>
+        <!--<p class="alert alert-danger" *ngIf="(loginForm.get('usuario').hasError('required')) && loginForm.get('usuario').touched">Ingresa un usuario valido</p>-->
       </div>
       <div class="form-group">
         <label for="exampleInputPassword1">Contraseña</label>
         <i class="fa fa-check-circle check" *ngIf="!(loginForm.get('password').hasError('required'))"></i>
         <i class="fa fa-exclamation-circle uncheck" *ngIf="(loginForm.get('password').hasError('required')) && loginForm.get('password').touched"></i>
-        <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Ingresa tu contraseña">
-        <p class="alert alert-danger" *ngIf="(loginForm.get('password').hasError('required')) && loginForm.get('password').touched">
-          Ingresa una contraseña valida</p>
+        <input formControlName="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Ingresa tu contraseña"
+        [ngClass]="{'is-invalid': (loginForm.get('password').hasError('required')) && loginForm.get('password').touched, 'is-valid': !(loginForm.get('password').hasError('required'))}">
+        <div class="invalid-feedback">Ingresa una contraseña valida.</div>
+        <!--<p class="alert alert-danger" *ngIf="(loginForm.get('password').hasError('required')) && loginForm.get('password').touched">Ingresa una contraseña valida</p>-->
       </div>
       <div class="form-group form-check">
         <input formControlName="recordarPassword" type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Recordar contraseña</label>
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Ingresar</button>
+      <button type="submit" class="btn btn-success btn-block" [disabled]="!loginForm.valid">Ingresar</button>
     </form>
+  </div>
+  <div>
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link active" routerLink="/home">¿Olvidaste tu nombre de usuario o contraseña?</a>
+      </li>
+    </ul>
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link active"routerLink="/register">¿No tienes cuenta? Regístrate</a>
+      </li>
+    </ul>
   </div>
 </div>

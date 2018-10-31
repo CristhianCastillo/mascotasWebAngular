@@ -7,6 +7,8 @@ import { User } from '../models/User';
 import { RegisterService } from '../services/registers/register.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalOutMessageComponent } from '../modal-out-message/modal-out-message.component';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +25,7 @@ export class RegisterComponent implements OnInit {
   public usuario: User;
 
   constructor(private router: Router, private scrollTop: ScrollTopService, private formBuilder: FormBuilder,
-              private service: RegisterService) {
+              private service: RegisterService, private modalService: NgbModal) {
     this.passwordFormGroup = this.formBuilder.group({
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required],

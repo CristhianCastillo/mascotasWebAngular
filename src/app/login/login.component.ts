@@ -43,8 +43,7 @@ export class LoginComponent implements OnInit {
   validData() {
     const usuarioLogin = {
       usuario: this.loginForm.value['usuario'],
-      password: this.loginForm.value['password'],
-      tipoUsuario: 'Usuario'
+      password: this.loginForm.value['password']
     };
     this.loginUser(usuarioLogin);
   }
@@ -52,11 +51,22 @@ export class LoginComponent implements OnInit {
   loginUser(data) {
     this.spinner.show();
     this.serviceLogin.loginUser(data).subscribe(
-      (result: boolean) => {
+      (result: any) => {
         console.log(result);
-        if (result) {
-          localStorage.setItem('user', JSON.stringify( data )) ;
-          this.router.navigate(['/myPets']) ;
+        if (result.status) {
+          const usuarioEnter = {
+            id: result.message,
+            usuario: data.usuario,
+            password: data.password,
+            tipoUsuario: result.root
+          }
+          localStorage.setItem('user', JSON.stringify( usuarioEnter )) ;
+          if(result.root === 'Usuario'){
+            this.router.navigate(['/myPets']) ;
+          }
+          else if(result.root === 'Propietario'){
+            this.router.navigate(['/establishment']) ;
+          }
           this.spinner.hide();
         } else {
           this.spinner.hide();

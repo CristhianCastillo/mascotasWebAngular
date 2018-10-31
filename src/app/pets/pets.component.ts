@@ -4,7 +4,7 @@ import { ModalCreatePetComponent } from './modal-create-pet/modal-create-pet.com
 import { ModalPetComponent } from './modal-pet/modal-pet.component';
 import { PetService } from '../services/pets/pet.service';
 import { ScrollTopService } from '../services/scroll-top.service';
-import {Mascota} from '../models/Mascota';
+import { Mascota } from '../models/Mascota';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 

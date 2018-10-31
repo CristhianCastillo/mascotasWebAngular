@@ -1,3 +1,17 @@
+.form-register {
+  width: 100%;
+  max-width: 500px;
+  padding: 5px;
+  margin: auto;
+}
+
+.invalid-item{
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
 input.ng-invalid.ng-touched{
   border-left: 5px solid #a94442;
 }

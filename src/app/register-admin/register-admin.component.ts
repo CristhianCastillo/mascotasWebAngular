@@ -77,8 +77,8 @@ export class RegisterAdminComponent implements OnInit {
               this._success.next('El nombre seleccionado estan en uso.');
               break;
             case "Email":
-                this._success.next('El email seleccionado ya esta registrado.');
-                break;
+              this._success.next('El email seleccionado ya esta registrado.');
+              break;
             case "Establishment":
               this._success.next("El nombre del establecimiento ya esta registrado.");
               break;
