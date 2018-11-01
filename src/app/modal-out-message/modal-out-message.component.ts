@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
 import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -9,11 +10,10 @@ import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bo
 export class ModalOutMessageComponent implements OnInit {
   @Input() tituloMensaje = 'Mascotas.ga';
   @Input() contenidoMensaje = 'Mascotas.ga, el sito ideal para tus mascotas.';
-  constructor(public activeModal: NgbActiveModal,  public config: NgbModalConfig) {
+  constructor(private router: Router, public activeModal: NgbActiveModal,  public config: NgbModalConfig) {
     config.backdrop = 'static';
   }
 
   ngOnInit() {
   }
-
 }

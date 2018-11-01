@@ -14,37 +14,32 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./pets.component.css']
 })
 export class PetsComponent implements OnInit {
-  
+
+  public  closeResult: string;
   public mascotasAny: any;
-  public imageSrc: any;
-  public image: any;
+  public avisoCrearMascotas: string;
 
   constructor(private modalService: NgbModal, public petService: PetService, private scrollTop: ScrollTopService,
               private spinner: NgxSpinnerService, public _DomSanitizer: DomSanitizer) {
-                this.image = '';
+    this.avisoCrearMascotas = null;
   }
 
   ngOnInit() {
     this.scrollTop.setScrollTop();
+    const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
     console.log('cargando mascotas...');
     this.spinner.show();
-
-    // this.petService.getImagen('5bd4f01c5cbc390ccc5dbf2b').subscribe(
-    //     //   (data) => {
-    //     //     this.imageSrc = data;
-    //     //     this.imageSrc = this.imageSrc.imagen
-    //     //     console.log(this.imageSrc);
-    //     //     this.image = this._DomSanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + this.imageSrc);
-    //     //   },
-    //     //   (error) => {
-    //     //     console.error(error);
-    //     //   }
-    //     // );
-
-    this.petService.getAllPets().subscribe(
+    this.petService.getAllPets(usuarioAutentificado.id).subscribe(
       (data) => {
-        console.log(data);
         this.mascotasAny = data;
+        if(data[0] === '[]'){
+          console.log('No hayy....');
+          this.avisoCrearMascotas = null;
+        }
+        else{
+          console.log('Si hay...');
+          this.avisoCrearMascotas = '';
+        }
         this.spinner.hide();
       },
       (error) => {
@@ -55,12 +50,24 @@ export class PetsComponent implements OnInit {
   }
 
   goToCreatePet() {
-    const modalRef = this.modalService.open(ModalCreatePetComponent);
+    const modal = this.modalService.open(ModalCreatePetComponent);
+    modal.result.then(()=> {
+      console.log('User Close');
+    }, ()=>{
+      console.log('Back Close');
+      this.ngOnInit();
+    })
   }
 
   goToViewPet(mascota: Mascota) {
     console.log(mascota);
-    const modalRef = this.modalService.open(ModalPetComponent)
+    const modalRef = this.modalService.open(ModalPetComponent);
     modalRef.componentInstance.mascota = mascota;
+    modalRef.result.then(()=>{
+      console.log('User Close');
+    }, ()=>{
+      console.log('Back Close');
+      this.ngOnInit();
+    })
   }
 }

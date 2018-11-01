@@ -67,16 +67,18 @@ export class ModalPetComponent implements OnInit {
   changeURL(newUrl) {
     console.log("Cambiando de imagen......")
     this.selectedFile = <File>newUrl.target.files[0];
-    if(this.selectedFile.size <= 10000) {
-      let reader = new FileReader();
-      reader.readAsDataURL(this.selectedFile);
-      reader.onload = () => {
-        this.mascota.imagen = reader.result.split(',')[1];
+    console.log(this.selectedFile);
+    if(this.selectedFile != null){
+      if((this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/png')&& this.selectedFile.size <= 10000){
+        let reader = new FileReader();
+        reader.readAsDataURL(this.selectedFile);
+        reader.onload = () => {
+          this.mascota.imagen = reader.result.split(',')[1];
+        };
+      } else {
+        this.mascota.imagen = '';
+        this.petForm.setValue['fotoMascota'] = '';
       }
-
-    } else {
-      this.mascota.imagen = '';
-      this.petForm.value['fotoMascota'] = '';
     }
     // if (newUrl.target.files && newUrl.target.files[0])
     // {

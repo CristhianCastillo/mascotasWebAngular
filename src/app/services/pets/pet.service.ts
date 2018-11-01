@@ -15,8 +15,8 @@ export class PetService {
     return this.http.get('http://localhost:8080/petsType');
   }
 
-  getAllPets() {
-    return this.http.get('http://localhost:8080/pets');
+  getAllPets(usuario: string) {
+    return this.http.get(`http://localhost:8080/pets/user/${usuario}`);
     //return this.http.get('https://mascotas.ga/application/mascotas/obtenerTodos');
   }
 

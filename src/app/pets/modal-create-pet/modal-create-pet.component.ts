@@ -59,7 +59,7 @@ export class ModalCreatePetComponent implements OnInit {
     this.selectedFile = <File>event.target.files[0];
     console.log(this.selectedFile);
     if(this.selectedFile != null){
-      if(this.selectedFile.type === 'image/jpeg' && this.selectedFile.size <= 10000){
+      if((this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/png')&& this.selectedFile.size <= 10000){
         let reader = new FileReader();
         reader.readAsDataURL(this.selectedFile);
         reader.onload = () => {
@@ -67,7 +67,7 @@ export class ModalCreatePetComponent implements OnInit {
         };
       }else {
         this.value = '';
-        this.petForm.value['fotoMascota'] = '';
+        this.petForm.setValue['fotoMascota'] = '';
       }
     }
   }
