@@ -15,7 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class PetsComponent implements OnInit {
 
-  public  closeResult: string;
+  public closeResult: string;
   public mascotasAny: any;
   public avisoCrearMascotas: string;
 

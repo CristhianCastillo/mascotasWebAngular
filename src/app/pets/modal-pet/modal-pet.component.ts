@@ -133,9 +133,9 @@ export class ModalPetComponent implements OnInit {
 
   openModalConfirm(titulo, mensaje) {
     this.servicePet.deletePet(this.mascota.id).subscribe(
-      (result: boolean) => {
+      (result: any) => {
         console.log(result);
-        if (result) {
+        if (result.status) {
           this.modalService.dismissAll();
           const modalRef = this.modalService.open(ModalOutMessageComponent);
           modalRef.componentInstance.tituloMensaje = titulo;
