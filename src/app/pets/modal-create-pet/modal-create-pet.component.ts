@@ -6,7 +6,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { PetService } from '../../services/pets/pet.service';
-import { Mascota } from '../../models/Mascota';
 
 @Component({
   selector: 'app-modal-create-pet',
@@ -43,7 +42,6 @@ export class ModalCreatePetComponent implements OnInit {
 
   private createForm() {
     return this.formBuilder.group({
-      fotoMascota: ['', Validators.required],
       nombre : ['', Validators.required],
       tipoMascota: ['', Validators.required],
       genero: ['', Validators.required],

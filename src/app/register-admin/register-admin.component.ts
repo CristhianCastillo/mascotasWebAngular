@@ -6,6 +6,8 @@ import { RegistrationValidator } from '../validators/RegistrationValidator';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { RegisterService } from '../services/registers/register.service';
+import {NgbModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ModalOutMessageComponent} from '../modal-out-message/modal-out-message.component';
 
 @Component({
   selector: 'app-register-admin',
@@ -21,7 +23,8 @@ export class RegisterAdminComponent implements OnInit {
   public passwordFormGroup: FormGroup;
 
   constructor(private activateRoute: ActivatedRoute, private router: Router,
-              private scrollTop: ScrollTopService, private formBuilder: FormBuilder, private service: RegisterService ) {
+              private scrollTop: ScrollTopService, private formBuilder: FormBuilder, private service: RegisterService,
+              private modalService: NgbModal) {
     this.passwordFormGroup = this.formBuilder.group({
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required],
@@ -55,10 +58,10 @@ export class RegisterAdminComponent implements OnInit {
       apellidos: this.registerForm.value['apellidos'],
       email: this.registerForm.value['email'],
       nombreUsuario: this.registerForm.value['nombreUsuario'],
+      password: this.passwordFormGroup.value['password'],
       establecimiento: this.registerForm.value['establecimiento'],
       nit: this.registerForm.value['nit'],
-      descripcion: this.registerForm.value['descripcion'],
-      password: this.passwordFormGroup.value['password']
+      descripcion: this.registerForm.value['descripcion']
     }
     this.registerOwner(user);
   }
@@ -69,6 +72,9 @@ export class RegisterAdminComponent implements OnInit {
       (result: any) => {
         console.log(result);
         if (result.status) {
+          const modalRef = this.modalService.open(ModalOutMessageComponent);
+          modalRef.componentInstance.tituloMensaje = 'Registro';
+          modalRef.componentInstance.contenidoMensaje = 'Registro exitoso, por favor ingresa a la aplicación.';
           this.router.navigate(['/login']) ;
         } else {
           const message = result.message;

@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title" id="modal-basic-title">Nombre Suministro</h4>
+  <h4 class="modal-title" id="modal-basic-title">{{suministroSeleccionado.nombre}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -12,8 +12,7 @@
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched"></i>
       <select formControlName="tipoSuministro" class="form-control" id="tipoSiministro"
       [ngClass]="{'is-invalid': (supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched,'is-valid': !(supplieForm.get('tipoSuministro').hasError('required'))}">
-        <option>Juguetes</option>
-        <option>Alimento</option>
+        <option *ngFor="let supplie of typeSupplies" [value]="supplie.id">{{supplie.nombre}}</option>
       </select>
       <div class="invalid-feedback">Selecciona un tipo.</div>
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched">Selecciona un tipo.</p>-->
@@ -86,15 +85,6 @@
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('proveedor').hasError('required')) && supplieForm.get('proveedor').touched">Ingresa el nombre de proveedor valido.</p>-->
     </div>
     <div class="form-group">
-      <label for="consumoDiario">Consumo Diario</label>
-      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('consumoDiario').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched"></i>
-      <input formControlName="consumoDiario" type="text" class="form-control" id="consumoDiario" placeholder="Consumo Diario"
-      [ngClass]="{'is-invalid': (supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched, 'is-valid': !(supplieForm.get('consumoDiario').hasError('required'))}">
-      <div class="invalid-feedback">Ingresa un consumo diario valido.</div>
-      <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched">Ingresa un consumo diario valido.</p>-->
-    </div>
-    <div class="form-group">
       <label for="comentarios">Comentarios</label>
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('comentarios').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('comentarios').hasError('required')) && supplieForm.get('comentarios').touched"></i>
@@ -105,7 +95,7 @@
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-outline-success" [disabled]="!supplieForm.valid">Actualizar</button>
-      <button type="button" class="btn btn-outline-danger" (click)=" openModalConfirm('Eliminar Suministro', 'Suministro eliminado correctamente!')">Eliminar</button>
+      <button type="button" class="btn btn-outline-danger" (click)="deleteSupplie()">Eliminar</button>
     </div>
   </form>
 </div>

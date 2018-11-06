@@ -4,6 +4,8 @@ import { ModalCreateSupplieComponent } from './modal-create-supplie/modal-create
 import { ModalSupplieComponent } from './modal-supplie/modal-supplie.component';
 import { ScrollTopService } from '../services/scroll-top.service';
 import {Suministro} from '../models/Suministro';
+import { SuppliesService } from '../services/supplies/supplies.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-supplies',
@@ -11,90 +13,52 @@ import {Suministro} from '../models/Suministro';
   styleUrls: ['./supplies.component.css']
 })
 export class SuppliesComponent implements OnInit {
-  public nombreSuministro: string ;
-  public suministros: any = [
-    {
-      nombreTipoSuministro: 'Juguetes',
-      detalles: [
-        {
-          id: 1,
-          tipoSuministro: 'Juguetes',
-          nombre: 'Hueso',
-          cantidad: 3,
-          unidadMedida: 'Unidades',
-          fecha: '2018-08-08',
-          precio: 89.9,
-          proveedor: 'Veterinaria Grecia',
-          consumoDiario: '1 por semana',
-          comentario: 'Es el juguete favortio.',
-          idUsuario: 1
-        },
-        {
-          id: 2,
-          tipoSuministro: 'Juguetes',
-          nombre: 'Pelota de lana',
-          cantidad: 8,
-          unidadMedida: 'Unidades',
-          fecha: '2016-08-08',
-          precio: 100.9,
-          proveedor: 'Veterinaria Past',
-          consumoDiario: '1 por semana',
-          comentario: 'Es el juguete favortio.',
-          idUsuario: 1
-        }
-      ]
-    },
-    {
-      nombreTipoSuministro: 'Alimento',
-      detalles: [
-        {
-          id: 3,
-          tipoSuministro: 'Alimento',
-          nombre: 'Purina cachorros',
-          cantidad: 25.5,
-          unidadMedida: 'Kg',
-          fecha: '2018-09-08',
-          precio: 100.0,
-          proveedor: 'Veterinaria Grecia',
-          consumoDiario: '1 Kg por semana',
-          comentario: 'Comida para los cachorros',
-          idUsuario: 1
-        },
-        {
-          id: 4,
-          tipoSuministro: 'Alimento',
-          nombre: 'Purina gatitos',
-          cantidad: 10.3,
-          unidadMedida: 'Kg',
-          fecha: '2018-08-08',
-          precio: 50.0,
-          proveedor: 'Veterinaria Past',
-          consumoDiario: '0.5 Kg por semana',
-          comentario: 'Comida para los gatitos.',
-          idUsuario: 1
-        }
-      ]
-    }
-  ];
+  public idSuministro: string ;
+  public suministros: any;
 
-  constructor(private modalService: NgbModal, private scrollTop: ScrollTopService) { }
+  constructor(private modalService: NgbModal, private scrollTop: ScrollTopService, private service: SuppliesService,
+               private spinner: NgxSpinnerService) { }
 
   public highlightRow(emp) {
-    console.log(emp.nombre);
-    this.nombreSuministro = emp.nombre;
+    console.log(emp.id);
+    this.idSuministro = emp.id;
   }
 
   ngOnInit() {
     this.scrollTop.setScrollTop();
+    const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
+    this.spinner.show();
+    this.service.getAllSupplies(usuarioAutentificado.id).subscribe(
+      (data) => {
+        this.suministros = data;
+        this.spinner.hide();
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error(error);
+      }
+    );
   }
 
   goToCreateSupplie() {
     const modalRef = this.modalService.open(ModalCreateSupplieComponent);
+    modalRef.result.then(()=> {
+      console.log('User Close');
+    }, ()=>{
+      console.log('Back Close');
+      this.ngOnInit();
+    })
   }
 
   goToViewSupplie(suministro: Suministro) {
     const modalRef = this.modalService.open(ModalSupplieComponent);
     modalRef.componentInstance.suministroSeleccionado = suministro;
+    modalRef.result.then(()=> {
+      console.log('User Close');
+    }, ()=>{
+      console.log('Back Close');
+      this.ngOnInit();
+    })
   }
 
 }

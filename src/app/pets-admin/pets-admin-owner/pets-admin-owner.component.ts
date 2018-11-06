@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalPetsAdminComponent } from '../../modal-pets-admin/modal-pets-admin.component';
+import { from } from 'rxjs';
+import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pets-admin-owner',
@@ -11,7 +13,7 @@ import { ModalPetsAdminComponent } from '../../modal-pets-admin/modal-pets-admin
 export class PetsAdminOwnerComponent implements OnInit {
 
   public idMascota: number;
-  public idCliente: number;
+  public idCliente: string;
   public nombreCliente: string;
   private sub: any;
   public mascotas: any = [
@@ -54,13 +56,15 @@ export class PetsAdminOwnerComponent implements OnInit {
         ]
     }
     ];
+
+
   constructor(private modalService: NgbModal, private route: ActivatedRoute) {
-    this.nombreCliente = 'Cristhian'
+    this.nombreCliente = 'Cristhian';
   }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.idCliente = +params['id'];
+      this.idCliente = params['id'];
     });
   }
 

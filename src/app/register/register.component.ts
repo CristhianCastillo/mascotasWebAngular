@@ -67,6 +67,9 @@ export class RegisterComponent implements OnInit {
       (result: any) => {
         console.log(result);
         if (result.status) {
+          const modalRef = this.modalService.open(ModalOutMessageComponent);
+          modalRef.componentInstance.tituloMensaje = 'Registro';
+          modalRef.componentInstance.contenidoMensaje = 'Registro exitoso, por favor ingresa a la aplicación.';
           this.router.navigate(['/login']) ;
         } else {
           const message = result.message;

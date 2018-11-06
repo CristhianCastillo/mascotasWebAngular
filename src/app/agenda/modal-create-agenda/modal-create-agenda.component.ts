@@ -3,6 +3,7 @@ import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bo
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalOutMessageComponent } from '../../modal-out-message/modal-out-message.component';
 import { Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { AgendaService } from '../../services/agenda/agenda.service';
 
 @Component({
   selector: 'app-modal-create-agenda',
@@ -11,15 +12,23 @@ import { Validators, FormGroup, FormBuilder} from '@angular/forms';
 })
 export class ModalCreateAgendaComponent implements OnInit {
 
-  @Input() agenda: any[];
+  @Input() listaMascotas: any[];
   public agendaForm: FormGroup;
-
+  public services: any;
   constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
-    , private modalService: NgbModal, private formBuilder: FormBuilder) {
+    , private modalService: NgbModal, private formBuilder: FormBuilder, private agendaService: AgendaService) {
     config.backdrop = 'static';
   }
 
   ngOnInit() {
+    this.agendaService.getServicesType().subscribe(
+      (result: any ) => {
+        this.services = result;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
     this.agendaForm = this.createForm();
   }
 
@@ -45,7 +54,7 @@ export class ModalCreateAgendaComponent implements OnInit {
       idMascota: this.agendaForm.value['idMascota'],
       nombre: this.agendaForm.value['nombre'],
       ubicacion: this.agendaForm.value['ubicacion'],
-      tipo: this.agendaForm.value['tipo'],
+      idTipo: this.agendaForm.value['tipo'],
       fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
       descripcion: this.agendaForm.value['descripcion']
     }
@@ -54,13 +63,19 @@ export class ModalCreateAgendaComponent implements OnInit {
 
   createEvent(evento){
     console.log(evento);
-    this.modalService.dismissAll();
-    const modalRef = this.modalService.open(ModalOutMessageComponent);
-    modalRef.componentInstance.tituloMensaje = 'Crear Evento';
-    modalRef.componentInstance.contenidoMensaje = 'Evento creado correctamente';
+    this.agendaService.createEvent(evento).subscribe(
+      (result: any) => {
+        console.log(result);
+        if (result.status) {
+          this.showMessage("Registrar Evento", "Evento registrado correctamente!");
+        } else {
+          this.showMessage("Registrar Evento", "El evento no ha sido registrado!");
+        }
+      }
+    );
   }
 
-  open(titulo, mensaje) {
+  showMessage(titulo, mensaje) {
     this.modalService.dismissAll();
     const modalRef = this.modalService.open(ModalOutMessageComponent);
     modalRef.componentInstance.tituloMensaje = titulo;

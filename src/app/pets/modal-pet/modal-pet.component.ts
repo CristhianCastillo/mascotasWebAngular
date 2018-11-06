@@ -52,7 +52,6 @@ export class ModalPetComponent implements OnInit {
   private createForm() {
     const esterilizado: string = this.mascota.esterilizado === true ? 'Si': 'No';
     return this.formBuilder.group({
-      fotoMascota: [''],
       nombre : [this.mascota.nombre + '', Validators.required],
       tipoMascota: [this.mascota.idTipo, Validators.required],
       genero: [this.mascota.genero, Validators.required],

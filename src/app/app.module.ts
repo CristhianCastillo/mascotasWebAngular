@@ -45,7 +45,7 @@ import { ModalPetsAdminComponent } from './modal-pets-admin/modal-pets-admin.com
     NgbModule
   ],
   providers: [
-    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+    //{ provide: ErrorHandler, useClass: GlobalErrorHandler },
     LoginAdminGuard, NoLoginAdminGuard, LoginUserGuard, LoginService, PetService, ScrollTopService],
   bootstrap: [AppComponent],
   entryComponents: [

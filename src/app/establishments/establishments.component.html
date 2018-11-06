@@ -5,7 +5,20 @@
     <p>Por favor verifica que tus datos son correctos, asi te podran encontrar mas facil.</p>
     <hr/>
   </div>
-  <form [formGroup]="establishmentForm" (ngSubmit)="getData()">
+  <form *ngIf="establecimiento | async; else loading" [formGroup]="establishmentForm" (ngSubmit)="getData()">
+    <div class="form-group text-center">
+      <img class="img-fluid" *ngIf="this.imagen != ''"
+           [src]="_DomSanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + this.imagen)" class="img-thumbnail">
+      <label for="foto">Seleccionar foto</label>
+      <i class="fa fa-check-circle check" *ngIf="this.imagen != ''"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="this.imagen == ''"></i>
+      <div class="custom-file">
+        <input id="foto" type="file" class="custom-file-input" (change)="onFileChange($event)" [ngClass]="{'is-invalid': this.imagen == '', 'is-valid': this.imagen != ''}">
+        <label class="custom-file-label">Choose file...</label>
+        <div class="invalid-feedback">Selecciona una imagen menor a 10 KB</div>
+      </div>
+      <!--<p class="alert alert-danger" *ngIf="(petForm.get('fotoMascota').hasError('required')) && petForm.get('fotoMascota').touched">Selecciona una foto.</p>-->
+    </div>
     <div class="form-group">
       <div class="form-row">
         <div class="form-group col-md-6">
@@ -26,7 +39,7 @@
              *ngIf="(establishmentForm.get('servicios').hasError('required'))"></i>
           <ng-multiselect-dropdown
             name="servicios" id="servicios" [placeholder]="'Selecciona un servicio'" formControlName="servicios"
-            [data]="dropdownList" [settings]="dropdownSettings">
+            [data]="services" [settings]="dropdownSettings">
           </ng-multiselect-dropdown>
           <div class="invalid-list" *ngIf="(establishmentForm.get('servicios').hasError('required'))">Selecciona al
             menos un servicio.
@@ -59,8 +72,8 @@
                  placeholder="Ingresa la URL de la pagina Web">
         </div>
         <div class="form-group col-md-6">
-          <label for="correo">Correo Electronico</label>
-          <input formControlName="correo" type="email" class="form-control" name="correo" id="correo"
+          <label for="email">Correo Electronico</label>
+          <input formControlName="email" type="email" class="form-control" name="email" id="email"
                  placeholder="Ingresa el email del establecimiento">
         </div>
       </div>
@@ -94,4 +107,7 @@
             class="btn btn-success">Actualizar
     </button>
   </form>
+  <ng-template #loading>
+    Loading User...
+  </ng-template>
 </div>

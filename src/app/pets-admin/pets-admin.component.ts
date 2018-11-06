@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import { ScrollTopService } from '../services/scroll-top.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { RequestsService } from '../services/requests/requests.service';
+import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import {ModalOutMessageComponent} from '../modal-out-message/modal-out-message.component';
 
 @Component({
   selector: 'app-pets-admin',
@@ -7,112 +13,100 @@ import {Router} from '@angular/router';
   styleUrls: ['./pets-admin.component.css']
 })
 export class PetsAdminComponent implements OnInit {
-
-  public idCliente: number ;
-  public fechaEvento: string ;
-  public clientes: any = [
-    {
-      id: 1,
-      nombreCliente: 'Cristhian Castillo',
-      numerovisitas: 10,
-      ultimaSolicitud: '2018-09-02 12:01 pm',
-      mascotas: [
-        {
-          nombreMascota: 'Maxi',
-          ultimaSolicitud: '2018-09-02 12:01 pm',
-          servicios: [
-            {
-              tipoServicio: 'Peluqueria',
-              estado: 'Finalizada',
-              fecha: '2018-07-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 2:00pm??.. Gracias!!'
-            },
-            {
-              tipoServicio: 'Baño',
-              estado: 'No Finalizada',
-              fecha: '2018-09-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 10:00am??.. Gracias!!'
-            }
-          ]
-        },
-        {
-          nombreMascota: 'Gatita',
-          ultimaSolicitud: '2018-05-02 14:01 pm',
-          servicios: [
-            {
-              tipoServicio: 'Peluqueria',
-              estado: 'Finalizada',
-              fecha: '2018-07-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 2:00pm??.. Gracias!!'
-            },
-            {
-              tipoServicio: 'Baño',
-              estado: 'No Finalizada',
-              fecha: '2018-09-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 10:00am??.. Gracias!!'
-            }
-          ]
-        }
-
-      ]
-    },
-    {
-      id: 2,
-      nombreCliente: 'Juan Castillo',
-      numerovisitas: 5,
-      ultimaSolicitud: '2018-09-02 12:01 pm',
-      mascotas: [
-        {
-          nombreMascota: 'Maxi',
-          ultimaSolicitud: '2018-09-02 12:01 pm',
-          servicios: [
-            {
-              tipoServicio: 'Peluqueria',
-              estado: 'Finalizada',
-              fecha: '2018-07-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 2:00pm??.. Gracias!!'
-            },
-            {
-              tipoServicio: 'Baño',
-              estado: 'No Finalizada',
-              fecha: '2018-09-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 10:00am??.. Gracias!!'
-            }
-          ]
-        },
-        {
-          nombreMascota: 'Gatita',
-          ultimaSolicitud: '2018-05-02 14:01 pm',
-          servicios: [
-            {
-              tipoServicio: 'Peluqueria',
-              estado: 'Finalizada',
-              fecha: '2018-07-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 2:00pm??.. Gracias!!'
-            },
-            {
-              tipoServicio: 'Baño',
-              estado: 'No Finalizada',
-              fecha: '2018-09-02 12:01 pm',
-              mensaje: 'Hola, me podrias atender a las 10:00am??.. Gracias!!'
-            }
-          ]
-        }
-      ]
-    }
-  ];
-  
-  constructor(private router: Router) { }
+  public requests: any;
+  public requestSelected: any;
+  public formAdmin: FormGroup;
+  public formSend: FormGroup;
+  constructor(private router: Router,private scrollTop: ScrollTopService, private modalService: NgbModal,
+              private spinner: NgxSpinnerService, private formBuilder: FormBuilder, private service: RequestsService,
+              public config: NgbModalConfig) {
+    this.formAdmin = this.createFormAdmin();
+    this.formSend = this.createFormSend();
+    config.backdrop = 'static';
+  }
 
   ngOnInit() {
+    this.scrollTop.setScrollTop();
+    const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
+    this.spinner.show();
+    this.service.getTopRequests(usuarioAutentificado.id).subscribe(
+      (data: any) => {
+        this.requests = data;
+        this.spinner.hide();
+      },
+      (error) => {
+        this.spinner.hide();
+        console.error(error);
+      }
+    );
   }
 
-  public highlightRow(emp) {
-    console.log(emp.id);
-    this.idCliente = emp.id;
+  private createFormAdmin() {
+    return this.formBuilder.group({
+      fechaInicial: ['', Validators.required],
+      fechaFinal : ['', Validators.required],
+    });
   }
 
-  goToViewEvent(idCliente: number){
-    this.router.navigate(['/myPetsAdmin', idCliente]);
+  private createFormSend() {
+    return this.formBuilder.group({
+      mensaje: ['', Validators.required]
+    });
+  }
+
+  search(){
+    const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
+    const fechaInicialJ = this.formAdmin.value['fechaInicial'];
+    const fechaFinalJ = this.formAdmin.value['fechaFinal'];
+    let fechaInicialDate: Date = new Date(Date.UTC(fechaInicialJ.year, fechaInicialJ.month - 1, fechaInicialJ.day, 1, 0, 0, 0));
+    let fechaFinalDate: Date = new Date(Date.UTC(fechaFinalJ.year, fechaFinalJ.month - 1, fechaFinalJ.day, 1, 0, 0, 0));
+    const filtro = {
+      fechaInicial: fechaInicialDate.toISOString().slice(0, 10),
+      fechaFinal: fechaFinalDate.toISOString().slice(0, 10)
+    };
+    this.service.getRequestsDate(filtro, usuarioAutentificado.id).subscribe(
+      (result: any) => {
+        console.log(result);
+        if (result === 'false') {
+          this.modalService.dismissAll();
+          const modalRef = this.modalService.open(ModalOutMessageComponent);
+          modalRef.componentInstance.tituloMensaje = "Upsss!!!";
+          modalRef.componentInstance.contenidoMensaje = "No se puede buscar las solicitudes ene ste momento.";
+        } else {
+          this.requests = result;
+        }
+      }
+    );
+  }
+
+  openModalSendResponse(content, request){
+    this.requestSelected = request;
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.ngOnInit();
+    }, (reason) => {
+      this.ngOnInit();
+    });
+  }
+
+  sendResponse(){
+    const responseRequest = {
+      respuesta: this.formSend.value['mensaje']
+    }
+    this.service.sendResponse(responseRequest, this.requestSelected.id).subscribe(
+      (result: any) => {
+        console.log(result);
+        if (result.status) {
+          this.modalService.dismissAll();
+          const modalRef = this.modalService.open(ModalOutMessageComponent);
+          modalRef.componentInstance.tituloMensaje = "Enviar respuesta";
+          modalRef.componentInstance.contenidoMensaje = "Mensaje enviado correctamente.";
+        } else {
+          this.modalService.dismissAll();
+          const modalRef = this.modalService.open(ModalOutMessageComponent);
+          modalRef.componentInstance.tituloMensaje = "Enviar respuesta";
+          modalRef.componentInstance.contenidoMensaje = 'No se ha podido enviar el mensaje.';
+        }
+      }
+    );
   }
 }

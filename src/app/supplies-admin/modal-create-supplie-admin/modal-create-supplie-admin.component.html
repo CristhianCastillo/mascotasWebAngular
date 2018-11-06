@@ -11,9 +11,9 @@
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('tipoSuministro').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched"></i>
       <select formControlName="tipoSuministro" class="form-control" id="tipoSiministro"
-      [ngClass]="{'is-invalid': (supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched, 'is-valid': !(supplieForm.get('tipoSuministro').hasError('required'))}">
-        <option>Juguetes</option>
-        <option>Alimento</option>
+              [ngClass]="{'is-invalid': (supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched,
+      'is-valid': !(supplieForm.get('tipoSuministro').hasError('required'))}">
+        <option *ngFor="let supplie of typeSupplies" [value]="supplie.id">{{supplie.nombre}}</option>
       </select>
       <div class="invalid-feedback">Selecciona un tipo.</div>
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('tipoSuministro').hasError('required')) && supplieForm.get('tipoSuministro').touched">Selecciona un tipo.</p>-->
@@ -23,7 +23,8 @@
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('nombre').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('nombre').hasError('required')) && supplieForm.get('nombre').touched"></i>
       <input formControlName="nombre" type="text" class="form-control" id="nombreSuministro" placeholder="Nombre del suministro"
-      [ngClass]="{'is-invalid': (supplieForm.get('nombre').hasError('required')) && supplieForm.get('nombre').touched, 'is-valid': !(supplieForm.get('nombre').hasError('required'))}">
+             [ngClass]="{'is-invalid': (supplieForm.get('nombre').hasError('required')) && supplieForm.get('nombre').touched,
+      'is-valid': !(supplieForm.get('nombre').hasError('required'))}">
       <div class="invalid-feedback">Ingresa un nombre valido.</div>
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('nombre').hasError('required')) && supplieForm.get('nombre').touched">Ingresa un nombre valido.</p>-->
     </div>
@@ -32,7 +33,7 @@
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('cantidad').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('cantidad').hasError('required')) && supplieForm.get('cantidad').touched"></i>
       <input formControlName="cantidad" type="number" class="form-control" id="cantidadSuministro" placeholder="Cantidad del suministro"
-      [ngClass]="{'is-invalid': (supplieForm.get('cantidad').hasError('required')) && supplieForm.get('cantidad').touched, 'is.valid':!(supplieForm.get('cantidad').hasError('required'))}">
+             [ngClass]="{'is-invalid': (supplieForm.get('cantidad').hasError('required')) && supplieForm.get('cantidad').touched,'is-valid': !(supplieForm.get('cantidad').hasError('required'))}">
       <div class="invalid-feedback">Ingresa una cantidad valida.</div>
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('cantidad').hasError('required')) && supplieForm.get('cantidad').touched">Ingresa una cantidad valida.</p>-->
     </div>
@@ -41,7 +42,7 @@
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('unidad').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('unidad').hasError('required')) && supplieForm.get('unidad').touched"></i>
       <select formControlName="unidad" class="form-control" id="unidadDeMedida"
-      [ngClass]="{'is-invalid': (supplieForm.get('unidad').hasError('required')) && supplieForm.get('unidad').touched,'is-valid': !(supplieForm.get('unidad').hasError('required'))}">
+              [ngClass]="{'is-invalid': (supplieForm.get('unidad').hasError('required')) && supplieForm.get('unidad').touched,'is-valid': !(supplieForm.get('unidad').hasError('required'))}">
         <option>Unidades</option>
         <option>Kg</option>
         <option>g</option>
@@ -54,10 +55,10 @@
     <div class="form-group">
       <label>Fecha Compra</label>
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('fechaCompra').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('fechaCompra').hasError('required')) && supplieForm.get('fechaCompra').touched"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('fechaCompra').hasError('required')) && supplieForm.get('fechaCompra').touched"
+         [ngClass]="{'is-invalid': (supplieForm.get('fechaCompra').hasError('required')) && supplieForm.get('fechaCompra').touched, 'is-valid': !(supplieForm.get('fechaCompra').hasError('required'))}"></i>
       <div class="input-group">
-        <input formControlName="fechaCompra" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker"
-        [ngClass]="{'is-invalid': (supplieForm.get('fechaCompra').hasError('required')) && supplieForm.get('fechaCompra').touched,'is-valid': !(supplieForm.get('fechaCompra').hasError('required'))}">
+        <input formControlName="fechaCompra" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker">
         <div class="input-group-append">
           <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">
             <i class="fa fa-calendar" style="font-size:24px"></i>
@@ -72,34 +73,25 @@
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('precio').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('precio').hasError('required')) && supplieForm.get('precio').touched"></i>
       <input formControlName="precio" type="number" class="form-control" id="precioSuministro" placeholder="Precio del suministro"
-      [ngClass]="{'is-invalid': (supplieForm.get('precio').hasError('required')) && supplieForm.get('precio').touched,'is-valid': !(supplieForm.get('precio').hasError('required'))}">
-      <div class="invalid-feedback">Ingresa un precio valido..</div>
+             [ngClass]="{'is-invalid': (supplieForm.get('precio').hasError('required')) && supplieForm.get('precio').touched, 'is-valid': !(supplieForm.get('precio').hasError('required'))}">
+      <div class="invalid-feedback">Ingresa un precio valido.</div>
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('precio').hasError('required')) && supplieForm.get('precio').touched">Ingresa un precio valido.</p>-->
     </div>
     <div class="form-group">
-      <label for="proveedor">Proveedor</label>
+      <label for="proveedor">Nombre Tienda</label>
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('proveedor').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('proveedor').hasError('required')) && supplieForm.get('proveedor').touched"></i>
       <input formControlName="proveedor" type="text" class="form-control" id="proveedor" placeholder="Nombre de tienda"
-      [ngClass]="{'is-invalid': (supplieForm.get('proveedor').hasError('required')) && supplieForm.get('proveedor').touched,'is-valid': !(supplieForm.get('proveedor').hasError('required'))}">
-      <div class="invalid-feedback">Ingresa el nombre de proveedor valido.</div>
+             [ngClass]="{'is-invalid': (supplieForm.get('proveedor').hasError('required')) && supplieForm.get('proveedor').touched,'is-valid': !(supplieForm.get('proveedor').hasError('required'))}">
+      <div class="invalid-feedback">Ingresa el nombre de un proveedor valido.</div>
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('proveedor').hasError('required')) && supplieForm.get('proveedor').touched">Ingresa el nombre de proveedor valido.</p>-->
-    </div>
-    <div class="form-group">
-      <label for="consumoDiario">Consumo Diario</label>
-      <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('consumoDiario').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched"></i>
-      <input formControlName="consumoDiario" type="text" class="form-control" id="consumoDiario" placeholder="Consumo Diario"
-      [ngClass]="{'is-invalid': (supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched,'is-valid': !(supplieForm.get('consumoDiario').hasError('required'))}">
-      <div class="invalid-feedback">Ingresa un consumo diario valido.</div>
-      <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('consumoDiario').hasError('required')) && supplieForm.get('consumoDiario').touched">Ingresa un consumo diario valido.</p>-->
     </div>
     <div class="form-group">
       <label for="comentarios">Comentarios</label>
       <i class="fa fa-check-circle check" *ngIf="!(supplieForm.get('comentarios').hasError('required'))"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(supplieForm.get('comentarios').hasError('required')) && supplieForm.get('comentarios').touched"></i>
       <textarea formControlName="comentarios" name="comentariosSuministro" class="form-control" id="comentarios" placeholder="Agrega algun comentario"
-      [ngClass]="{'is-invalid': (supplieForm.get('comentarios').hasError('required')) && supplieForm.get('comentarios').touched,'is-valid': !(supplieForm.get('comentarios').hasError('required'))}"></textarea>
+                [ngClass]="{'is-invalid': (supplieForm.get('comentarios').hasError('required')) && supplieForm.get('comentarios').touched,'is-valid': !(supplieForm.get('comentarios').hasError('required'))}"></textarea>
       <div class="invalid-feedback">Ingresa un comentario valido.</div>
       <!--<p class="alert alert-danger" *ngIf="(supplieForm.get('comentarios').hasError('required')) && supplieForm.get('comentarios').touched">Ingresa un comentario valido.</p>-->
     </div>

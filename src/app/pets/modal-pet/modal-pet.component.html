@@ -5,32 +5,39 @@
   </button>
 </div>
 <div class="modal-body">
-  <form [formGroup]= "petForm" (ngSubmit)="openModalUpdate('Registro Mascota', 'Mascota actualizada correctamente!')">
+  <form [formGroup]="petForm" (ngSubmit)="openModalUpdate('Registro Mascota', 'Mascota actualizada correctamente!')">
     <div class="form-group">
-      <img *ngIf="mascota.imagen != ''" class="img-fluid" [src]="_DomSanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + mascota.imagen)" class="img-thumbnail">
+      <img *ngIf="mascota.imagen != ''" class="img-fluid"
+           [src]="_DomSanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + mascota.imagen)"
+           class="img-thumbnail">
       <label for="exampleFormControlFile1">Seleccionar foto</label>
-      <i class="fa fa-check-circle check" *ngIf="!(petForm.get('fotoMascota').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('fotoMascota').hasError('required')) && petForm.get('fotoMascota').touched"></i>
-      <input formControlName="fotoMascota" type="file" class="form-control-file" (change)="changeURL($event)" id="exampleFormControlFile1"
-      [ngClass]="{'is-invalid': (petForm.get('fotoMascota').hasError('required')) && petForm.get('fotoMascota').touched, 'is-valid': !(petForm.get('fotoMascota').hasError('required'))}">
-      <div class="invalid-feedback">Selecciona una imagen menor a 10 KB.</div>
+      <i class="fa fa-check-circle check" *ngIf="mascota.imagen != ''"></i>
+      <i class="fa fa-exclamation-circle uncheck" *ngIf="mascota.imagen === ''"></i>
+      <div class="custom-file">
+        <input  type="file" class="form-control" (change)="changeURL($event)" id="exampleFormControlFile1"
+               [ngClass]="{'is-invalid': mascota.imagen === '', 'is-valid': mascota.imagen !=''}">
+        <div class="invalid-feedback">Selecciona una imagen menor a 10 KB.</div>
+      </div>
       <!--<p class="alert alert-danger" *ngIf="(petForm.get('fotoMascota').hasError('required')) && petForm.get('fotoMascota').touched">Selecciona una foto.</p>-->
     </div>
     <div class="form-group">
       <label for="nombreMascota">Nombre Mascota</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('nombre').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('nombre').hasError('required')) && petForm.get('nombre').touched"></i>
-      <input formControlName="nombre" type="text" class="form-control" name="nombreDeMascota"  id="nombreMascota" placeholder="Nombre de tu mascota"
-      [ngClass]="{'is-invalid': (petForm.get('nombre').hasError('required')) && petForm.get('nombre').touched, 'is-valid': !(petForm.get('nombre').hasError('required'))}">
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('nombre').hasError('required')) && petForm.get('nombre').touched"></i>
+      <input formControlName="nombre" type="text" class="form-control" name="nombreDeMascota" id="nombreMascota"
+             placeholder="Nombre de tu mascota"
+             [ngClass]="{'is-invalid': (petForm.get('nombre').hasError('required')) && petForm.get('nombre').touched, 'is-valid': !(petForm.get('nombre').hasError('required'))}">
       <div class="invalid-feedback">Ingresa un nombre valido.</div>
       <!--<p class="alert alert-danger" *ngIf="(petForm.get('nombre').hasError('required')) && petForm.get('nombre').touched">Ingresa un nombre valido</p>-->
     </div>
     <div class="form-group">
       <label for="tipoMascota">Tipo Mascota</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('tipoMascota').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('tipoMascota').hasError('required')) && petForm.get('tipoMascota').touched"></i>
-      <select formControlName="tipoMascota" class="form-control" id="tipoMascota"  name="tipoDeMascota"
-      [ngClass]="{'is-invalid': (petForm.get('tipoMascota').hasError('required')) && petForm.get('tipoMascota').touched, 'is-valid': !(petForm.get('tipoMascota').hasError('required'))}">
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('tipoMascota').hasError('required')) && petForm.get('tipoMascota').touched"></i>
+      <select formControlName="tipoMascota" class="form-control" id="tipoMascota" name="tipoDeMascota"
+              [ngClass]="{'is-invalid': (petForm.get('tipoMascota').hasError('required')) && petForm.get('tipoMascota').touched, 'is-valid': !(petForm.get('tipoMascota').hasError('required'))}">
         <option *ngFor="let type of typePets" [value]="type.id">{{type.nombre}}</option>
       </select>
       <div class="invalid-feedback">Selecciona un tipo.</div>
@@ -39,9 +46,10 @@
     <div class="form-group">
       <label for="generoMascota">Genero</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('genero').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('genero').hasError('required')) && petForm.get('genero').touched"></i>
-      <select formControlName="genero" class="form-control" id="generoMascota"  name="generoDeMascota"
-      [ngClass]="{'is-invalid': (petForm.get('genero').hasError('required')) && petForm.get('genero').touched, 'is-valid': !(petForm.get('genero').hasError('required'))}">
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('genero').hasError('required')) && petForm.get('genero').touched"></i>
+      <select formControlName="genero" class="form-control" id="generoMascota" name="generoDeMascota"
+              [ngClass]="{'is-invalid': (petForm.get('genero').hasError('required')) && petForm.get('genero').touched, 'is-valid': !(petForm.get('genero').hasError('required'))}">
         <option>Macho</option>
         <option>Hembra</option>
       </select>
@@ -51,10 +59,12 @@
     <div class="form-group">
       <label for="generoMascota">Fecha Nacimiento</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('fechaNacimiento').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('fechaNacimiento').hasError('required')) && petForm.get('fechaNacimiento').touched"></i>
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('fechaNacimiento').hasError('required')) && petForm.get('fechaNacimiento').touched"></i>
       <div class="input-group">
-        <input formControlName="fechaNacimiento" class="form-control" placeholder="yyyy-mm-dd" name="d2"  ngbDatepicker #d2="ngbDatepicker"
-        [ngClass]="{'is-invalid': (petForm.get('fechaNacimiento').hasError('required')) && petForm.get('fechaNacimiento').touched, 'is-valid': !(petForm.get('fechaNacimiento').hasError('required'))}">
+        <input formControlName="fechaNacimiento" class="form-control" placeholder="yyyy-mm-dd" name="d2" ngbDatepicker
+               #d2="ngbDatepicker"
+               [ngClass]="{'is-invalid': (petForm.get('fechaNacimiento').hasError('required')) && petForm.get('fechaNacimiento').touched, 'is-valid': !(petForm.get('fechaNacimiento').hasError('required'))}">
         <div class="input-group-append">
           <button class="btn btn-outline-danger calendar" (click)="d2.toggle()" type="button">
             <i class="fa fa-calendar" style="font-size:24px"></i>
@@ -67,18 +77,21 @@
     <div class="form-group">
       <label for="razaMascota">Raza</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('raza').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('raza').hasError('required')) && petForm.get('raza').touched"></i>
-      <input formControlName="raza" type="text" class="form-control" id="razaMascota"  name="razaDeMascota" placeholder="Raza de tu mascota"
-      [ngClass]="{'is-invalid': (petForm.get('raza').hasError('required')) && petForm.get('raza').touched, 'is-valid': !(petForm.get('raza').hasError('required'))}">
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('raza').hasError('required')) && petForm.get('raza').touched"></i>
+      <input formControlName="raza" type="text" class="form-control" id="razaMascota" name="razaDeMascota"
+             placeholder="Raza de tu mascota"
+             [ngClass]="{'is-invalid': (petForm.get('raza').hasError('required')) && petForm.get('raza').touched, 'is-valid': !(petForm.get('raza').hasError('required'))}">
       <div class="invalid-feedback">Ingresa una raza valida.</div>
       <!--<p class="alert alert-danger" *ngIf="(petForm.get('raza').hasError('required')) && petForm.get('raza').touched">Ingresa una raza valida.</p>-->
     </div>
     <div class="form-group">
       <label for="mascotaEsterilizada">Esterilizado</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('esterilizado').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('esterilizado').hasError('required')) && petForm.get('esterilizado').touched"></i>
-      <select formControlName="esterilizado" class="form-control" id="mascotaEsterilizada"  name="mascotaEsterilizadaM"
-      [ngClass]="{'is-invalid': (petForm.get('esterilizado').hasError('required')) && petForm.get('esterilizado').touched, 'is-valid': !(petForm.get('esterilizado').hasError('required'))}">
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('esterilizado').hasError('required')) && petForm.get('esterilizado').touched"></i>
+      <select formControlName="esterilizado" class="form-control" id="mascotaEsterilizada" name="mascotaEsterilizadaM"
+              [ngClass]="{'is-invalid': (petForm.get('esterilizado').hasError('required')) && petForm.get('esterilizado').touched, 'is-valid': !(petForm.get('esterilizado').hasError('required'))}">
         <option>Si</option>
         <option>No</option>
       </select>
@@ -88,24 +101,30 @@
     <div class="form-group">
       <label for="colorMascota">Color</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('color').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('color').hasError('required')) && petForm.get('color').touched"></i>
-      <input formControlName="color" type="text" class="form-control" id="colorMascota" name="colorDeMascota" placeholder="Color de tu mascota"
-      [ngClass]="{'is-invalid': (petForm.get('color').hasError('required')) && petForm.get('color').touched, 'is-valid': !(petForm.get('color').hasError('required'))}">
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('color').hasError('required')) && petForm.get('color').touched"></i>
+      <input formControlName="color" type="text" class="form-control" id="colorMascota" name="colorDeMascota"
+             placeholder="Color de tu mascota"
+             [ngClass]="{'is-invalid': (petForm.get('color').hasError('required')) && petForm.get('color').touched, 'is-valid': !(petForm.get('color').hasError('required'))}">
       <div class="invalid-feedback">Ingresa un color valido.</div>
       <!--<p class="alert alert-danger" *ngIf="(petForm.get('color').hasError('required')) && petForm.get('color').touched">Ingresa un color valido.</p>-->
     </div>
     <div class="form-group">
       <label for="descripcionMascota">Descripción Mascota</label>
       <i class="fa fa-check-circle check" *ngIf="!(petForm.get('descripcion').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck" *ngIf="(petForm.get('descripcion').hasError('required')) && petForm.get('descripcion').touched"></i>
-      <textarea formControlName="descripcion" name="descripcionDelEstablecimiento" class="form-control" id="descripcionMascota" placeholder="Descripción"
-      [ngClass]="{'is-invalid': (petForm.get('descripcion').hasError('required')) && petForm.get('descripcion').touched, 'is-valid': !(petForm.get('descripcion').hasError('required'))}"></textarea>
+      <i class="fa fa-exclamation-circle uncheck"
+         *ngIf="(petForm.get('descripcion').hasError('required')) && petForm.get('descripcion').touched"></i>
+      <textarea formControlName="descripcion" name="descripcionDelEstablecimiento" class="form-control"
+                id="descripcionMascota" placeholder="Descripción"
+                [ngClass]="{'is-invalid': (petForm.get('descripcion').hasError('required')) && petForm.get('descripcion').touched, 'is-valid': !(petForm.get('descripcion').hasError('required'))}"></textarea>
       <div class="invalid-feedback">Ingresa una descripción valida.</div>
       <!--<p class="alert alert-danger" *ngIf="(petForm.get('descripcion').hasError('required')) && petForm.get('descripcion').touched">Ingresa una descripción valida.</p>-->
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-outline-success" [disabled]="!petForm.valid">Actualizar</button>
-      <button type="button" class="btn btn-outline-danger" (click)="openModalConfirm('Registro Mascota', 'Mascota eliminada correctamente!')">Eliminar</button>
+      <button type="button" class="btn btn-outline-danger"
+              (click)="openModalConfirm('Registro Mascota', 'Mascota eliminada correctamente!')">Eliminar
+      </button>
     </div>
   </form>
 </div>

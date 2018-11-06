@@ -12,7 +12,7 @@
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched"></i>
       <select formControlName="idMascota" class="form-control" id="idMascota" name="idMascota"
       [ngClass]="{'is-invalid': (agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched, 'is-valid': !(agendaForm.get('idMascota').hasError('required'))}">
-        <option *ngFor="let mascota of agenda" [value]="mascota.idMascota">{{mascota.nombre}}</option>
+        <option *ngFor="let mascota of listaMascotas" [value]="mascota.id">{{mascota.nombre}}</option>
       </select>
       <div class="invalid-feedback">Selecciona una mascota.</div>
       <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched">Selecciona una mascota</p>-->
@@ -41,12 +41,7 @@
       <i class="fa fa-exclamation-circle uncheck" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched"></i>
       <select formControlName="tipo" class="form-control" id="tipo" name="tipo"
       [ngClass]="{'is-invalid': (agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched, 'is-valid': !(agendaForm.get('tipo').hasError('required'))}">
-        <option>Veterinario</option>
-        <option>Peluqueria</option>
-        <option>Vacuna</option>
-        <option>Jugar</option>
-        <option>Dientes</option>
-        <option>Baño</option>
+        <option *ngFor="let service of services" [value]="service.id">{{service.nombre}}</option>
       </select>
       <div class="invalid-feedback">Selecciona un tipo de evento.</div>
       <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched">Selecciona una tipo de evento</p>-->

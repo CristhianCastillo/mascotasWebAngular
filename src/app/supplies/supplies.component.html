@@ -12,8 +12,8 @@
           <div class="col">&nbsp;</div>
         </div>
         <h5 class="m-2">
-          <span class="badge badge-pill" [ngClass]="{'bg-info': (detalle.nombre == nombreSuministro),
-                'bg-light border': (!(detalle.nombre == nombreSuministro))}">&nbsp;</span>
+          <span class="badge badge-pill" [ngClass]="{'bg-info': (detalle.id == idSuministro),
+                'bg-light border': (!(detalle.id == idSuministro))}">&nbsp;</span>
         </h5>
         <div class="row h-50">
           <div class="col border-right">&nbsp;</div>
@@ -22,23 +22,26 @@
       </div>
       <!-- timeline item 1 event content -->
       <div class="col py-2">
-        <div class="card" [ngClass]="{'border-info shadow': (detalle.nombre == nombreSuministro),
-                '': (!(detalle.nombre == nombreSuministro))}">
+        <div class="card" [ngClass]="{'border-info shadow': (detalle.id == idSuministro),
+                '': (!(detalle.id == idSuministro))}">
           <div class="card-body">
-            <div class="float-right" [ngClass]="{'text-info': (detalle.nombre == nombreSuministro),
-                'text-muted': (!(detalle.nombre == nombreSuministro))}">{{detalle.fecha}}</div>
-            <h4 class="card-title" [ngClass]="{'text-info': (detalle.nombre == nombreSuministro),
-                '': (!(detalle.nombre == nombreSuministro))}">{{detalle.nombre}} {{detalle.cantidad}} {{detalle.unidadMedida}}</h4>
-            <p>Consumo: {{detalle.consumoDiario}}</p>
-            <p>Comentarios: {{detalle.comentario}}</p>
+            <div class="float-right" [ngClass]="{'text-info': (detalle.id == idSuministro),
+                'text-muted': (!(detalle.id == idSuministro))}">{{detalle.fecha}}</div>
+            <h4 class="card-title" [ngClass]="{'text-info': (detalle.id == idSuministro),
+                '': (!(detalle.id == idSuministro))}">{{detalle.nombre}} {{detalle.cantidad}} {{detalle.unidadMedida}}</h4>
+            <p>Precio: {{detalle.precio}}</p>
+            <p>Comentario: {{detalle.comentario}}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="btn-float">
-    <button type="button" class="btn btn-default btn-circle btn-xl btn-lateral" (click)="goToCreateSupplie()"><i class="material-icons">
-      add_circle
-    </i></button><br>
-  </div>
+  <!--<div class="btn-float">-->
+    <!--<button type="button" class="btn btn-default btn-circle btn-xl btn-lateral" (click)="goToCreateSupplie()"><i class="material-icons">-->
+      <!--add_circle-->
+    <!--</i></button><br>-->
+  <!--</div>-->
+  <button (click)="goToCreateSupplie()" class="btn btn-default btn-circle btn-xl float">
+    <i class="fa fa-plus my-float"></i>
+  </button>
 </div>

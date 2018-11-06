@@ -6,6 +6,7 @@ import { Validators, FormGroup, FormBuilder} from '@angular/forms';
 import { Cita } from '../../models/Cita';
 import { DateConvert } from '../../models/DateConvert';
 import { HourConvert } from '../../models/HourConvert';
+import { AgendaService } from '../../services/agenda/agenda.service';
 
 @Component({
   selector: 'app-modal-agenda',
@@ -14,32 +15,43 @@ import { HourConvert } from '../../models/HourConvert';
 })
 export class ModalAgendaComponent implements OnInit {
 
-  @Input() mascotas: any[];
+  @Input() listaMascotas: any[];
   @Input() mascotaSeleccionada: number;
   @Input() eventoSeleccionado: Cita;
 
   public agendaForm: FormGroup;
 
+  public services: any;
   public fechaJs: Date;
   public fechaActividad: DateConvert;
   public horaActividad: HourConvert;
 
   constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
-    , private modalService: NgbModal, private formBuilder: FormBuilder) {
+    , private modalService: NgbModal, private formBuilder: FormBuilder, private agendaService: AgendaService) {
     config.backdrop = 'static';
   }
 
   ngOnInit() {
+
+    this.agendaService.getServicesType().subscribe(
+      (result: any ) => {
+        this.services = result;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
     console.log(this.eventoSeleccionado);
     this.fechaActividad = new DateConvert();
     //Fecha Evento
-    this.fechaJs = new Date(this.eventoSeleccionado.fechaEvento);
+    this.fechaJs = new Date(this.eventoSeleccionado.fecha);
     this.fechaActividad.year = this.fechaJs.getUTCFullYear();
     this.fechaActividad.month = (this.fechaJs.getUTCMonth() + 1);
     this.fechaActividad.day = this.fechaJs.getUTCDate();
     //Hora Evento
-    let parts: string[] = this.eventoSeleccionado.horaEvento.split(':');
-    console.log(parts);
+    let hora: string[] = this.eventoSeleccionado.fecha.split(' ');
+    let parts: string[] = hora[1].split(':');
+    console.log(hora[1]);
     this.horaActividad = new HourConvert();
     this.horaActividad.hour = Number(parts[0]);
     this.horaActividad.minute = Number(parts[1]);
@@ -66,12 +78,10 @@ export class ModalAgendaComponent implements OnInit {
     console.log(fechaDate.toISOString().slice(11, 16));
     const evento = {
       idMascota: this.agendaForm.value['idMascota'],
-      id: this.eventoSeleccionado.id,
       nombre: this.agendaForm.value['nombre'],
       ubicacion: this.agendaForm.value['ubicacion'],
-      tipo: this.agendaForm.value['tipo'],
-      fecha: fechaDate.toISOString().slice(0, 10),
-      hora: fechaDate.toISOString().slice(11, 16),
+      idTipo: this.agendaForm.value['tipo'],
+      fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
       descripcion: this.agendaForm.value['descripcion']
     }
     this.updateEvent(evento);
@@ -79,27 +89,29 @@ export class ModalAgendaComponent implements OnInit {
 
   updateEvent(evento){
     console.log(evento);
-    this.modalService.dismissAll();
-    const modalRef = this.modalService.open(ModalOutMessageComponent);
-    modalRef.componentInstance.tituloMensaje = 'Actualizar Evento';
-    modalRef.componentInstance.contenidoMensaje = 'Evento actualizado correctamente';
+    this.agendaService.updateEvent(this.eventoSeleccionado.id, evento).subscribe(
+      (result: any ) => {
+        console.log(result);
+        if (result.status) {
+          this.openModalConfirm("Actualizar Evento", "Evento actualizado correctamente.");
+        } else {
+          this.openModalConfirm("Actualizar Evento", "El evento no se ha podido actualizar.");
+        }
+      }
+    );
+  }
 
-    // this.servicePet.updatePet(this.mascota.id, data).subscribe(
-    //   (result: boolean ) => {
-    //     console.log(result);
-    //     if (result) {
-    //       this.modalService.dismissAll();
-    //       const modalRef = this.modalService.open(ModalOutMessageComponent);
-    //       modalRef.componentInstance.tituloMensaje = titulo;
-    //       modalRef.componentInstance.contenidoMensaje = mensaje;
-    //     } else {
-    //       this.modalService.dismissAll();
-    //       const modalRef = this.modalService.open(ModalOutMessageComponent);
-    //       modalRef.componentInstance.tituloMensaje = titulo;
-    //       modalRef.componentInstance.contenidoMensaje = 'No se ha podido actualizar la mascota';
-    //     }
-    //   }
-    // );
+  deleteEvent(){
+    this.agendaService.deleteEvent(this.eventoSeleccionado.id).subscribe(
+      (result: any ) => {
+        console.log(result);
+        if (result.status) {
+          this.openModalConfirm("Eliminar Evento", "Evento eliminado correctamente.");
+        } else {
+          this.openModalConfirm("Eliminar Evento", "El evento no se ha podido eliminar.");
+        }
+      }
+    );
   }
 
   openModalConfirm(titulo, mensaje) {
