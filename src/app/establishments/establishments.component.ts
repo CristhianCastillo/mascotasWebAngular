@@ -43,6 +43,7 @@ export class EstablishmentsComponent implements OnInit {
     this.scrollTop.setScrollTop();
     const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
     this.establishmentForm = this.formBuilder.group({
+      imagen: ['test'],
       nombre: ['', Validators.required],
       telefono: [''],
       direccion: [''],
@@ -63,6 +64,7 @@ export class EstablishmentsComponent implements OnInit {
     let horaFinalStr: string;
     this.establecimiento.subscribe(
       (result: any) => {
+        console.log(result);
         this.idEstablecimiento = result.id;
         this.imagen = result.imagen;
         horaInicialStr = result.horaInicial;
@@ -74,7 +76,7 @@ export class EstablishmentsComponent implements OnInit {
           this.horaInicial = new HourConvert();
           this.horaInicial.hour = Number(horaInicialPartes[0]);
           this.horaInicial.minute = Number(horaInicialPartes[1]);
-          this.establishmentForm.setValue({horaInicial: this.horaInicial});
+          //this.establishmentForm.setValue({horaInicial: this.horaInicial});
         }
 
         if(horaFinalStr != null && horaFinalStr != ''){
@@ -84,7 +86,7 @@ export class EstablishmentsComponent implements OnInit {
           this.horaFinal.hour = Number(horaFinalPartes[0]);
           this.horaFinal.minute = Number(horaFinalPartes[1]);
           console.log(this.horaFinal);
-          this.establishmentForm.controls['horaFinal'].patchValue(this.horaFinal);
+          //this.establishmentForm.controls['horaFinal'].patchValue(this.horaFinal);
         }
       }
     );
