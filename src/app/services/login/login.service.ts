@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
   loginUser(data): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/user/login', data, {
-    //return this.http.post<any>('https://mascotas.ga/application/user/login', data, {
+    return this.http.post<any>(`${this.URL}user/login`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

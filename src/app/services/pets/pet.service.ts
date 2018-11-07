@@ -9,21 +9,20 @@ import { Mascota } from '../../models/Mascota';
 })
 export class PetService {
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
   getTypePets(){
-    return this.http.get('http://localhost:8080/petType');
-    //return this.http.get('https://mascotas.ga/application/petsType');
+    return this.http.get(`${this.URL}petType`);
   }
 
   getAllPets(usuario: string) {
-    return this.http.get(`http://localhost:8080/pet/${usuario}`);
-    //return this.http.get(`https://mascotas.ga/application/pets/user/${usuario}`);
+    return this.http.get(`${this.URL}pet/${usuario}`);
   }
 
   createPet(data: Mascota): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/pet', data, {
-    //return this.http.post<any>('https://mascotas.ga/application/pets', data, {
+    return this.http.post<any>(`${this.URL}pet`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -31,8 +30,7 @@ export class PetService {
   }
 
   updatePet(idMascota: string, data: Mascota): Observable<any> {
-    return this.http.put<any>(`http://localhost:8080/pet/${idMascota}`, data, {
-    //return this.http.put<any>(`https://mascotas.ga/application/pets/${idMascota}`, data, {
+    return this.http.put<any>(`${this.URL}pet/${idMascota}`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -40,8 +38,7 @@ export class PetService {
   }
 
   deletePet(idMascota: string): Observable<any> {
-    return this.http.delete<any>(`http://localhost:8080/pet/${idMascota}`,{
-    //return this.http.delete<any>(`https://mascotas.ga/application/pets/${idMascota}`,{
+    return this.http.delete<any>(`${this.URL}pet/${idMascota}`,{
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

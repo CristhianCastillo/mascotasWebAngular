@@ -8,26 +8,24 @@ import { Cita } from '../../models/Cita';
 })
 export class AgendaService {
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
   getServicesType(){
-    //return this.http.get('https://mascotas.ga/application/serviceType');
-    return this.http.get('http://localhost:8080/serviceType');
+    return this.http.get(`${this.URL}serviceType`);
   }
 
   getServicesTypeOwner(){
-    //return this.http.get('https://mascotas.ga/application/serviceType');
-    return this.http.get('http://localhost:8080/serviceType/owner');
+    return this.http.get(`${this.URL}serviceType/owner`);
   }
 
   getAllAgenda(usuario: string) {
-    return this.http.get(`http://localhost:8080/agenda/${usuario}`);
-    //return this.http.get(`https://mascotas.ga/application/ageenda/user/${usuario}`);
+    return this.http.get(`${this.URL}agenda/${usuario}`);
   }
 
   createEvent(data: Cita): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/agenda', data, {
-      //return this.http.post<any>('https://mascotas.ga/application/agenda', data, {
+    return this.http.post<any>(`${this.URL}agenda`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -35,8 +33,7 @@ export class AgendaService {
   }
 
   updateEvent(id: string, data: Cita): Observable<any> {
-    return this.http.put<any>(`http://localhost:8080/agenda/${id}`, data, {
-      //return this.http.put<any>(`https://mascotas.ga/application/agenda/${id}`, data, {
+    return this.http.put<any>(`${this.URL}agenda/${id}`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -44,8 +41,7 @@ export class AgendaService {
   }
 
   deleteEvent(id: string): Observable<any> {
-    return this.http.delete<any>(`http://localhost:8080/agenda/${id}`,{
-      //return this.http.delete<any>(`https://mascotas.ga/application/agenda/${id}`,{
+    return this.http.delete<any>(`${this.URL}agenda/${id}`,{
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

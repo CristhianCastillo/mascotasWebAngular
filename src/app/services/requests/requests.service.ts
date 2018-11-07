@@ -8,16 +8,16 @@ import {Cita} from '../../models/Cita';
 })
 export class RequestsService {
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
   getTopRequests(idUsuario: string){
-    //return this.http.get('https://mascotas.ga/application/serviceType');
-    return this.http.get(`http://localhost:8080/request/ownerTop/${idUsuario}`);
+    return this.http.get(`${this.URL}request/ownerTop/${idUsuario}`);
   }
 
   getRequestsDate(data: any, idUsuario: string){
-    return this.http.post<any>(`http://localhost:8080/request/ownerDate/${idUsuario}`, data, {
-      //return this.http.post<any>('https://mascotas.ga/application/agenda', data, {
+    return this.http.post<any>(`${this.URL}request/ownerDate/${idUsuario}`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -25,8 +25,7 @@ export class RequestsService {
   }
 
   sendResponse(data: any, id: string): Observable<any> {
-    return this.http.put<any>(`http://localhost:8080/request/sendResponse/${id}`, data, {
-      //return this.http.post<any>('https://mascotas.ga/application/agenda', data, {
+    return this.http.put<any>(`${this.URL}request/sendResponse/${id}`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

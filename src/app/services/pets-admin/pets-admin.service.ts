@@ -9,8 +9,9 @@ export class PetsAdminService {
 
   constructor(public http: HttpClient) { }
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   getAllRequest(idUsuario: string) {
-    return this.http.get(`http://localhost:8080/request/admin/${idUsuario}`);
-    //return this.http.get(`https://mascotas.ga/application/request/admin/${idUsuario}`);
+    return this.http.get(`${this.URL}request/admin/${idUsuario}`);
   }
 }

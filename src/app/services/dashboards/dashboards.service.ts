@@ -6,15 +6,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class DashboardsService {
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
   getCountServices(id: string) {
-    //return this.http.get('http://localhost:8080/pets');
-    return this.http.get(`http://localhost:8080/DashBoards/countByServices/${id}`);
+    return this.http.get(`${this.URL}DashBoards/countByServices/${id}`);
   }
 
   getCountQualify(id: string) {
-    //return this.http.get('http://localhost:8080/pets');
-    return this.http.get(`http://localhost:8080/DashBoards/countRatings/${id}`);
+    return this.http.get(`${this.URL}DashBoards/countRatings/${id}`);
   }
 }

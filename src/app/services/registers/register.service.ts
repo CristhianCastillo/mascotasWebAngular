@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class RegisterService {
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
   createUser(data): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/user/user', data, {
-    //return this.http.post<any>('https://mascotas.ga/application/user/user', data, {
+    return this.http.post<any>(`${this.URL}user/user`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
@@ -19,8 +20,7 @@ export class RegisterService {
   }
 
   createUserOwner(data): Observable<any> {
-    return this.http.post<any>('http://localhost:8080/user/owner', data, {
-    //return this.http.post<any>('https://mascotas.ga/application/user/owner', data, {
+    return this.http.post<any>(`${this.URL}user/owner`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })

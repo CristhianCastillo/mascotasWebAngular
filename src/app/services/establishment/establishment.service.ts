@@ -8,16 +8,16 @@ import {Establecimiento} from '../../models/Establecimiento';
 })
 export class EstablishmentService {
 
+  public URL: string = 'https://mascotas.ga/application/';
+  //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
   getEstablishment(usuario: string): Observable<Establecimiento> {
-    return this.http.get<Establecimiento>(`http://localhost:8080/establishment/${usuario}`);
-    //return this.http.get(`https://mascotas.ga/application/establishment${usuario}`);
+    return this.http.get<Establecimiento>(`${this.URL}establishment/${usuario}`);
   }
 
   updateEstablishment(id: string, data: any): Observable<any> {
-    return this.http.put<any>(`http://localhost:8080/establishment/${id}`, data, {
-      //return this.http.put<any>(`https://mascotas.ga/application/establishment/${id}`, data, {
+    return this.http.put<any>(`${this.URL}establishment/${id}`, data, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
