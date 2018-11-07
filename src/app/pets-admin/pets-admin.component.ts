@@ -71,7 +71,7 @@ export class PetsAdminComponent implements OnInit {
           this.modalService.dismissAll();
           const modalRef = this.modalService.open(ModalOutMessageComponent);
           modalRef.componentInstance.tituloMensaje = "Upsss!!!";
-          modalRef.componentInstance.contenidoMensaje = "No se puede buscar las solicitudes ene ste momento.";
+          modalRef.componentInstance.contenidoMensaje = "No se puede buscar las solicitudes en este momento.";
         } else {
           this.requests = result;
         }

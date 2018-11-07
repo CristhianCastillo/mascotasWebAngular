@@ -12,10 +12,8 @@ export class SuppliesService {
   //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) { }
 
-
   getTypeSupplies(){
     return this.http.get(`${this.URL}supplieType`);
-    //return this.http.get('https://mascotas.ga/application/petsType');
   }
 
   getAllSupplies(usuario: string) {
