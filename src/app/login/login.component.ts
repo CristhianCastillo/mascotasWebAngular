@@ -58,7 +58,8 @@ export class LoginComponent implements OnInit {
             id: result.message,
             usuario: data.usuario,
             password: data.password,
-            tipoUsuario: result.root
+            tipoUsuario: result.root,
+            token: result.token
           }
           localStorage.setItem('user', JSON.stringify( usuarioEnter )) ;
           if(result.root === 'Usuario'){
