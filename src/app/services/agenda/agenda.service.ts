@@ -10,7 +10,6 @@ import {catchError} from 'rxjs/operators';
 export class AgendaService {
 
   public URL: string = 'https://mascotas.ga/application/';
-
   //public URL: string = 'http://localhost:8080/';
   constructor(public http: HttpClient) {
   }
