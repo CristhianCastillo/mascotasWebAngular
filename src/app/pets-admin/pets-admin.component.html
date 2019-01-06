@@ -1,53 +1,54 @@
 <div class="container py-2">
   <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
-    <p style="font-size: 20px; color: white">Actualizando...</p>
+    <p style="font-size: 20px; color: white">{{propiedades['message.spinner']}}</p>
   </ngx-spinner>
-  <h2 class="text-center text-muted py-3">Solicitudes de Clientes</h2>
+  <h2 class="text-center text-muted py-3">{{propiedades['title']}}</h2>
   <form [formGroup]="formAdmin" (ngSubmit)="search()">
     <div class="form-row">
       <div class="form-group col-md-6">
         <div class="input-group">
-          <input formControlName="fechaInicial" class="form-control" placeholder="Fecha Inicial" name="d1"
-            ngbDatepicker #d1="ngbDatepicker" [ngClass]="{'is-invalid': (formAdmin.get('fechaInicial').hasError('required')) && formAdmin.get('fechaInicial').touched, 'is-valid': !(formAdmin.get('fechaInicial').hasError('required'))}">
+          <input formControlName="fechaInicial" class="form-control" [placeholder]="propiedades['label.fecha.inicial']" name="d1"
+            ngbDatepicker #d1="ngbDatepicker" [ngClass]="isValidInput('fechaInicial')">
           <div class="input-group-append">
             <button class="btn btn-outline-danger calendar" (click)="d1.toggle()" type="button">
               <i class="fa fa-calendar" style="font-size:24px"></i>
             </button>
           </div>
-          <div class="invalid-feedback">Selecciona una fecha inicial.</div>
+          <div class="invalid-feedback">{{propiedades['label.fecha.inicial.invalid']}}</div>
         </div>
       </div>
       <div class="form-group col-md-6">
         <div class="input-group">
-          <input formControlName="fechaFinal" class="form-control" placeholder="Fecha Final" name="d2" ngbDatepicker
-            #d2="ngbDatepicker" [ngClass]="{'is-invalid': (formAdmin.get('fechaFinal').hasError('required')) && formAdmin.get('fechaFinal').touched, 'is-valid': !(formAdmin.get('fechaFinal').hasError('required'))}">
+          <input formControlName="fechaFinal" class="form-control" [placeholder]="propiedades['label.fecha.final']" name="d2" ngbDatepicker
+            #d2="ngbDatepicker" [ngClass]="isValidInput('fechaFinal')">
           <div class="input-group-append">
             <button class="btn btn-outline-danger calendar" (click)="d2.toggle()" type="button">
               <i class="fa fa-calendar" style="font-size:24px"></i>
             </button>
           </div>
-          <div class="invalid-feedback">Selecciona una fecha final.</div>
+          <div class="invalid-feedback">{{propiedades['label.fecha.final.invalid']}}</div>
         </div>
       </div>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-warning" [disabled]="!formAdmin.valid">Buscar</button>
+      <button type="submit" class="btn btn-warning">{{variables.common.buttons['button.search']}}</button>
     </div>
   </form>
   <div>
     <ngb-accordion [closeOthers]="true">
-      <ngb-panel *ngFor="let request of requests" [ngSwitch]="request.estado">
+      <ngb-panel *ngFor="let request of requests; trackBy: trackByFn" [ngSwitch]="request.estado">
         <ng-template ngbPanelTitle>
           <i class="fa fa-calendar-check-o" *ngSwitchCase="true" style="font-size:30px;color:blue"></i>
           <i class="fa fa-calendar-times-o" *ngSwitchCase="false" style="font-size:30px;color:red"></i>
           <span> &bull; <b>{{request.fecha}}</b></span> - {{request.usuario}}
         </ng-template>
         <ng-template ngbPanelContent>
-          <h5>Tipo Actividad: {{request.tipoActividad}}</h5>
-          <strong>Mensaje: </strong>{{request.mensaje}}
+          <h5>{{propiedades['label.tipo.actividad'].replace('{0}', request.tipoActividad)}}</h5>
+          <strong>{{propiedades['label.mensaje']}} </strong>{{request.mensaje}}
           <br>
-          <strong *ngIf="request.respuesta != ''">Respondiste: </strong>{{request.respuesta}}
-          <button type="button" *ngIf="!request.estado" class="btn btn-success" (click)="openModalSendResponse(content, request)">Responder
+          <strong *ngIf="request.respuesta != ''">{{propiedades['label.respuesta']}} </strong>{{request.respuesta}}
+          <button type="button" *ngIf="!request.estado" class="btn btn-success" (click)="openModalSendResponse(content, request)">
+            {{variables.common.buttons['button.response']}}
           </button>
         </ng-template>
       </ngb-panel>
@@ -58,7 +59,7 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Enviar Respuesta</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{propiedades['title.modal']}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -66,15 +67,14 @@
   <form [formGroup]="formSend" (ngSubmit)="sendResponse()">
     <div class="modal-body">
       <div class="form-group">
-        <i class="fa fa-check-circle check" *ngIf="!(formSend.get('mensaje').hasError('required'))"></i>
-        <i class="fa fa-exclamation-circle uncheck" *ngIf="(formSend.get('mensaje').hasError('required')) && formSend.get('mensaje').touched"></i>
-        <label>Enviar Respuesta a solicitud de {{requestSelected.usuario}}</label>
-        <input formControlName="mensaje" type="text" class="form-control" id="mensaje" placeholder="Mensaje" [ngClass]="{'is-invalid': (formSend.get('mensaje').hasError('required')) && formSend.get('mensaje').touched, 'is-valid': !(formSend.get('mensaje').hasError('required'))}">
-        <div class="invalid-feedback">Ingresa un mensaje.</div>
+        <i [ngClass]="isValidSendCheck('mensaje')"></i>
+        <label>{{propiedades['label.enviar.respuesta'].replace('{0}', requestSelected.usuario)}}</label>
+        <input formControlName="mensaje" type="text" class="form-control" id="mensaje" placeholder="Mensaje" [ngClass]="isValidSendInput('mensaje')">
+        <div class="invalid-feedback">{{propiedades['label.enviar.respuesta.invalid']}}</div>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit" class="btn btn-outline-dark" [disabled]="!formSend.valid">Enviar</button>
+      <button type="submit" class="btn btn-outline-dark">{{variables.common.buttons['button.send']}}</button>
     </div>
   </form>
 </ng-template>

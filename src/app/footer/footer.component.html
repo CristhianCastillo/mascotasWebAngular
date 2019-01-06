@@ -2,9 +2,13 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-md-12 footer-col">
-        <h4>Mascotas.ga</h4>
-        <a href="https://play.google.com/store"><img class="iconF" src="../../assets/imgs/disponible-android.png"  alt="Android" style="width:105px;">&nbsp;</a>
-        <a href="https://www.apple.com/co/ios/app-store/"><img class="iconF" src="../../assets/imgs/disponible-app-store.png" alt="IOS"style="width:105px; height: 33px;"></a>
+        <h4>{{variables['application.name']}}</h4>
+        <a [href]="propiedades['url.mobile.app.android']" target="_blank">
+          <img class="iconF" [src]="propiedades['url.image.google.store']"  alt="Android" style="width:105px;">&nbsp;
+        </a>
+        <a [href]="propiedades['url.modile.app.iso']" target="_blank">
+          <img class="iconF" [src]="propiedades['url.image.apple.store']" alt="IOS"style="width:105px; height: 33px;">
+        </a>
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 mt-3 mt-sm-3">
             <ul class="list-unstyled list-inline social text-center">
@@ -17,13 +21,14 @@
           </div>
           <hr>
         </div>
-        <p>Cristhian Eduardo Castillo Erazo - Andres Felipe Ariza Calderon</p>
+        <p>{{variables['autor.1']}} - {{variables['autor.2']}}</p>
         <ul class="list-inline">
-          <li class="list-inline-item"><a href="#">Terminos y Condiciones de uso</a></li>
-          <li class="list-inline-item"><a href="#">Politicas de privacidad</a></li>
-          <li class="list-inline-item"><a href="#">Soporte</a></li>
+          <li class="list-inline-item"><a href="#">{{propiedades['terminos.condiciones']}}</a></li>
+          <li class="list-inline-item"><a href="#">{{propiedades['politicas']}}</a></li>
+          <li class="list-inline-item"><a href="#">{{propiedades['soporte']}}</a></li>
         </ul>
-        <p>Copyright &copy; 2018 MASCOTAS.GA. Todos los derechos reservados.</p>
+        <p>{{propiedades['copy.right'].replace('{0}', this.date)}}</p>
+        <p>{{variables.version}}</p>
       </div>
     </div>
   </div>

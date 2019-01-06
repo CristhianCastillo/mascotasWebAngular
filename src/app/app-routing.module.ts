@@ -5,67 +5,61 @@ import { NoLoginAdminGuard } from './guards/no-login-admin.guard';
 import { LoginUserGuard } from './guards/login-user.guard';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './error/error.component';
+import { NotfoundComponent } from './not-found/notfound.component';
+import { LoginGuard } from './guards/login.guard';
+import * as HeaderConst from '../app/constants/header-menu';
+import { environment } from '@env/environment';
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
-  {path: 'home', component: HomeComponent},
+  {path: '', component: HomeComponent, data: {title: environment['application.name']}},
+  {path: HeaderConst.ROUTING_URL_HOME, component: HomeComponent, data: {title: environment['application.name']}},
   {
-    path: 'login',
+    path: HeaderConst.ROUTING_URL_LOGIN,
     loadChildren: '../app/login/login.module#LoginModule',
-    canActivate: [NoLoginAdminGuard]
+    canActivate: [NoLoginAdminGuard], data: {title: environment.components.header['label.menu.login']}
   },
   {
-    path: 'register',
+    path: HeaderConst.ROUTING_URL_REGISTER,
     loadChildren: '../app/register/register.module#RegisterModule',
-    canActivate: [NoLoginAdminGuard]
+    canActivate: [NoLoginAdminGuard], data: {title: environment.components.header['label.menu.register']}
   },
   {
-    path: 'registerAdmin',
-    loadChildren: '../app/register-admin/register-admin.module#RegisterAdminModule',
-    canActivate: [NoLoginAdminGuard]
-  },
-  {
-    path: 'myPets',
+    path: HeaderConst.ROUTING_URL_MASCOTAS_USUARIO,
     loadChildren: '../app/pets/pets.module#PetsModule',
-    canActivate: [LoginUserGuard]
+    canActivate: [LoginUserGuard], data: {title: environment.components.header['label.menu.mascotas.usuario']}
   },
   {
-    path: 'agenda',
+    path: HeaderConst.ROUTING_URL_AGENDA,
     loadChildren: '../app/agenda/agenda.module#AgendaModule',
-    canActivate: [LoginUserGuard]
+    canActivate: [LoginUserGuard], data: {title: environment.components.header['label.menu.agenda.usuario']}
   },
   {
-    path: 'supplies',
+    path: HeaderConst.ROUTING_URL_SUPPLIES,
     loadChildren: '../app/supplies/supplies.module#SuppliesModule',
-    canActivate: [LoginUserGuard]
+    canActivate: [LoginUserGuard], data: { title: environment.components.header['label.menu.suministros.usuario'] }
   },
   {
-    path: 'establishment',
+    path: HeaderConst.ROUTING_URL_ESTABLISHMENT,
     loadChildren: '../app/establishments/establishments.module#EstablishmentsModule',
-    canActivate: [LoginAdminGuard]
+    canActivate: [LoginAdminGuard], data: {title: environment.components.header['label.menu.establishment']}
   },
   {
-    path: 'myPetsAdmin',
+    path: HeaderConst.ROUTING_URL_SOLICITUDES,
     loadChildren: '../app/pets-admin/pets-admin.module#PetsAdminModule',
-    canActivate: [LoginAdminGuard]
+    canActivate: [LoginAdminGuard], data: {title: environment.components.header['label.menu.solicitudes.propietario']}
   },
   {
-    path: 'myPetsAdminPets',
-    loadChildren: '../app/pets-admin-pets/pets-admin-pets.module#PetsAdminPetsModule',
-    canActivate: [LoginAdminGuard]
+    path: HeaderConst.ROUTING_URL_SUPPLIES_ADMIN,
+    loadChildren: '../app/supplies/supplies.module#SuppliesModule',
+    canActivate: [LoginGuard], data: {title: environment.components.header['label.menu.suministros.propietario']}
   },
   {
-    path: 'suppliesAdmin',
-    loadChildren: '../app/supplies-admin/supplies-admin.module#SuppliesAdminModule',
-    canActivate: [LoginAdminGuard]
-  },
-  {
-    path: 'dashboardAdmin',
+    path: HeaderConst.ROUTING_URL_ESTADISTICAS,
     loadChildren: '../app/dashboard-admin/dashboard-admin.module#DashboardAdminModule',
-    canActivate: [LoginAdminGuard]
+    canActivate: [LoginAdminGuard], data: {title: environment.components.header['label.menu.estadisticas']}
   },
-  {path: 'error', component: ErrorComponent},
-  {path: '**', component: HomeComponent}
+  {path: HeaderConst.ROUTING_URL_ERROR, component: ErrorComponent, data: { title: environment.components.error['error.title.page'] }},
+  {path: '**', component: NotfoundComponent, data: {title: environment.components.notfound['error.title.page']}}
 ];
 
 @NgModule({

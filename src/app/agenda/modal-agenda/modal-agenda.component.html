@@ -7,93 +7,64 @@
 <div class="modal-body">
   <form [formGroup]="agendaForm" (ngSubmit)="getData()">
     <div class="form-group">
-      <label for="idMascota">Seleccionar Mascota</label>
-      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('idMascota').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck"
-         *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched"></i>
-      <select formControlName="idMascota" class="form-control" id="idMascota" name="idMascota"
-              [ngClass]="{'is-invalid': (agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched, 'is-valid': !(agendaForm.get('idMascota').hasError('required'))}">
-        <option *ngFor="let mascota of listaMascotas" [value]="mascota.id">{{mascota.nombre}}</option>
+      <label for="idMascota">{{propiedades.components.agenda['label.select.pet']}}</label>
+      <i [ngClass]="isValidCheck('idMascota')"></i>
+      <select formControlName="idMascota" class="form-control" id="idMascota" name="idMascota" [ngClass]="isValidInput('idMascota')">
+        <option *ngFor="let mascota of listaMascotas; trackBy: trackByFn" [value]="mascota.id">{{mascota.nombre}}</option>
       </select>
-      <div class="invalid-feedback">Selecciona una mascota.</div>
-      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('idMascota').hasError('required')) && agendaForm.get('idMascota').touched">Selecciona una mascota</p>-->
+      <div class="invalid-feedback">{{propiedades.components.agenda['label.select.pet.invalid']}}</div>
     </div>
     <div class="form-group">
-      <label for="nombre">Nombre</label>
-      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('nombre').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck"
-         *ngIf="(agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched"></i>
+      <label for="nombre">{{propiedades.components.agenda['label.name']}}</label>
+      <i [ngClass]="isValidCheck('nombre')"></i>
       <input formControlName="nombre" type="text" class="form-control" id="nombre" name="nombreDelEvento"
-             placeholder="Asocia un nombre para este evento"
-             [ngClass]="{'is-invalid': (agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched, 'is-valid': !(agendaForm.get('nombre').hasError('required'))}">
-      <div class="invalid-feedback">Ingresa un nombre valido.</div>
-      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('nombre').hasError('required')) && agendaForm.get('nombre').touched">Ingresa un nombre valido</p>-->
+             placeholder="Asocia un nombre para este evento" [ngClass]="isValidInput('nombre')">
+      <div class="invalid-feedback">{{propiedades.components.agenda['label.name.invalid']}}</div>
     </div>
     <div class="form-group">
-      <label for="ubicacion">Ubicación</label>
-      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('ubicacion').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck"
-         *ngIf="(agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched"></i>
+      <label for="ubicacion">{{propiedades.components.agenda['label.location']}}</label>
+      <i [ngClass]="isValidCheck('ubicacion')"></i>
       <input formControlName="ubicacion" type="text" class="form-control" id="ubicacion" name="ubicacion"
-             placeholder="Asocia un lugar para este evento"
-             [ngClass]="{'is-invalid': (agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched, 'is-valid': !(agendaForm.get('ubicacion').hasError('required'))}">
-      <div class="invalid-feedback">Ingresa una ubicación valida.</div>
-      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('ubicacion').hasError('required')) && agendaForm.get('ubicacion').touched">Ingresa una ubicación valida</p>-->
+             placeholder="Asocia un lugar para este evento" [ngClass]="isValidInput('ubicacion')">
+      <div class="invalid-feedback">{{propiedades.components.agenda['label.location.invalid']}}</div>
     </div>
     <div class="form-group">
-      <label for="tipo">Tipo Evento</label>
-      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('tipo').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck"
-         *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched"></i>
-      <select formControlName="tipo" class="form-control" id="tipo" name="tipo"
-              [ngClass]="{'is-invalid': (agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched, 'is-valid': !(agendaForm.get('tipo').hasError('required'))}">
-        <option *ngFor="let service of services" [value]="service.id">{{service.nombre}}</option>
+      <label for="tipo">{{propiedades.components.agenda['label.tipo.evento']}}</label>
+      <i [ngClass]="isValidCheck('tipo')"></i>
+      <select formControlName="tipo" class="form-control" id="tipo" name="tipo" [ngClass]="isValidInput('tipo')">
+        <option *ngFor="let service of services trackBy: trackByFn" [value]="service.id">{{service.nombre}}</option>
       </select>
-      <div class="invalid-feedback">Selecciona un tipo de evento valido.</div>
-      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('tipo').hasError('required')) && agendaForm.get('tipo').touched">Selecciona una tipo de evento</p>-->
+      <div class="invalid-feedback">{{propiedades.components.agenda['label.tipo.evento.invalid']}}</div>
     </div>
     <div class="form-group">
-      <label>Fecha Evento</label>
-      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('fecha').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck"
-         *ngIf="(agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched"></i>
+      <label>{{propiedades.components.agenda['label.fecha.evento']}}</label>
+      <i [ngClass]="isValidCheck('fecha')"></i>
       <div class="input-group">
         <input formControlName="fecha" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
-               #d="ngbDatepicker"
-               [ngClass]="{'is-invalid': (agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched,'is-valid': !(agendaForm.get('fecha').hasError('required'))}">
+               #d="ngbDatepicker" [ngClass]="isValidInput('fecha')">
         <div class="input-group-append">
           <button class="btn btn-outline-danger calendar" (click)="d.toggle()" type="button">
             <i class="fa fa-calendar" style="font-size:24px"></i>
           </button>
         </div>
-        <div class="invalid-feedback">Selecciona una fecha.</div>
+        <div class="invalid-feedback">{{propiedades.components.agenda['label.fecha.evento.invalid']}}</div>
       </div>
-      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('fecha').hasError('required')) && agendaForm.get('fecha').touched">Selecciona una fecha</p>-->
     </div>
     <div class="form-group">
-      <label>Hora Evento</label>
-      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('hora').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck"
-         *ngIf="(agendaForm.get('hora').hasError('required')) && agendaForm.get('hora').touched"></i>
-      <ngb-timepicker formControlName="hora" name="Hora"
-                      [ngClass]="{'is-invalid': (agendaForm.get('hora').hasError('required')) && agendaForm.get('hora').touched, 'is-valid': !(agendaForm.get('hora').hasError('required'))}"></ngb-timepicker>
-      <div class="invalid-feedback">Selecciona una hora.</div>
-      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('hora').hasError('required')) && agendaForm.get('hora').touched">Selecciona una hora</p>-->
+      <label>{{propiedades.components.agenda['label.hora.evento']}}</label>
+      <i [ngClass]="isValidCheck('hora')"></i>
+      <ngb-timepicker formControlName="hora" name="Hora" [ngClass]="isValidInput('hora')"></ngb-timepicker>
+      <div class="invalid-feedback">{{propiedades.components.agenda['label.hora.evento.invalid']}}</div>
     </div>
     <div class="form-group">
-      <label for="descripcion">Descripción Evento</label>
-      <i class="fa fa-check-circle check" *ngIf="!(agendaForm.get('descripcion').hasError('required'))"></i>
-      <i class="fa fa-exclamation-circle uncheck"
-         *ngIf="(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched"></i>
-      <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion"
-                placeholder="Descripción Evento"
-                [ngClass]="{'is-invalid':(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched, 'is-valid': !(agendaForm.get('descripcion').hasError('required'))}"></textarea>
-      <div class="invalid-feedback">Ingresa una descripción valida.</div>
-      <!--<p class="alert alert-danger" *ngIf="(agendaForm.get('descripcion').hasError('required')) && agendaForm.get('descripcion').touched">Ingresa una descripción valida.</p>-->
+      <label for="descripcion">{{propiedades.components.agenda['label.descripcion.evento']}}</label>
+      <i [ngClass]="isValidCheck('descripcion')"></i>
+      <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion" placeholder="Descripción Evento" [ngClass]="isValidInput('descripcion')"></textarea>
+      <div class="invalid-feedback">{{propiedades.components.agenda['label.descripcion.evento.invalid']}}</div>
     </div>
     <div class="modal-footer">
-      <button type="submit" class="btn btn-outline-success" [disabled]="!agendaForm.valid">Actualizar</button>
-      <button type="button" class="btn btn-outline-danger" (click)="deleteEvent()">Eliminar</button>
+      <button type="submit" class="btn btn-outline-success">{{propiedades.common.buttons["button.update"]}}</button>
+      <button type="button" class="btn btn-outline-danger" (click)="deleteEvent()">{{propiedades.common.buttons["button.delete"]}}</button>
     </div>
   </form>
 </div>

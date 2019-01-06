@@ -1,12 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { ModalOutMessageComponent } from '../../modal-out-message/modal-out-message.component';
-import { Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Cita } from '../../models/Cita';
 import { DateConvert } from '../../models/DateConvert';
 import { HourConvert } from '../../models/HourConvert';
 import { AgendaService } from '../../services/agenda/agenda.service';
+import { environment } from '@env/environment';
+import { DateUtils } from '../../utils/date-utils';
+import { MessagesUtils} from '../../utils/messages-utils';
+import { ValidationsUtils } from '../../utils/validations-utils';
 
 @Component({
   selector: 'app-modal-agenda',
@@ -20,42 +22,38 @@ export class ModalAgendaComponent implements OnInit {
   @Input() eventoSeleccionado: Cita;
 
   public agendaForm: FormGroup;
-
   public services: any;
   public fechaJs: Date;
   public fechaActividad: DateConvert;
   public horaActividad: HourConvert;
+  public propiedades: any;
 
-  constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
-    , private modalService: NgbModal, private formBuilder: FormBuilder, private agendaService: AgendaService) {
+  constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal, public config: NgbModalConfig,
+              private formBuilder: FormBuilder, private agendaService: AgendaService, private messageService: MessagesUtils) {
     config.backdrop = 'static';
+    this.propiedades = environment;
   }
 
   ngOnInit() {
-
     this.agendaService.getServicesType().subscribe(
       (result: any ) => {
         this.services = result;
-      },
-      (error) => {
+      }, (error) => {
         console.error(error);
       }
     );
-    console.log(this.eventoSeleccionado);
-    this.fechaActividad = new DateConvert();
-    //Fecha Evento
-    this.fechaJs = new Date(this.eventoSeleccionado.fecha);
-    this.fechaActividad.year = this.fechaJs.getUTCFullYear();
-    this.fechaActividad.month = (this.fechaJs.getUTCMonth() + 1);
-    this.fechaActividad.day = this.fechaJs.getUTCDate();
-    //Hora Evento
-    let hora: string[] = this.eventoSeleccionado.fecha.split(' ');
-    let parts: string[] = hora[1].split(':');
-    console.log(hora[1]);
-    this.horaActividad = new HourConvert();
-    this.horaActividad.hour = Number(parts[0]);
-    this.horaActividad.minute = Number(parts[1]);
+    this.fechaJs = DateUtils.dateStringToDate(this.eventoSeleccionado.fecha);
+    this.fechaActividad = DateUtils.dateToDateConvert(this.fechaJs);
+    this.horaActividad = DateUtils.dateStringToHourConvert(this.eventoSeleccionado.fecha);
     this.agendaForm = this.createForm();
+  }
+
+  isValidCheck(field: string){
+    return ValidationsUtils.isValidCheck(field, this.agendaForm);
+  }
+
+  isValidInput(field: string){
+    return ValidationsUtils.isValidInput(field, this.agendaForm);
   }
 
   private createForm() {
@@ -70,54 +68,50 @@ export class ModalAgendaComponent implements OnInit {
     });
   }
 
-  getData(){
-    const fechaJ = this.agendaForm.value['fecha'];
-    const horaJ = this.agendaForm.value['hora'];
-    let fechaDate: Date = new Date(Date.UTC(fechaJ.year, fechaJ.month - 1, fechaJ.day, horaJ.hour, horaJ.minute, 0, 0))
-    console.log(fechaDate.toISOString().slice(0, 10));
-    console.log(fechaDate.toISOString().slice(11, 16));
-    const evento = {
-      idMascota: this.agendaForm.value['idMascota'],
-      nombre: this.agendaForm.value['nombre'],
-      ubicacion: this.agendaForm.value['ubicacion'],
-      idTipo: this.agendaForm.value['tipo'],
-      fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
-      descripcion: this.agendaForm.value['descripcion']
-    }
-    this.updateEvent(evento);
+  trackByFn(index, item) {
+    return item.id;
   }
 
-  updateEvent(evento){
-    console.log(evento);
+  getData() {
+    if(this.agendaForm.valid) {
+      const fechaJ = this.agendaForm.value['fecha'];
+      const horaJ = this.agendaForm.value['hora'];
+      let fechaDate: Date = DateUtils.dateHourToDate(fechaJ, horaJ);
+      const evento = {
+        idMascota: this.agendaForm.value['idMascota'],
+        nombre: this.agendaForm.value['nombre'],
+        ubicacion: this.agendaForm.value['ubicacion'],
+        idTipo: this.agendaForm.value['tipo'],
+        fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
+        descripcion: this.agendaForm.value['descripcion']
+      };
+      this.updateEvent(evento);
+    } else {
+      ValidationsUtils.validateAllFormFields(this.agendaForm);
+    }
+  }
+
+  updateEvent(evento) {
     this.agendaService.updateEvent(this.eventoSeleccionado.id, evento).subscribe(
       (result: any ) => {
-        console.log(result);
         if (result.status) {
-          this.openModalConfirm("Actualizar Evento", "Evento actualizado correctamente.");
+          this.messageService.showMessage(this.propiedades.components.agenda['modal-search']['update.message.title'], this.propiedades.components.agenda['modal-search']['update.message.correct']);
         } else {
-          this.openModalConfirm("Actualizar Evento", "El evento no se ha podido actualizar.");
+          this.messageService.showMessage(this.propiedades.components.agenda['modal-search']['update.message.title'], this.propiedades.components.agenda['modal-search']['update.message.incorrect']);
         }
       }
     );
   }
 
-  deleteEvent(){
+  deleteEvent() {
     this.agendaService.deleteEvent(this.eventoSeleccionado.id).subscribe(
       (result: any ) => {
-        console.log(result);
         if (result.status) {
-          this.openModalConfirm("Eliminar Evento", "Evento eliminado correctamente.");
+          this.messageService.showMessage(this.propiedades.components.agenda['modal-search']['delete.message.title'], this.propiedades.components.agenda['modal-search']['delete.message.correct']);
         } else {
-          this.openModalConfirm("Eliminar Evento", "El evento no se ha podido eliminar.");
+          this.messageService.showMessage(this.propiedades.components.agenda['modal-search']['delete.message.title'], this.propiedades.components.agenda['modal-search']['delete.message.incorrect']);
         }
       }
     );
-  }
-
-  openModalConfirm(titulo, mensaje) {
-    this.modalService.dismissAll();
-    const modalRef = this.modalService.open(ModalOutMessageComponent);
-    modalRef.componentInstance.tituloMensaje = titulo;
-    modalRef.componentInstance.contenidoMensaje = mensaje;
   }
 }

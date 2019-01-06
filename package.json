@@ -1,6 +1,6 @@
 {
   "name": "mascotas-web",
-  "version": "0.0.0",
+  "version": "2019.1.5",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -22,10 +22,14 @@
     "@angular/router": "^6.1.0",
     "@ng-bootstrap/ng-bootstrap": "^3.2.0",
     "@types/chart.js": "^2.7.34",
+    "bootstrap": "^4.2.1",
     "chart.js": "^2.7.3",
     "core-js": "^2.5.4",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
     "ng-multiselect-dropdown": "^0.2.1",
     "ngx-spinner": "^6.1.2",
+    "popper.js": "^1.14.6",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.3.2",
     "zone.js": "~0.8.26"

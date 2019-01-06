@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import { Observable } from 'rxjs';
+import * as HeaderConst from '../constants/header-menu';
+import * as LoginConst from '../constants/login';
 
 @Injectable({
   providedIn: 'root'
@@ -10,19 +12,18 @@ export class NoLoginAdminGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-
-    const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
+    const usuarioAutentificado = JSON.parse(localStorage.getItem(LoginConst.USER_SESSION));
     /**
      * Usuario auntentificado
      */
     if ( usuarioAutentificado === null ) {
       return true;
     } else {
-      if (usuarioAutentificado.tipoUsuario === 'Propietario' ) {
-        this.router.navigate(['/establishment']);
+      if (usuarioAutentificado.tipoUsuario === LoginConst.USER_ESTABLISHMENT_OWNER ) {
+        this.router.navigate([HeaderConst.URL_ESTABLISHMENT]).then(() => {}, (error) => {});
         return false;
-      } else if (usuarioAutentificado.tipoUsuario === 'Usuario' ) {
-        this.router.navigate(['/myPets']);
+      } else if (usuarioAutentificado.tipoUsuario === LoginConst.USER_PET_OWNER ) {
+        this.router.navigate([HeaderConst.URL_MASCOTAS_USUARIO]).then(() => {}, (error) => {});
         return false;
       }
     }

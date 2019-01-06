@@ -14,16 +14,20 @@ import { LoginAdminGuard } from './guards/login-admin.guard';
 import { NoLoginAdminGuard } from './guards/no-login-admin.guard';
 import { LoginUserGuard } from './guards/login-user.guard';
 import { HomeComponent } from './home/home.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * Services
  */
 import { LoginService } from './services/login/login.service';
 import { PetService } from './services/pets/pet.service';
-import { GlobalErrorHandler } from './global-error-handler.service';
-import { ScrollTopService } from './services/scroll-top.service';
-import { ModalPetsAdminComponent } from './modal-pets-admin/modal-pets-admin.component';
+import { GlobalErrorHandler } from './services/error-global/global-error-handler.service';
+import { ScrollTopService } from './services/scroll-top/scroll-top.service';
+import { AuthInterceptor } from './services/http-interceptor/AuthInterceptor';
+import { LoginGuard } from './guards/login.guard';
+import { MessagesUtils } from './utils/messages-utils';
+import { NotfoundComponent } from './not-found/notfound.component';
 
 
 @NgModule({
@@ -34,7 +38,7 @@ import { ModalPetsAdminComponent } from './modal-pets-admin/modal-pets-admin.com
     ModalOutMessageComponent,
     HomeComponent,
     ErrorComponent,
-    ModalPetsAdminComponent
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,
@@ -45,12 +49,14 @@ import { ModalPetsAdminComponent } from './modal-pets-admin/modal-pets-admin.com
     NgbModule
   ],
   providers: [
+    NgbActiveModal,
+    MessagesUtils,
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
-    LoginAdminGuard, NoLoginAdminGuard, LoginUserGuard, LoginService, PetService, ScrollTopService],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    LoginAdminGuard, NoLoginAdminGuard, LoginUserGuard, LoginGuard, LoginService, PetService, ScrollTopService],
   bootstrap: [AppComponent],
   entryComponents: [
-    ModalOutMessageComponent,
-    ModalPetsAdminComponent
+    ModalOutMessageComponent
   ]
 })
 export class AppModule { }

@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalOutMessageComponent } from '../../modal-out-message/modal-out-message.component';
 import { DomSanitizer } from '@angular/platform-browser';
-
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { PetService } from '../../services/pets/pet.service';
+import * as CommonConst from '../../constants/common';
+import * as LoginConst from '../../constants/login';
+import { DateUtils } from '../../utils/date-utils';
+import { EnumUtils } from '../../utils/enum-utils';
+import { environment } from '@env/environment';
+import {EnumEsterilizado, EnumGeneros} from '../../constants/common';
+import {ValidationsUtils} from '../../utils/validations-utils';
+import { MessagesUtils } from '../../utils/messages-utils';
 
 @Component({
   selector: 'app-modal-create-pet',
@@ -18,26 +24,47 @@ export class ModalCreatePetComponent implements OnInit {
   public petForm: FormGroup;
   public selectedFile: File;
   public value: string;
+  public propiedades: any;
+  public variables: any;
+  public convertImage: string;
+  public listaGeneros: any;
+  public listaSiNo: any;
 
   constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
   , private modalService: NgbModal, public servicePet: PetService, private formBuilder: FormBuilder,
-              public _DomSanitizer: DomSanitizer) {
+              public _DomSanitizer: DomSanitizer, private serviceMessage: MessagesUtils) {
     config.backdrop = 'static';
     this.value = '';
     this.selectedFile = null;
+    this.propiedades = environment.components.pets;
+    this.variables = environment;
+    this.convertImage = CommonConst.IMAGEN_CONVERT_BASE_64;
+    this.listaGeneros = EnumUtils.convertKeys(EnumGeneros);
+    this.listaSiNo = EnumUtils.convertKeys(EnumEsterilizado);
     this.petForm = this.createForm();
   }
 
   ngOnInit() {
     this.servicePet.getTypePets().subscribe(
       (data) => {
-        console.log(data);
         this.typePets = data;
       },
       (error) => {
         console.error(error);
       }
     );
+  }
+
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  isValidCheck(field: string){
+    return ValidationsUtils.isValidCheck(field, this.petForm);
+  }
+
+  isValidInput(field: string){
+    return ValidationsUtils.isValidInput(field, this.petForm);
   }
 
   private createForm() {
@@ -55,56 +82,51 @@ export class ModalCreatePetComponent implements OnInit {
 
   onFileChange(event) {
     this.selectedFile = <File>event.target.files[0];
-    console.log(this.selectedFile);
     if(this.selectedFile != null){
-      if((this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/png')&& this.selectedFile.size <= 10000){
+      if((this.selectedFile.type === CommonConst.IMAGE_JPEG_TYPE || this.selectedFile.type === CommonConst.IMAGE_PNG_TYPE)
+        && this.selectedFile.size <= CommonConst.IMAGEN_MAX_SIZE) {
         let reader = new FileReader();
         reader.readAsDataURL(this.selectedFile);
         reader.onload = () => {
           this.value = reader.result.split(',')[1];
         };
-      }else {
+      } else {
         this.value = '';
         this.petForm.setValue['fotoMascota'] = '';
       }
     }
   }
 
-  open(titulo, mensaje) {
-    const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
-    const fechaJ = this.petForm.value['fechaNacimiento'];
-    //const esterilizado: boolean = (this.petForm.value['esterilizado'] === 'Si') ? true : false;
-    let fechaDate: Date = new Date(Date.UTC(fechaJ.year, fechaJ.month - 1, fechaJ.day, 1, 0, 0, 0))
-    const mascota = {
-      idUsuario: usuarioAutentificado.id,
-      imagen: this.value,
-      nombre: this.petForm.value['nombre'],
-      idTipo: this.petForm.value['tipoMascota'],
-      genero: this.petForm.value['genero'],
-      fechaNacimiento: fechaDate.toISOString().slice(0, 10),
-      raza: this.petForm.value['raza'],
-      esterilizado: this.petForm.value['esterilizado'],
-      color: this.petForm.value['color'],
-      descripcion: this.petForm.value['descripcion']
+  getData() {
+    if(this.petForm.valid) {
+      const usuarioAutentificado = JSON.parse(localStorage.getItem(LoginConst.USER_SESSION));
+      const fechaJ = this.petForm.value['fechaNacimiento'];
+      let fechaDate: Date = DateUtils.dateJsonToDate(fechaJ);
+      const mascota = {
+        idUsuario: usuarioAutentificado.id,
+        imagen: this.value,
+        nombre: this.petForm.value['nombre'],
+        idTipo: this.petForm.value['tipoMascota'],
+        genero: this.petForm.value['genero'],
+        fechaNacimiento: fechaDate.toISOString().slice(0, 10),
+        raza: this.petForm.value['raza'],
+        esterilizado: this.petForm.value['esterilizado'],
+        color: this.petForm.value['color'],
+        descripcion: this.petForm.value['descripcion']
+      }
+      this.createPet(mascota);
+    } else {
+      ValidationsUtils.validateAllFormFields(this.petForm);
     }
-    console.log(mascota);
-    this.createPet(mascota, titulo, mensaje);
   }
 
-  createPet(data, titulo, mensaje) {
+  createPet(data) {
     this.servicePet.createPet(data).subscribe(
       (result: any) => {
-        console.log(result);
         if (result.status) {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = titulo;
-          modalRef.componentInstance.contenidoMensaje = mensaje;
+          this.serviceMessage.showMessage(this.propiedades['modal-create']['create.message.title'], this.propiedades['modal-create']['create.message.correct']);
         } else {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = titulo;
-          modalRef.componentInstance.contenidoMensaje = 'No se ha podido ingresar la mascota';
+          this.serviceMessage.showMessage(this.propiedades['modal-create']['create.message.title'], this.propiedades['modal-create']['create.message.incorrect']);
         }
       }
     );

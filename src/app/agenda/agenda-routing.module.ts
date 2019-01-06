@@ -1,9 +1,9 @@
-import { NgModule }             from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AgendaComponent } from './agenda.component';
 
 const routers: Routes = [
-  {path:  "", component: AgendaComponent}
+  {path: '', component: AgendaComponent}
 ];
 
 @NgModule({

@@ -1,60 +1,33 @@
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-danger">
   <div class="container">
-    <a class="navbar-brand " [routerLink]="['/home']">
+    <a class="navbar-brand " [routerLink]="[urls.URL_HOME]">
       <img src="../../assets/imgs/logo-nav-mascotas.png" width="30" height="30" class="d-inline-block align-top" alt="">
-      Mascotas.ga
+      {{variables['application.name']}}
     </a>
     <button class="navbar-toggler" type="button" (click)="toggle()">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-collapse collapse" id="navbarContent" *ngIf="tipoUsuario();" [ngSwitch]="tipoMenu"
+    <div class="navbar-collapse collapse" id="navbarContent" *ngIf="selectUserType();" [ngSwitch]="tipoMenu"
          [ngClass]="{ 'show': isExpanded }">
       <ul class="navbar-nav ml-auto " *ngSwitchCase="'menuPublico'">
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/home" (click)='collapse()'>Home</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/login" (click)='collapse()'>Iniciar Sesión</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/register" (click)='collapse()'>Registrarse</a>
+        <li class="nav-item" routerLinkActive="active" *ngFor="let menu of menuPublico; trackBy: trackByFn">
+          <a class="nav-link" [routerLink]="menu.url" (click)='collapse()'>{{menu.name}}</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto " *ngSwitchCase="'menuPropietario'">
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/home" (click)='collapse()'>Home</a>
+        <li class="nav-item" routerLinkActive="active" *ngFor="let menu of menuPropietario; trackBy: trackByFn">
+          <a class="nav-link" [routerLink]="menu.url" (click)='collapse()'>{{menu.name}}</a>
         </li>
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/establishment" (click)='collapse()'>Mi Establecimiento</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/myPetsAdmin" (click)='collapse()'>Solicitudes</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/suppliesAdmin" (click)='collapse()'>Suministros</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/dashboardAdmin" (click)='collapse()'>Estadisticas</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" (click)="goToLogout()" (click)='collapse()'>Salir</a>
+          <a class="nav-link" (click)="goToLogout()" (click)='collapse()'>{{propiedades['label.menu.exit']}}</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto " *ngSwitchCase="'menuUsuario'">
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/home" (click)='collapse()'>Home</a>
+        <li class="nav-item" routerLinkActive="active" *ngFor="let menu of menuUsuario; trackBy: trackByFn">
+          <a class="nav-link" [routerLink]="menu.url" (click)='collapse()'>{{menu.name}}</a>
         </li>
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/myPets" (click)='collapse()'>Mis Mascotas</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/agenda" (click)='collapse()'>Mi Agenda</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" routerLink="/supplies" (click)='collapse()'>Suministros</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" (click)="goToLogout()" (click)='collapse()'>Salir</a>
+          <a class="nav-link" (click)="goToLogout()" (click)='collapse()'>{{propiedades['label.menu.exit']}}</a>
         </li>
       </ul>
     </div>

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './register.component';
 
 const routers: Routes = [
-  {path:  "", component: RegisterComponent}
+  {path:  ":id", component: RegisterComponent}
 ];
 
 @NgModule({

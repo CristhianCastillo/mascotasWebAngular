@@ -1,16 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { ModalOutMessageComponent } from '../modal-out-message/modal-out-message.component';
-import { ScrollTopService } from '../services/scroll-top.service';
-import {Validators, FormGroup, FormBuilder, FormControl} from '@angular/forms';
-import {HourConvert} from '../models/HourConvert';
+import { Component, OnInit } from '@angular/core';
+import { NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ScrollTopService } from '../services/scroll-top/scroll-top.service';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { HourConvert } from '../models/HourConvert';
 import { EstablishmentService } from '../services/establishment/establishment.service';
 import { AgendaService } from '../services/agenda/agenda.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Establecimiento } from '../models/Establecimiento';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { environment } from '@env/environment';
+import * as CommonConst from '../constants/common';
+import { EnumHorarios } from '../constants/common';
+import * as LoginConst from '../constants/login';
+import { EnumUtils } from '../utils/enum-utils';
+import { DateUtils } from '../utils/date-utils';
+import { MessagesUtils } from '../utils/messages-utils';
+import { ValidationsUtils } from '../utils/validations-utils';
 
 @Component({
   selector: 'app-establishments',
@@ -29,19 +35,28 @@ export class EstablishmentsComponent implements OnInit {
   public horaFinal: HourConvert;
   public selectedFile: File;
   public imagen: any;
+  public convertImage: any;
 
-  constructor(public config: NgbModalConfig, private modalService: NgbModal, private scrollTop: ScrollTopService,
+  public propiedades: any;
+  public buttons: any;
+  public listaHorarios: any;
+
+  constructor(public config: NgbModalConfig, private messageService: MessagesUtils, private scrollTop: ScrollTopService,
               private formBuilder: FormBuilder, private establishmentService: EstablishmentService,
               private agendaService: AgendaService, public _DomSanitizer: DomSanitizer) {
     config.backdrop = 'static';
     this.selectedFile = null;
     this.idEstablecimiento = '';
     this.imagen = '';
+    this.propiedades = environment.components.establishments;
+    this.buttons = environment.common.buttons;
+    this.listaHorarios = EnumUtils.convertKeys(EnumHorarios);
+    this.convertImage = CommonConst.IMAGEN_CONVERT_BASE_64;
   }
 
   ngOnInit() {
     this.scrollTop.setScrollTop();
-    const usuarioAutentificado = JSON.parse(localStorage.getItem('user'));
+    const usuarioAutentificado = JSON.parse(localStorage.getItem(LoginConst.USER_SESSION));
     this.establishmentForm = this.formBuilder.group({
       imagen: ['test'],
       nombre: ['', Validators.required],
@@ -64,7 +79,6 @@ export class EstablishmentsComponent implements OnInit {
     let horaFinalStr: string;
     this.establecimiento.subscribe(
       (result: any) => {
-        console.log(result);
         this.idEstablecimiento = result.id;
         this.imagen = result.imagen;
         horaInicialStr = result.horaInicial;
@@ -72,21 +86,16 @@ export class EstablishmentsComponent implements OnInit {
 
         if(horaInicialStr != null && horaInicialStr != ''){
           let horaInicialPartes: string[] = horaInicialStr.split(':');
-          console.log(horaInicialStr);
           this.horaInicial = new HourConvert();
           this.horaInicial.hour = Number(horaInicialPartes[0]);
           this.horaInicial.minute = Number(horaInicialPartes[1]);
-          //this.establishmentForm.setValue({horaInicial: this.horaInicial});
         }
 
         if(horaFinalStr != null && horaFinalStr != ''){
           let horaFinalPartes: string[] = horaFinalStr.split(':');
-          console.log(horaFinalStr);
           this.horaFinal = new HourConvert();
           this.horaFinal.hour = Number(horaFinalPartes[0]);
           this.horaFinal.minute = Number(horaFinalPartes[1]);
-          console.log(this.horaFinal);
-          //this.establishmentForm.controls['horaFinal'].patchValue(this.horaFinal);
         }
       }
     );
@@ -94,8 +103,7 @@ export class EstablishmentsComponent implements OnInit {
     this.agendaService.getServicesTypeOwner().subscribe(
       (result: any ) => {
         this.services = result;
-      },
-      (error) => {
+      }, (error) => {
         console.error(error);
       }
     );
@@ -104,86 +112,86 @@ export class EstablishmentsComponent implements OnInit {
       singleSelection: false,
       //idField: 'id',
       //textField: 'nombre',
-      selectAllText: 'Seleccionar Todos',
-      unSelectAllText: 'Desmarcar Todos',
-      searchPlaceholderText: 'Buscar',
+      selectAllText: this.propiedades['select.all.select'],
+      unSelectAllText: this.propiedades['select.all.unselect'],
+      searchPlaceholderText: this.propiedades['select.search'],
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  isValidCheck(field: string){
+    return ValidationsUtils.isValidCheck(field, this.establishmentForm);
+  }
+
+  isValidInput(field: string){
+    return ValidationsUtils.isValidInput(field, this.establishmentForm);
+  }
+
   onFileChange(event) {
     this.selectedFile = <File>event.target.files[0];
-    console.log(this.selectedFile);
-    if(this.selectedFile != null){
-      if((this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/png')&& this.selectedFile.size <= 10000){
+    if(this.selectedFile != null) {
+      if((this.selectedFile.type === CommonConst.IMAGE_JPEG_TYPE || this.selectedFile.type === CommonConst.IMAGE_PNG_TYPE)
+        && this.selectedFile.size <= 10000) {
         let reader = new FileReader();
         reader.readAsDataURL(this.selectedFile);
         reader.onload = () => {
           this.imagen = reader.result.split(',')[1];
         };
-      }else {
+      } else {
         this.imagen = '';
       }
     }
   }
 
-  getData(){
-    const horaInicial = this.establishmentForm.value['horaInicial'];
-    const horaFinal = this.establishmentForm.value['horaFinal'];
-    let fechaInicialDate: Date;
-    let fechaFinalDate: Date;
-    let fechaIni: string;
-    let fechaFin: string;
-    console.log(horaInicial);
-    if(horaInicial != null && horaInicial != ''){
-      console.log("Aqui dentro11111111111111111111111111");
-      fechaInicialDate = new Date(Date.UTC(2000, 2, 2, horaInicial.hour, horaInicial.minute, 0, 0));
-      fechaIni = fechaInicialDate.toISOString().slice(11, 16);
-    } else {
-      fechaIni = '';
-    }
+  getData() {
+    if(this.establishmentForm.valid) {
+      const horaInicial = this.establishmentForm.value['horaInicial'];
+      const horaFinal = this.establishmentForm.value['horaFinal'];
+      let fechaIni: string;
+      let fechaFin: string;
+      if(horaInicial != null && horaInicial != ''){
+        fechaIni = DateUtils.hourConvertToDateString(horaInicial);
+      } else {
+        fechaIni = '';
+      }
 
-    if(horaFinal != null && horaFinal != ''){
-      fechaFinalDate = new Date(Date.UTC(2000, 2, 2, horaFinal.hour, horaFinal.minute, 0, 0));
-      fechaFin = fechaFinalDate.toISOString().slice(11, 16);
-    } else {
-      fechaFin = '';
-    }
+      if(horaFinal != null && horaFinal != ''){
+        fechaFin = DateUtils.hourConvertToDateString(horaFinal);
+      } else {
+        fechaFin = '';
+      }
 
-    const establecimiento = {
-      imagen: this.imagen,
-      nombre: this.establishmentForm.value['nombre'],
-      telefono: this.establishmentForm.value['telefono'],
-      direccion: this.establishmentForm.value['direccion'],
-      email: this.establishmentForm.value['correo'],
-      paginaWeb: this.establishmentForm.value['paginaWeb'],
-      servicios: this.establishmentForm.value['servicios'],
-      horarios: this.establishmentForm.value['horarios'],
-      horaInicial: fechaIni,
-      horaFinal: fechaFin,
-      descripcion: this.establishmentForm.value['descripcion']
+      const establecimiento = {
+        imagen: this.imagen,
+        nombre: this.establishmentForm.value['nombre'],
+        telefono: this.establishmentForm.value['telefono'],
+        direccion: this.establishmentForm.value['direccion'],
+        email: this.establishmentForm.value['correo'],
+        paginaWeb: this.establishmentForm.value['paginaWeb'],
+        servicios: this.establishmentForm.value['servicios'],
+        horarios: this.establishmentForm.value['horarios'],
+        horaInicial: fechaIni,
+        horaFinal: fechaFin,
+        descripcion: this.establishmentForm.value['descripcion']
+      };
+      this.updateEstablishment(establecimiento);
+    } else {
+      ValidationsUtils.validateAllFormFields(this.establishmentForm);
     }
-    console.log(establecimiento);
-    this.updateEstablishment(establecimiento);
   }
 
-  updateEstablishment(establecimiento){
-    console.log(establecimiento);
-    console.log(this.idEstablecimiento);
+  updateEstablishment(establecimiento) {
     this.establishmentService.updateEstablishment(this.idEstablecimiento, establecimiento).subscribe(
       (result: any ) => {
-        console.log(result);
         if (result.status) {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = "Actualizar Establecimiento";
-          modalRef.componentInstance.contenidoMensaje = "Los datos de tu establecimiento se han actualizado correctamente.";
+          this.messageService.showMessage(this.propiedades['update.message.title'], this.propiedades['update.message.correct']);
         } else {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = "Actualizar Establecimiento";
-          modalRef.componentInstance.contenidoMensaje = 'No se ha podido actualizar el establecimiento.';
+          this.messageService.showMessage(this.propiedades['update.message.title'], this.propiedades['update.message.incorrect']);
         }
       }
     );

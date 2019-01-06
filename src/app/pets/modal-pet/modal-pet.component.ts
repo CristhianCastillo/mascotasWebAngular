@@ -1,13 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ModalOutMessageComponent} from '../../modal-out-message/modal-out-message.component';
+import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { MessagesUtils } from '../../utils/messages-utils';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { PetService } from '../../services/pets/pet.service';
-import {Mascota} from '../../models/Mascota';
-import {DateConvert} from '../../models/DateConvert';
+import { Mascota } from '../../models/Mascota';
+import { DateConvert } from '../../models/DateConvert';
+import * as CommonConst from '../../constants/common';
+import { DateUtils } from '../../utils/date-utils';
+import { environment } from '@env/environment';
+import { EnumUtils } from '../../utils/enum-utils';
+import { EnumGeneros } from '../../constants/common';
+import { EnumEsterilizado } from '../../constants/common';
+import {ValidationsUtils} from '../../utils/validations-utils';
 
 @Component({
   selector: 'app-modal-pet',
@@ -22,31 +28,50 @@ export class ModalPetComponent implements OnInit {
   public fechaNacimiento: DateConvert;
   public modeloNuevo: Date;
   public selectedFile: File;
+  public propiedades: any;
+  public variables: any;
+  public convertImage: string;
+  public listaGeneros: any;
+  public listaSiNo: any;
 
   constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
     , private modalService: NgbModal, public servicePet: PetService, private formBuilder: FormBuilder,
-              public _DomSanitizer: DomSanitizer) {
+              public _DomSanitizer: DomSanitizer, private serviceMessage: MessagesUtils) {
     config.backdrop = 'static';
+    this.propiedades = environment.components.pets;
+    this.variables = environment;
+    this.convertImage = CommonConst.IMAGEN_CONVERT_BASE_64;
+    this.listaGeneros = EnumUtils.convertKeys(EnumGeneros);
+    this.listaSiNo = EnumUtils.convertKeys(EnumEsterilizado);
   }
 
   ngOnInit() {
     this.servicePet.getTypePets().subscribe(
       (data) => {
-        console.log(data);
         this.typePets = data;
       },
       (error) => {
         console.error(error);
       }
     );
-    //console.log(this.mascota);
     this.fechaNacimiento = new DateConvert();
     this.modeloNuevo = new Date(this.mascota.fechaNacimiento);
     this.fechaNacimiento.year = this.modeloNuevo.getUTCFullYear();
     this.fechaNacimiento.month = (this.modeloNuevo.getUTCMonth() + 1);
     this.fechaNacimiento.day = this.modeloNuevo.getUTCDate();
-    //console.log(this.mascota);
     this.petForm = this.createForm();
+  }
+
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  isValidCheck(field: string){
+    return ValidationsUtils.isValidCheck(field, this.petForm);
+  }
+
+  isValidInput(field: string){
+    return ValidationsUtils.isValidInput(field, this.petForm);
   }
 
   private createForm() {
@@ -64,11 +89,10 @@ export class ModalPetComponent implements OnInit {
   }
 
   changeURL(newUrl) {
-    console.log("Cambiando de imagen......")
     this.selectedFile = <File>newUrl.target.files[0];
-    console.log(this.selectedFile);
-    if(this.selectedFile != null){
-      if((this.selectedFile.type === 'image/jpeg' || this.selectedFile.type === 'image/png')&& this.selectedFile.size <= 10000){
+    if(this.selectedFile != null) {
+      if((this.selectedFile.type === CommonConst.IMAGE_JPEG_TYPE || this.selectedFile.type === CommonConst.IMAGE_PNG_TYPE) &&
+        this.selectedFile.size <= CommonConst.IMAGEN_MAX_SIZE) {
         let reader = new FileReader();
         reader.readAsDataURL(this.selectedFile);
         reader.onload = () => {
@@ -79,71 +103,48 @@ export class ModalPetComponent implements OnInit {
         this.petForm.setValue['fotoMascota'] = '';
       }
     }
-    // if (newUrl.target.files && newUrl.target.files[0])
-    // {
-    //   let reader = new FileReader();
-    //   reader.onload = (newUrl: ProgressEvent) => {
-    //     this.value = reader.result.split(',')[1];
-    //     this.mascota.imagen = (<FileReader>newUrl.target).result;
-    //   }
-    //   reader.readAsDataURL(newUrl.target.files[0]);
-    // }
   }
 
-  openModalUpdate(titulo, mensaje) {
-    console.log("Actualizando")
-    const fechaJ = this.petForm.value['fechaNacimiento'];
-    //const esterilizado: boolean = (this.petForm.value['esterilizado'] === 'Si') ? true : false;
-    let fechaDate: Date = new Date(Date.UTC(fechaJ.year, fechaJ.month - 1, fechaJ.day, 1, 0, 0, 0))
-    //console.log(fechaDate.toISOString().slice(0, 10));
-    const mascota = {
-      imagen: this.mascota.imagen,
-      nombre: this.petForm.value['nombre'],
-      idTipo: this.petForm.value['tipoMascota'],
-      genero: this.petForm.value['genero'],
-      fechaNacimiento: fechaDate.toISOString().slice(0, 10),
-      raza: this.petForm.value['raza'],
-      esterilizado: this.petForm.value['esterilizado'],
-      color: this.petForm.value['color'],
-      descripcion: this.petForm.value['descripcion']
+  openModalUpdate() {
+    if(this.petForm.valid) {
+      const fechaJ = this.petForm.value['fechaNacimiento'];
+      let fechaDate: Date = DateUtils.dateJsonToDate(fechaJ);
+      const mascota = {
+        imagen: this.mascota.imagen,
+        nombre: this.petForm.value['nombre'],
+        idTipo: this.petForm.value['tipoMascota'],
+        genero: this.petForm.value['genero'],
+        fechaNacimiento: fechaDate.toISOString().slice(0, 10),
+        raza: this.petForm.value['raza'],
+        esterilizado: this.petForm.value['esterilizado'],
+        color: this.petForm.value['color'],
+        descripcion: this.petForm.value['descripcion']
+      }
+      this.updatePet(mascota);
+    } else {
+      ValidationsUtils.validateAllFormFields(this.petForm);
     }
-    console.log(mascota);
-    this.updatePet(mascota, titulo, mensaje);
   }
 
-  updatePet(data, titulo, mensaje) {
+  updatePet(data) {
     this.servicePet.updatePet(this.mascota.id, data).subscribe(
       (result: any ) => {
-        console.log(result);
         if (result.status) {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = titulo;
-          modalRef.componentInstance.contenidoMensaje = mensaje;
+          this.serviceMessage.showMessage(this.propiedades['modal-search']['update.message.title'], this.propiedades['modal-search']['update.message.correct']);
         } else {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = titulo;
-          modalRef.componentInstance.contenidoMensaje = 'No se ha podido actualizar la mascota';
+          this.serviceMessage.showMessage(this.propiedades['modal-search']['update.message.title'], this.propiedades['modal-search']['update.message.incorrect']);
         }
       }
     );
   }
 
-  openModalConfirm(titulo, mensaje) {
+  openModalDelete() {
     this.servicePet.deletePet(this.mascota.id).subscribe(
       (result: any) => {
-        console.log(result);
         if (result.status) {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = titulo;
-          modalRef.componentInstance.contenidoMensaje = mensaje;
+          this.serviceMessage.showMessage(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.correct']);
         } else {
-          this.modalService.dismissAll();
-          const modalRef = this.modalService.open(ModalOutMessageComponent);
-          modalRef.componentInstance.tituloMensaje = titulo;
-          modalRef.componentInstance.contenidoMensaje = 'No se ha podido eliminar la mascota';
+          this.serviceMessage.showMessage(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.incorrect']);
         }
       }
     );

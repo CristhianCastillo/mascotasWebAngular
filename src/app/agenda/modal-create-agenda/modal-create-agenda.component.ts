@@ -1,9 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbModalConfig, NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalOutMessageComponent } from '../../modal-out-message/modal-out-message.component';
-import { Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { MessagesUtils } from '../../utils/messages-utils';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { AgendaService } from '../../services/agenda/agenda.service';
+import { environment } from '@env/environment';
+import { DateUtils } from '../../utils/date-utils';
+import { ValidationsUtils } from '../../utils/validations-utils';
 
 @Component({
   selector: 'app-modal-create-agenda',
@@ -15,27 +18,42 @@ export class ModalCreateAgendaComponent implements OnInit {
   @Input() listaMascotas: any[];
   public agendaForm: FormGroup;
   public services: any;
-  constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal,  public config: NgbModalConfig
-    , private modalService: NgbModal, private formBuilder: FormBuilder, private agendaService: AgendaService) {
+  public propiedades: any;
+
+  constructor(private calendar: NgbCalendar, public activeModal: NgbActiveModal, public config: NgbModalConfig
+    , private modalService: NgbModal, private formBuilder: FormBuilder, private agendaService: AgendaService,
+              private messageService: MessagesUtils) {
     config.backdrop = 'static';
+    this.propiedades = environment;
   }
 
   ngOnInit() {
     this.agendaService.getServicesType().subscribe(
-      (result: any ) => {
+      (result: any) => {
         this.services = result;
-      },
-      (error) => {
+      }, (error) => {
         console.error(error);
       }
     );
     this.agendaForm = this.createForm();
   }
 
+  trackByFn(index, item) {
+    return item.id;
+  }
+
+  isValidCheck(field: string){
+    return ValidationsUtils.isValidCheck(field, this.agendaForm);
+  }
+
+  isValidInput(field: string){
+    return ValidationsUtils.isValidInput(field, this.agendaForm);
+  }
+
   private createForm() {
     return this.formBuilder.group({
       idMascota: ['', Validators.required],
-      nombre : ['', Validators.required],
+      nombre: ['', Validators.required],
       tipo: ['', Validators.required],
       fecha: ['', Validators.required],
       hora: ['', Validators.required],
@@ -44,42 +62,34 @@ export class ModalCreateAgendaComponent implements OnInit {
     });
   }
 
-  getData(){
-    const fechaJ = this.agendaForm.value['fecha'];
-    const horaJ = this.agendaForm.value['hora'];
-    let fechaDate: Date = new Date(Date.UTC(fechaJ.year, fechaJ.month - 1, fechaJ.day, horaJ.hour, horaJ.minute, 0, 0))
-    console.log(fechaDate.toISOString().slice(0, 10));
-    console.log(fechaDate.toISOString().slice(11, 16));
-    const evento = {
-      idMascota: this.agendaForm.value['idMascota'],
-      nombre: this.agendaForm.value['nombre'],
-      ubicacion: this.agendaForm.value['ubicacion'],
-      idTipo: this.agendaForm.value['tipo'],
-      fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
-      descripcion: this.agendaForm.value['descripcion']
+  getData() {
+    if(this.agendaForm.valid) {
+      let fechaJ = this.agendaForm.value['fecha'];
+      let horaJ = this.agendaForm.value['hora'];
+      let fechaDate: Date = DateUtils.dateHourToDate(fechaJ, horaJ);
+      let evento = {
+        idMascota: this.agendaForm.value['idMascota'],
+        nombre: this.agendaForm.value['nombre'],
+        ubicacion: this.agendaForm.value['ubicacion'],
+        idTipo: this.agendaForm.value['tipo'],
+        fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
+        descripcion: this.agendaForm.value['descripcion']
+      }
+      this.createEvent(evento);
+    } else {
+      ValidationsUtils.validateAllFormFields(this.agendaForm);
     }
-    this.createEvent(evento);
   }
 
-  createEvent(evento){
-    console.log(evento);
+  createEvent(evento) {
     this.agendaService.createEvent(evento).subscribe(
       (result: any) => {
-        console.log(result);
         if (result.status) {
-          this.showMessage("Registrar Evento", "Evento registrado correctamente!");
+          this.messageService.showMessage(this.propiedades.components.agenda['modal-create'].title, this.propiedades.components.agenda['modal-create']['create.message.correct']);
         } else {
-          this.showMessage("Registrar Evento", "El evento no ha sido registrado!");
+          this.messageService.showMessage(this.propiedades.components.agenda['modal-create'].title, this.propiedades.components.agenda['modal-create']['create.message.incorrect']);
         }
       }
     );
   }
-
-  showMessage(titulo, mensaje) {
-    this.modalService.dismissAll();
-    const modalRef = this.modalService.open(ModalOutMessageComponent);
-    modalRef.componentInstance.tituloMensaje = titulo;
-    modalRef.componentInstance.contenidoMensaje = mensaje;
-  }
-
 }

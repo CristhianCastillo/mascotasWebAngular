@@ -1,113 +1,100 @@
 <br>
 <div class="container">
   <div class="text-center">
-    <h2>Mi Establecimiento</h2>
-    <p>Por favor verifica que tus datos son correctos, asi te podran encontrar mas facil.</p>
+    <h2>{{propiedades.title}}</h2>
+    <p>{{propiedades.description}}</p>
     <hr/>
   </div>
   <form *ngIf="establecimiento | async; else loading" [formGroup]="establishmentForm" (ngSubmit)="getData()">
     <div class="form-group text-center">
       <img class="img-fluid" *ngIf="this.imagen != ''"
-           [src]="_DomSanitizer.bypassSecurityTrustUrl('data:image/jpeg;base64,' + this.imagen)" class="img-thumbnail">
-      <label for="foto">Seleccionar foto</label>
+           [src]="_DomSanitizer.bypassSecurityTrustUrl(this.convertImage + this.imagen)" class="img-thumbnail">
+      <label for="foto">{{propiedades['label.seleccionar.foto']}}</label>
       <i class="fa fa-check-circle check" *ngIf="this.imagen != ''"></i>
       <i class="fa fa-exclamation-circle uncheck" *ngIf="this.imagen == ''"></i>
       <div class="custom-file">
-        <input id="foto" type="file" class="custom-file-input" (change)="onFileChange($event)" [ngClass]="{'is-invalid': this.imagen == '', 'is-valid': this.imagen != ''}">
-        <label class="custom-file-label">Choose file...</label>
-        <div class="invalid-feedback">Selecciona una imagen menor a 10 KB</div>
+        <input id="foto" type="file" class="custom-file-input" (change)="onFileChange($event)"
+               [ngClass]="{'is-invalid': this.imagen == '', 'is-valid': this.imagen != ''}">
+        <label class="custom-file-label">{{propiedades['label.seleccionar.foto.file']}}</label>
+        <div class="invalid-feedback">{{propiedades['label.seleccionar.foto.invalid']}}</div>
       </div>
-      <!--<p class="alert alert-danger" *ngIf="(petForm.get('fotoMascota').hasError('required')) && petForm.get('fotoMascota').touched">Selecciona una foto.</p>-->
     </div>
     <div class="form-group">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="nombre">Nombre Establecimiento</label>
-          <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('nombre').hasError('required'))"></i>
-          <i class="fa fa-exclamation-circle uncheck"
-             *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched"></i>
-          <input formControlName="nombre" type="text" class="form-control" name="nombre" id="nombre"
-                 placeholder="Nombre establecimiento"
-                 [ngClass]="{'is-invalid': (establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched, 'is-valid': !(establishmentForm.get('nombre').hasError('required'))}">
-          <div class="invalid-feedback">Ingresa un nombre valido.</div>
-          <!--<p class="alert alert-danger" *ngIf="(establishmentForm.get('nombre').hasError('required')) && establishmentForm.get('nombre').touched">Ingresa un nombre valido para el establecimiento.</p>-->
+          <label for="nombre">{{propiedades['label.establecimiento']}}</label>
+          <i [ngClass]="isValidCheck('nombre')"></i>
+          <input formControlName="nombre" type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre establecimiento" [ngClass]="isValidInput('nombre')">
+          <div class="invalid-feedback">{{propiedades['label.establecimiento.invalid']}}</div>
         </div>
         <div class="form-group col-md-6">
-          <label>Servicios</label>
-          <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('servicios').hasError('required'))"></i>
-          <i class="fa fa-exclamation-circle uncheck"
-             *ngIf="(establishmentForm.get('servicios').hasError('required'))"></i>
+          <label>{{propiedades['label.servicios']}}</label>
+          <i [ngClass]="isValidCheck('servicios')"></i>
           <ng-multiselect-dropdown
             name="servicios" id="servicios" [placeholder]="'Selecciona un servicio'" formControlName="servicios"
             [data]="services" [settings]="dropdownSettings">
           </ng-multiselect-dropdown>
-          <div class="invalid-list" *ngIf="(establishmentForm.get('servicios').hasError('required'))">Selecciona al
-            menos un servicio.
-          </div>
+          <div class="invalid-list" *ngIf="(establishmentForm.get('servicios').hasError('required'))">{{propiedades['label.servicios.invalid']}}</div>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label for="telefono">Telefono</label>
+          <label for="telefono">{{propiedades['label.telefono']}}</label>
           <input formControlName="telefono" type="text" class="form-control" name="telefono" id="telefono"
                  placeholder="Telefono">
         </div>
         <div class="form-group col-md-4">
-          <label for="direccion">Dirección</label>
+          <label for="direccion">{{propiedades['label.direccion']}}</label>
           <input formControlName="direccion" type="text" class="form-control" name="direccion" id="direccion"
                  placeholder="Dirección">
         </div>
         <div class="form-group col-md-4">
-          <label for="horarios">Horarios</label>
+          <label for="horarios">{{propiedades['label.horarios']}}</label>
           <select formControlName="horarios" class="form-control" id="horarios" name="horarios">
-            <option>24 Horas</option>
-            <option>Establecido</option>
+            <option *ngFor="let horario of listaHorarios; trackBy: trackByFn" [value]="horario.value">{{horario.value}}</option>
           </select>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="paginaWeb">Pagina Web</label>
+          <label for="paginaWeb">{{propiedades['label.pagina.web']}}</label>
           <input formControlName="paginaWeb" type="url" class="form-control" name="paginaWeb" id="paginaWeb"
                  placeholder="Ingresa la URL de la pagina Web">
         </div>
         <div class="form-group col-md-6">
-          <label for="email">Correo Electronico</label>
+          <label for="email">{{propiedades['label.correo.electronico']}}</label>
           <input formControlName="email" type="email" class="form-control" name="email" id="email"
                  placeholder="Ingresa el email del establecimiento">
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-3">
-          <label>Abre a las</label>
+          <label>{{propiedades['label.abre']}}</label>
           <ngb-timepicker formControlName="horaInicial" name="horaInicial"></ngb-timepicker>
         </div>
         <div class="form-group col-md-3">
-          <label>Cierra a las</label>
+          <label>{{propiedades['label.cierra']}}</label>
           <ngb-timepicker formControlName="horaFinal" name="horaFinal"></ngb-timepicker>
         </div>
         <div class="form-group col-md-6">
-          <label for="descripcion">Descripción</label>
-          <i class="fa fa-check-circle check" *ngIf="!(establishmentForm.get('descripcion').hasError('required'))"></i>
-          <i class="fa fa-exclamation-circle uncheck"
-             *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched"></i>
+          <label for="descripcion">{{propiedades['label.descripcion']}}</label>
+          <i [ngClass]="isValidCheck('descripcion')"></i>
           <textarea formControlName="descripcion" name="descripcion" class="form-control" id="descripcion"
                     placeholder="Ingresa una descripción breve de tu establecimiento"
-                    style="width: 100%; height: 100px;"
-                    [ngClass]="{'is-invalid': (establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched, 'is-valid': !(establishmentForm.get('descripcion').hasError('required'))}"></textarea>
-          <div class="invalid-feedback">Ingresa una descripcion valida.</div>
+                    style="width: 100%; height: 100px;" [ngClass]="isValidInput('descripcion')"></textarea>
+          <div class="invalid-feedback">{{propiedades['label.descripcion.invalid']}}</div>
         </div>
       </div>
     </div>
     <div class="form-group">
-
-      <!--<p class="alert alert-danger" *ngIf="(establishmentForm.get('descripcion').hasError('required')) && establishmentForm.get('descripcion').touched">Ingresa una descripción valida</p>-->
     </div>
-    <button type="submit" [disabled]="!establishmentForm.valid"
-            class="btn btn-success">Actualizar
-    </button>
+    <div class="col-12 text-right">
+      <button type="submit"
+              class="btn btn-success align-self-end">{{buttons['button.update']}}
+      </button>
+    </div>
   </form>
   <ng-template #loading>
-    Loading User...
+    {{propiedades['login']}}
   </ng-template>
 </div>

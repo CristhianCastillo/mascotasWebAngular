@@ -16,12 +16,19 @@
   margin-bottom: 10px;
 }
 
+no-show {
+  display: none;
+}
+
 input.ng-invalid.ng-touched{
   border-left: 5px solid #a94442;
 }
 
 input.ng-valid.ng-dirty{
   border-left: 5px solid #42A948;
+}
+input.ng-valid.ng-touched{
+  box-shadow: 0 0 10px #42A948;
 }
 
 .check {
