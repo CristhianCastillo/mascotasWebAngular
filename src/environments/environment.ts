@@ -12,6 +12,8 @@ export const environment = {
       'message.spinner': 'Actualizando Registros...',
       'message.location': 'Ubicación:',
       'message.description': 'Descripción:',
+      'message.no.agenda': 'Aun no tienes eventos, agregalos!',
+      'url.image.no.agenda': '../../assets/imgs/no-agenda-register.png',
       'label.select.pet': 'Seleccionar Mascota',
       'label.select.pet.invalid': 'Selecciona una mascota',
       'label.name': 'Nombre',
@@ -44,7 +46,9 @@ export const environment = {
     dashboard: {
       'chart.solicitudes.servicio': 'Solicitudes por servicio',
       'chart.calificaciones': 'Calificaciones',
-      'random.letters': '0123456789ABCDEF'
+      'random.letters': '0123456789ABCDEF',
+      'message.no.dashboards': 'Aun no tienes calificaciones!',
+      'url.image.no.dashboards': '../../assets/imgs/no-dashboards.png',
     },
     error: {
       'title': 'Upsss! Estamos teniendo problemas',
@@ -120,6 +124,14 @@ export const environment = {
       'label.register': '¿No tienes cuenta? Regístrate',
       'login.message.incorrect': 'Usuario y/o contraseña no validos.'
     },
+    captcha: {
+      'key': '6LcTZIkUAAAAAPq8N1jf-6q6wGLzW-5HAvNufUn0',
+      'size': 'Normal', // -->  Normal, Compact
+      'lang': 'es',
+      'them': 'Light', // --> Dark, Light
+      'type': 'Image', // --> Image, Audio
+      'label.captcha.invalid': 'Demuestra que no eres un robot.'
+    },
     notfound: {
       'title': 'Esta página ya no existe.',
       'description': 'No pudimos encontrar la página que estabas buscando.',
@@ -181,7 +193,9 @@ export const environment = {
       'send.message.correct': 'Mensaje enviado correctamente',
       'send.message.incorrect': 'No se ha podido eviar el mensaje.',
       'title.search': 'Upsss!',
-      'search.message.incorrect': 'No se puede buscar las solicitudes en este momento.'
+      'search.message.incorrect': 'No se puede buscar las solicitudes en este momento.',
+      'message.no.solicitudes': 'No se encontraron solicitudes!',
+      'url.image.no.solicitudes': '../../assets/imgs/no-request.png',
     },
     register: {
       'description': 'Por favor ingresa algunos datos para crear tu cuenta',
@@ -208,7 +222,7 @@ export const environment = {
       'label.terminos.condiciones.invalid': 'Debes aceptar los terminos y condiciones',
       'link.inicio.sesion': '¿Ya tienes cuenta? Inicia Sesión',
       'register.message.title': 'Registro',
-      'register.message.correct': 'Registro exitoso, por favor ingresa a la aplicación',
+      'register.message.correct': 'Registro exitoso, por favor revisa tu email para confirmar tu cuenta.',
       'alert.message.user.invalid': 'El nombre seleccionado ya esta en uso.',
       'alert.message.email.invalid': 'El email seleccionado ya esta registrado.',
       'alert.message.establecimiento.invalid': 'El nombre del establecimiento ya esta registrado.',
@@ -246,6 +260,8 @@ export const environment = {
       'label.nombre.tienda.invalid': 'Ingresa el nombre de un proveedor valido.',
       'label.comentarios': 'Comentarios',
       'label.comentarios.invalid': 'Ingresa un comentario valido.',
+      'message.no.supplies': 'No se encontraron suministros, agregalos!',
+      'url.image.no.supplies': '../../assets/imgs/no-supplie-register.png',
       'modal.create' : {
         'title': 'Registrar Suministro',
         'create.message.title': 'Agregar Suministro',
@@ -263,10 +279,13 @@ export const environment = {
     }
   },
   services: {
-    'end.point': 'https://mascotas.ga/application',
+    'end.point': 'http://localhost:8080',
     'content.type': 'application/json'
   },
   common: {
+    select: {
+      "default.option": "Selecciona una opción"
+    },
     buttons: {
       'button.create': 'Crear',
       'button.create.count': 'Crear Cuenta',
@@ -284,7 +303,27 @@ export const environment = {
     },
     messages: {
       'message.title.default': 'Mascotas.ga',
-      'message.body.default': 'Mascotas.ga, el sitio ideal para tus mascotas.'
+      'message.body.default': 'Mascotas.ga, el sitio ideal para tus mascotas.',
+      correct: {
+        'title.common': 'Correcto',
+        'message.common': 'Acción completada correctamente!',
+        'icon.common': '../../assets/imgs/message-success.png'
+      },
+      error: {
+        'title.common': 'Error',
+        'message.common': 'Mascotas.ga pide disculpas, en estos momentos tu solicitud no podra ser atendida.',
+        'icon.common': '../../assets/imgs/message-incorrect.png'
+      },
+      information: {
+        'title.common': 'Información',
+        'message.common': 'Mensaje de información',
+        'icon.common': '../../assets/imgs/message-information.png'
+      },
+      warning: {
+        'title.common': 'Advertencia',
+        'message.common': 'Advertencia.',
+        'icon.common': '../../assets/imgs/message-warning.png'
+      }
     }
   }
 };

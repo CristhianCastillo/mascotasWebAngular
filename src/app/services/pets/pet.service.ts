@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Mascota } from '../../models/Mascota';
+import { Mascota } from '@models/Mascota';
 import { catchError } from 'rxjs/operators';
 import { environment } from '@env/environment';
-import * as UrlServicesConst from '../url-services/url-services';
+import * as UrlServicesConst from '@services/url-services/url-services';
 import 'rxjs/Rx';
-import { GlobalErrorHandler } from '../error-global/global-error-handler.service';
+import { GlobalErrorHandler } from '@services/error-global/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class PetService {
   constructor(public http: HttpClient) { }
 
   getTypePets(){
-    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_TYPE_PETS_REST}`).map(
+    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_TYPE_PETS_RETRIVE_REST}`).map(
       (response) => {
         return response;
       }, err => {
@@ -27,7 +27,7 @@ export class PetService {
   }
 
   getAllPets(usuario: string) {
-    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_PETS_REST}/${usuario}`).map(
+    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_PETS_RETRIVE_REST}/${usuario}`).map(
       (response) => {
         return response;
       }, err => {
@@ -37,7 +37,7 @@ export class PetService {
   }
 
   createPet(data: Mascota): Observable<any> {
-    return this.http.post<any>(`${this.URL}${UrlServicesConst.SERVICE_PETS_REST}`, data).map(
+    return this.http.post<any>(`${this.URL}${UrlServicesConst.SERVICE_PETS_CREATE_REST}`, data).map(
       (response) => {
         return response;
       }, err => {
@@ -47,7 +47,7 @@ export class PetService {
   }
 
   updatePet(idMascota: string, data: Mascota): Observable<any> {
-    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_PETS_REST}/${idMascota}`, data).map(
+    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_PETS_UPDATE_REST}/${idMascota}`, data).map(
       (response) => {
         return response;
       }, err => {
@@ -57,7 +57,7 @@ export class PetService {
   }
 
   deletePet(idMascota: string): Observable<any> {
-    return this.http.delete<any>(`${this.URL}${UrlServicesConst.SERVICE_PETS_REST}/${idMascota}`).map(
+    return this.http.delete<any>(`${this.URL}${UrlServicesConst.SERVICE_PETS_DELETE_REST}/${idMascota}`).map(
       (response) => {
         return response;
       }, err => {

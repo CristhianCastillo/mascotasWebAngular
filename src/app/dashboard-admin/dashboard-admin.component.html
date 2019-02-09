@@ -1,14 +1,27 @@
 <div class="container">
-  <div class="row">
-    <div class="col">
-      <div >
-        <canvas id="pie-chart-1"></canvas>
-      </div>
-    </div>
-    <div class="col">
-      <div>
-        <canvas id="pie-chart-2"></canvas>
-      </div>
-    </div>
+  <br>
+  <div class="col-12 text-center" *ngIf="avisoDashboard == null; else dashboards">
+    <h1>{{propiedades['message.no.dashboards']}}</h1>
+    <img class="img-fluid" [src]="propiedades['url.image.no.dashboards']">
   </div>
+  <ng-template #dashboards>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="chart block">
+          <div id="title-pie-chart-1"><strong></strong></div>
+          <div class="pie-chart chart margin-bottom-sm">
+            <canvas id="pie-chart-1"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="chart block">
+          <div id="title-pie-chart-2"><strong></strong></div>
+          <div class="pie-chart chart margin-bottom-sm">
+            <canvas id="pie-chart-2"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>

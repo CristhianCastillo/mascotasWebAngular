@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { SuppliesService } from '../../services/supplies/supplies.service';
-import { DateUtils } from '../../utils/date-utils';
-import * as LoginConst from '../../constants/login';
+import { SuppliesService } from '@services/supplies/supplies.service';
+import { DateUtils } from '@utils/date-utils';
+import * as LoginConst from '@constants/login';
 import {environment} from '@env/environment';
-import * as CommonConst from '../../constants/common';
-import {EnumUtils} from '../../utils/enum-utils';
-import {MessagesUtils} from '../../utils/messages-utils';
-import {ValidationsUtils} from '../../utils/validations-utils';
+import * as CommonConst from '@constants/common';
+import {EnumUtils} from '@utils/enum-utils';
+import {MessagesUtils} from '@utils/messages-utils';
+import {ValidationsUtils} from '@utils/validations-utils';
 
 @Component({
   selector: 'app-modal-create-supplie',
@@ -36,11 +36,16 @@ export class ModalCreateSupplieComponent implements OnInit {
 
   ngOnInit() {
     this.service.getTypeSupplies().subscribe(
-      (data) => {
-        this.typeSupplies = data;
+      (result: any) => {
+        if(result.code === CommonConst.SUCCESS_CODE){
+          this.typeSupplies = result.result;
+        } else {
+          this.messageService.showMessageError(null, result.description);
+        }
       },
       (error) => {
         console.error(error);
+        this.messageService.showMessageError();
       }
     );
   }
@@ -94,11 +99,14 @@ export class ModalCreateSupplieComponent implements OnInit {
     const usuarioAutentificado = JSON.parse(localStorage.getItem(LoginConst.USER_SESSION));
     this.service.addSupplie(suministro, usuarioAutentificado.id).subscribe(
       (result: any) => {
-        if (result.status) {
-          this.messageService.showMessage(this.propiedades['modal.create']['create.message.title'], this.propiedades['modal.create']['create.message.correct']);
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          this.messageService.showMessageSucces(this.propiedades['modal.create']['create.message.title'], this.propiedades['modal.create']['create.message.correct']);
         } else {
-          this.messageService.showMessage(this.propiedades['modal.create']['create.message.title'], this.propiedades['modal.create']['create.message.incorrect']);
+          this.messageService.showMessageError(this.propiedades['modal.create']['create.message.title'], this.propiedades['modal.create']['create.message.incorrect']);
         }
+      }, (error) => {
+        console.log(error);
+        this.messageService.showMessageError();
       }
     );
   }

@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import { environment } from '@env/environment';
-import * as UrlServicesConst from '../url-services/url-services';
+import * as UrlServicesConst from '@services/url-services/url-services';
 import 'rxjs/Rx';
-import { GlobalErrorHandler } from '../error-global/global-error-handler.service';
+import { GlobalErrorHandler } from '@services/error-global/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'

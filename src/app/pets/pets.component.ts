@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalCreatePetComponent } from './modal-create-pet/modal-create-pet.component';
 import { ModalPetComponent } from './modal-pet/modal-pet.component';
-import { PetService } from '../services/pets/pet.service';
-import { ScrollTopService } from '../services/scroll-top/scroll-top.service';
-import { Mascota } from '../models/Mascota';
+import { PetService } from '@services/pets/pet.service';
+import { ScrollTopService } from '@services/scroll-top/scroll-top.service';
+import { Mascota } from '@models/Mascota';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
-import * as LoginConst from '../constants/login';
+import * as LoginConst from '@constants/login';
 import { environment } from '@env/environment';
-import * as CommonConst from '../constants/common';
+import * as CommonConst from '@constants/common';
+import { MessagesUtils } from '@utils/messages-utils';
 
 @Component({
   selector: 'app-pets',
@@ -25,7 +26,7 @@ export class PetsComponent implements OnInit {
   public convertImage: string;
 
   constructor(private modalService: NgbModal, public petService: PetService, private scrollTop: ScrollTopService,
-              private spinner: NgxSpinnerService, public _DomSanitizer: DomSanitizer) {
+              private spinner: NgxSpinnerService, public _DomSanitizer: DomSanitizer, private messageService: MessagesUtils) {
     this.avisoCrearMascotas = null;
     this.propiedades = environment.components.pets;
     this.variables = environment;
@@ -37,19 +38,24 @@ export class PetsComponent implements OnInit {
     const usuarioAutentificado = JSON.parse(localStorage.getItem(LoginConst.USER_SESSION));
     this.spinner.show();
     this.petService.getAllPets(usuarioAutentificado.id).subscribe(
-      (data) => {
-        this.mascotasAny = data;
-        if(data[0] === '[]'){
-          this.avisoCrearMascotas = null;
-        }
-        else{
-          this.avisoCrearMascotas = '';
-        }
+      (result: any) => {
         this.spinner.hide();
+        if(result.code === CommonConst.SUCCESS_CODE){
+          this.mascotasAny = result.result;
+          if(result.result.length == 0){
+            this.avisoCrearMascotas = null;
+          }
+          else{
+            this.avisoCrearMascotas = '';
+          }
+        } else {
+          this.messageService.showMessageError(null, result.description);
+        }
       },
       (error) => {
         this.spinner.hide();
         console.error(error);
+        this.messageService.showMessageError();
       }
     );
   }

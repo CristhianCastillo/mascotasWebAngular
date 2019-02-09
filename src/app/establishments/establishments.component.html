@@ -1,7 +1,7 @@
 <br>
 <div class="container">
   <div class="text-center">
-    <h2>{{propiedades.title}}</h2>
+    <h2 class="text-muted">{{propiedades.title}}</h2>
     <p>{{propiedades.description}}</p>
     <hr/>
   </div>
@@ -51,6 +51,7 @@
         <div class="form-group col-md-4">
           <label for="horarios">{{propiedades['label.horarios']}}</label>
           <select formControlName="horarios" class="form-control" id="horarios" name="horarios">
+            <option selected>{{variables.common.select['default.option']}}</option>
             <option *ngFor="let horario of listaHorarios; trackBy: trackByFn" [value]="horario.value">{{horario.value}}</option>
           </select>
         </div>
@@ -68,13 +69,15 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
           <label>{{propiedades['label.abre']}}</label>
-          <ngb-timepicker formControlName="horaInicial" name="horaInicial"></ngb-timepicker>
+          <input type="time" formControlName="horaInicial" class="form-control" name="usr_time">
         </div>
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
           <label>{{propiedades['label.cierra']}}</label>
-          <ngb-timepicker formControlName="horaFinal" name="horaFinal"></ngb-timepicker>
+          <input type="time" formControlName="horaFinal" class="form-control" name="usr_time">
+        </div>
+        <div class="form-group col-md-2">
         </div>
         <div class="form-group col-md-6">
           <label for="descripcion">{{propiedades['label.descripcion']}}</label>

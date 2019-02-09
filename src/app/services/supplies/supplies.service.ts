@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '@env/environment';
-import * as UrlServicesConst from '../url-services/url-services';
+import * as UrlServicesConst from '@services/url-services/url-services';
 import 'rxjs/Rx';
-import { GlobalErrorHandler } from '../error-global/global-error-handler.service';
+import { GlobalErrorHandler } from '@services/error-global/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class SuppliesService {
   }
 
   getAllSupplies(usuario: string) {
-    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_REST}/${usuario}`).map(
+    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_RETRIVE_REST}/${usuario}`).map(
       (response) => {
         return response;
       }, err => {
@@ -36,7 +36,7 @@ export class SuppliesService {
   }
 
   addSupplie(data: any, idUsuario: string): Observable<any> {
-    return this.http.post<any>(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_REST}/${idUsuario}`, data).map(
+    return this.http.post<any>(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_CREATE_REST}/${idUsuario}`, data).map(
       (response) => {
         return response;
       }, err => {
@@ -46,7 +46,7 @@ export class SuppliesService {
   }
 
   updateSupplie(data: any, idSuministro: string): Observable<any> {
-    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_REST}/${idSuministro}`, data).map(
+    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_UPDATE_REST}/${idSuministro}`, data).map(
       (response) => {
         return response;
       }, err => {
@@ -56,7 +56,7 @@ export class SuppliesService {
   }
 
   deleteSuppplie(idSupplie: string): Observable<any> {
-    return this.http.delete<any>(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_REST}/${idSupplie}`).map(
+    return this.http.delete<any>(`${this.URL}${UrlServicesConst.SERVICE_SUPPLIE_DELETE_REST}/${idSupplie}`).map(
       (response) => {
         return response;
       }, err => {

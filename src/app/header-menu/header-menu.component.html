@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-danger">
   <div class="container">
     <a class="navbar-brand " [routerLink]="[urls.URL_HOME]">
-      <img src="../../assets/imgs/logo-nav-mascotas.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <img [src]="variables['application.imagen']" width="30" height="30" class="d-inline-block align-top" alt="">
       {{variables['application.name']}}
     </a>
     <button class="navbar-toggler" type="button" (click)="toggle()">

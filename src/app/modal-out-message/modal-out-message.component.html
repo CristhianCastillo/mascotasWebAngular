@@ -4,9 +4,10 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <p>{{contenidoMensaje}}</p>
+<div class="modal-body starter-template">
+  <img class="img-fluid" [src]="imagen">
+  <p style="padding-top: 10px;">{{contenidoMensaje}}</p>
 </div>
-<div class="modal-footer">
-   <button type="button" class="btn btn-outline-success" (click)="activeModal.close('Close click')">{{variables.common.buttons['button.ok']}}</button>
+<div class="modal-footer justify-content-center">
+   <button type="button" class="btn btn-success" (click)="activeModal.close('Close click')">{{variables.common.buttons['button.ok']}}</button>
 </div>

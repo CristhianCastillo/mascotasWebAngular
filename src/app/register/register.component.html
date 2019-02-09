@@ -2,7 +2,7 @@
 <div class="container">
   <div class="form-register">
     <div class="text-center">
-      <h2>{{propiedadesRegister['title'].replace('{0}', variables['application.name'])}}</h2>
+      <h2 class="text-muted">{{propiedadesRegister['title'].replace('{0}', variables['application.name'])}}</h2>
       <p>{{propiedades['description']}}</p>
       <a class="btn btn-primary float-md-center" [routerLink]="urlRegister">{{propiedadesRegister['button.registro']}}</a>
       <hr />
@@ -72,6 +72,22 @@
         <input formControlName="terminosCondiciones" type="checkbox" class="custom-control-input" id="terminosCondiciones">
         <label class="custom-control-label" for="terminosCondiciones">{{propiedades['label.terminos.condiciones']}}</label>
         <div class="invalid-item" *ngIf="isCheckValid('terminosCondiciones')">{{propiedades['label.terminos.condiciones.invalid']}}</div>
+      </div>
+      <br>
+      <div class="form-group" style="text-align: center;">
+        <ngx-recaptcha2 style="display: inline-block"
+          [siteKey]="variables.components.captcha['key']"
+          (reset)="handleReset()"
+          (expire)="handleExpire()"
+          (load)="handleLoad()"
+          (success)="handleSuccess($event)"
+          [size]="variables.components.captcha['size']"
+          [hl]="variables.components.captcha['lang']"
+          [theme]="variables.components.captcha['them']"
+          [type]="variables.components.captcha['type']"
+          formControlName="recaptcha">
+        </ngx-recaptcha2>
+        <div class="invalid-item" *ngIf="isCheckCaptcha('recaptcha')">{{variables.components.captcha['label.captcha.invalid']}}</div>
       </div>
       <br>
       <button type="submit" class="btn btn-success btn-block" >{{variables.common.buttons['button.create.count']}}</button>

@@ -7,9 +7,10 @@
 <div class="modal-body">
   <form [formGroup]= "agendaForm" (ngSubmit)="getData()">
     <div class="form-group">
-      <label for="idMascota">{{propiedades.components.agenda['label.select.pet']}}</label>
+      <label for="id-mascota">{{propiedades.components.agenda['label.select.pet']}}</label>
       <i [ngClass]="isValidCheck('idMascota')"></i>
-      <select formControlName="idMascota" class="form-control" id="idMascota" name="idMascota" [ngClass]="isValidInput('idMascota')">
+      <select formControlName="idMascota" class="form-control" id="id-mascota" name="id-mascota" [ngClass]="isValidInput('idMascota')">
+        <option value="" selected>{{propiedades.common.select['default.option']}}</option>
         <option *ngFor="let mascota of listaMascotas; trackBy: trackByFn" [value]="mascota.id">{{mascota.nombre}}</option>
       </select>
       <div class="invalid-feedback">{{propiedades.components.agenda['label.select.pet.invalid']}}</div>
@@ -17,7 +18,7 @@
     <div class="form-group">
       <label for="nombre">{{propiedades.components.agenda['label.name']}}</label>
       <i [ngClass]="isValidCheck('nombre')"></i>
-      <input formControlName="nombre" type="text" class="form-control" id="nombre" name="nombreDelEvento" placeholder="Asocia un nombre para este evento"
+      <input formControlName="nombre" type="text" class="form-control" id="nombre" name="nombre" placeholder="Asocia un nombre para este evento"
              [ngClass]="isValidInput('nombre')">
       <div class="invalid-feedback">{{propiedades.components.agenda['label.name.invalid']}}</div>
     </div>
@@ -33,6 +34,7 @@
       <i [ngClass]="isValidCheck('tipo')"></i>
       <select formControlName="tipo" class="form-control" id="tipo" name="tipo"
               [ngClass]="isValidInput('tipo')">
+        <option value="" selected>{{propiedades.common.select['default.option']}}</option>
         <option *ngFor="let service of services; trackBy: trackByFn" [value]="service.id">{{service.nombre}}</option>
       </select>
       <div class="invalid-feedback">{{propiedades.components.agenda['label.tipo.evento.invalid']}}</div>
@@ -54,10 +56,8 @@
     <div class="form-group">
       <label>{{propiedades.components.agenda['label.hora.evento']}}</label>
       <i [ngClass]="isValidCheck('hora')"></i>
-      <ngb-timepicker formControlName="hora" name="Hora"></ngb-timepicker>
-      <p class="alert alert-danger" *ngIf="(agendaForm.get('hora').hasError('required')) && agendaForm.get('hora').touched">
-        {{propiedades.components.agenda['label.hora.evento.invalid']}}
-      </p>
+      <input type="time" formControlName="hora" class="form-control" name="hora" [ngClass]="isValidInput('hora')">
+      <div class="invalid-feedback">{{propiedades.components.agenda['label.hora.evento.invalid']}}</div>
     </div>
     <div class="form-group">
       <label for="descripcion">{{propiedades.components.agenda['label.descripcion.evento']}}</label>

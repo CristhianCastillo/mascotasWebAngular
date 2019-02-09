@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Establecimiento} from '../../models/Establecimiento';
+import { Establecimiento} from '@models/Establecimiento';
 import { catchError} from 'rxjs/operators';
 import { environment } from '@env/environment';
-import * as UrlServicesConst from '../url-services/url-services';
+import * as UrlServicesConst from '@services/url-services/url-services';
 import 'rxjs/Rx';
-import { GlobalErrorHandler } from '../error-global/global-error-handler.service';
+import { GlobalErrorHandler } from '@services/error-global/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class EstablishmentService {
   constructor(public http: HttpClient) { }
 
   getEstablishment(usuario: string): Observable<Establecimiento> {
-    return this.http.get<Establecimiento>(`${this.URL}${UrlServicesConst.SERVICE_ESTABLISHMENT_REST}/${usuario}`).map(
+    return this.http.get<Establecimiento>(`${this.URL}${UrlServicesConst.SERVICE_ESTABLISHMENT_RETRIVE_REST}/${usuario}`).map(
       (response) => {
         return response;
       }, err => {
@@ -27,7 +27,7 @@ export class EstablishmentService {
   }
 
   updateEstablishment(id: string, data: any): Observable<any> {
-    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_ESTABLISHMENT_REST}/${id}`, data).map(
+    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_ESTABLISHMENT_UPDATE_REST}/${id}`, data).map(
       (response) => {
         return response;
       }, err => {

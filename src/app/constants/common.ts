@@ -4,6 +4,9 @@ export const IMAGE_JPEG_TYPE: string = 'image/jpeg';
 export const IMAGE_PNG_TYPE: string = 'image/png';
 export const IMAGEN_CONVERT_BASE_64: string = 'data:image/jpeg;base64,';
 export const IMAGEN_MAX_SIZE: number = 10000;
+export const SUCCESS_CODE: number = 0;
+export const NO_SESSION_ERROR_CODE: number = -1;
+export const ERROR_CODE: number = -2;
 export enum EnumHorarios {
   HORARIO_24_HORAS = '24 Horas',
   HORARIO_ESTABLECIDO = 'Establecido'

@@ -3,43 +3,50 @@
     <p style="font-size: 20px; color: white">{{propiedades['message.spinner']}}</p>
   </ngx-spinner>
   <h2 class="text-center text-muted py-3">{{title}}</h2>
-  <div *ngFor="let suministro of suministros; trackBy: trackByFn">
-    <h3>{{suministro.nombreTipoSuministro}}</h3>
-    <hr>
-    <!-- timeline item 1 -->
-    <div class="row" *ngFor="let detalle of suministro.detalles; trackBy: trackByFn" (mouseover)="changeStyleRow(detalle)" (click)="goToViewSupplie(detalle)">
-      <!-- timeline item 1 left dot -->
-      <div class="col-auto text-center flex-column d-none d-sm-flex">
-        <div class="row h-50">
-          <div class="col border-right">&nbsp;</div>
-          <div class="col">&nbsp;</div>
-        </div>
-        <h5 class="m-2">
+  <hr/>
+  <div class="col-12 text-center" *ngIf="avisoSuministros == null; else suministrosTemp">
+    <h1>{{propiedades['message.no.supplies']}}</h1>
+    <img class="img-fluid" [src]="propiedades['url.image.no.supplies']">
+  </div>
+  <ng-template #suministrosTemp>
+    <div *ngFor="let suministro of suministros; trackBy: trackByFn">
+      <h3>{{suministro.nombreTipoSuministro}}</h3>
+      <hr>
+      <!-- timeline item 1 -->
+      <div class="row" *ngFor="let detalle of suministro.detalles; trackBy: trackByFn" (mouseover)="changeStyleRow(detalle)" (click)="goToViewSupplie(detalle)">
+        <!-- timeline item 1 left dot -->
+        <div class="col-auto text-center flex-column d-none d-sm-flex">
+          <div class="row h-50">
+            <div class="col border-right">&nbsp;</div>
+            <div class="col">&nbsp;</div>
+          </div>
+          <h5 class="m-2">
           <span class="badge badge-pill" [ngClass]="{'bg-info': (detalle.id == idSuministro),
                 'bg-light border': (!(detalle.id == idSuministro))}">&nbsp;</span>
-        </h5>
-        <div class="row h-50">
-          <div class="col border-right">&nbsp;</div>
-          <div class="col">&nbsp;</div>
+          </h5>
+          <div class="row h-50">
+            <div class="col border-right">&nbsp;</div>
+            <div class="col">&nbsp;</div>
+          </div>
         </div>
-      </div>
-      <!-- timeline item 1 event content -->
-      <div class="col py-2">
-        <div class="card" [ngClass]="{'border-info shadow': (detalle.id == idSuministro),
+        <!-- timeline item 1 event content -->
+        <div class="col py-2">
+          <div class="card" [ngClass]="{'border-info shadow': (detalle.id == idSuministro),
                 '': (!(detalle.id == idSuministro))}">
-          <div class="card-body">
-            <div class="float-right" [ngClass]="{'text-info': (detalle.id == idSuministro),
+            <div class="card-body">
+              <div class="float-right" [ngClass]="{'text-info': (detalle.id == idSuministro),
                 'text-muted': (!(detalle.id == idSuministro))}">{{detalle.fecha}}</div>
-            <h4 class="card-title" [ngClass]="{'text-info': (detalle.id == idSuministro),
+              <h4 class="card-title" [ngClass]="{'text-info': (detalle.id == idSuministro),
                 '': (!(detalle.id == idSuministro))}">{{detalle.nombre}}
-              {{detalle.cantidad}} {{detalle.unidadMedida}}</h4>
-            <p>{{propiedades['label.descripcion.precio'].replace('{0}', detalle.precio)}}</p>
-            <p>{{propiedades['label.descripcion.comentario'].replace('{0}', detalle.comentario)}}</p>
+                {{detalle.cantidad}} {{detalle.unidadMedida}}</h4>
+              <p>{{propiedades['label.descripcion.precio'].replace('{0}', detalle.precio)}}</p>
+              <p>{{propiedades['label.descripcion.comentario'].replace('{0}', detalle.comentario)}}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-template>
   <button (click)="goToCreateSupplie()" class="btn btn-default btn-circle btn-xl float">
     <i class="fa fa-plus my-float"></i>
   </button>

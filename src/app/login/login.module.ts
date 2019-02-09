@@ -6,12 +6,15 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule} from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxCaptchaModule } from 'ngx-captcha';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxCaptchaModule,
     LoginRoutingModule,
     NgbModule,
     NgxSpinnerModule

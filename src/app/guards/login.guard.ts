@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import { Observable } from 'rxjs';
-import * as LoginConst from '../constants/login';
-import * as HeaderConst from '../constants/header-menu';
+import * as LoginConst from '@constants/login';
+import * as HeaderConst from '@constants/header-menu';
 
 @Injectable({
   providedIn: 'root'

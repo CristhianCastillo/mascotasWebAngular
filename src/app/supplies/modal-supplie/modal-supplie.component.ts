@@ -2,15 +2,15 @@ import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbModalConfig, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import {Suministro} from '../../models/Suministro';
-import {DateConvert} from '../../models/DateConvert';
-import { SuppliesService } from '../../services/supplies/supplies.service';
-import { DateUtils } from '../../utils/date-utils';
+import {Suministro} from '@models/Suministro';
+import {DateConvert} from '@models/DateConvert';
+import { SuppliesService } from '@services/supplies/supplies.service';
+import { DateUtils } from '@utils/date-utils';
 import {environment} from '@env/environment';
-import * as CommonConst from '../../constants/common';
-import {EnumUtils} from '../../utils/enum-utils';
-import {MessagesUtils} from '../../utils/messages-utils';
-import {ValidationsUtils} from '../../utils/validations-utils';
+import * as CommonConst from '@constants/common';
+import {EnumUtils} from '@utils/enum-utils';
+import {MessagesUtils} from '@utils/messages-utils';
+import {ValidationsUtils} from '@utils/validations-utils';
 
 @Component({
   selector: 'app-modal-supplie',
@@ -39,10 +39,15 @@ export class ModalSupplieComponent implements OnInit {
 
   ngOnInit() {
     this.service.getTypeSupplies().subscribe(
-      (data) => {
-        this.typeSupplies = data;
+      (result: any) => {
+        if(result.code === CommonConst.SUCCESS_CODE){
+          this.typeSupplies = result.result;
+        } else {
+          this.messageService.showMessageError(null, result.description);
+        }
       }, (error) => {
         console.error(error);
+        this.messageService.showMessageError();
       }
     );
     //Fecha Evento
@@ -93,7 +98,7 @@ export class ModalSupplieComponent implements OnInit {
         precio: this.supplieForm.value['precio'],
         proveedor: this.supplieForm.value['proveedor'],
         comentario: this.supplieForm.value['comentarios'],
-      }
+      };
       this.updateSupplie(suministro);
     } else {
       ValidationsUtils.validateAllFormFields(this.supplieForm);
@@ -103,11 +108,14 @@ export class ModalSupplieComponent implements OnInit {
   updateSupplie(suministro) {
     this.service.updateSupplie(suministro, suministro.id).subscribe(
       (result: any) => {
-        if (result.status) {
-          this.messageService.showMessage(this.propiedades['modal.search']['update.message.title'], this.propiedades['modal.search']['update.message.correct']);
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          this.messageService.showMessageSucces(this.propiedades['modal.search']['update.message.title'], this.propiedades['modal.search']['update.message.correct']);
         } else {
-          this.messageService.showMessage(this.propiedades['modal.search']['update.message.title'], this.propiedades['modal.search']['update.message.incorrect']);
+          this.messageService.showMessageError(this.propiedades['modal.search']['update.message.title'], this.propiedades['modal.search']['update.message.incorrect']);
         }
+      }, (error) => {
+          console.log(error);
+          this.messageService.showMessageError();
       }
     );
   }
@@ -115,11 +123,14 @@ export class ModalSupplieComponent implements OnInit {
   deleteSupplie() {
     this.service.deleteSuppplie(this.suministroSeleccionado.id).subscribe(
       (result: any) => {
-        if (result.status) {
-          this.messageService.showMessage(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.correct']);
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          this.messageService.showMessageSucces(this.propiedades['modal.search']['delete.message.title'], this.propiedades['modal.search']['delete.message.correct']);
         } else {
-          this.messageService.showMessage(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.incorrect']);
+          this.messageService.showMessageError(this.propiedades['modal.search']['delete.message.title'], this.propiedades['modal.search']['delete.message.incorrect']);
         }
+      }, (error) => {
+          console.log(error);
+          this.messageService.showMessageError();
       }
     );
   }

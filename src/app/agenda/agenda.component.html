@@ -7,42 +7,46 @@
     <p style="font-size: 20px; color: white">{{propiedades['message.spinner']}}</p>
   </ngx-spinner>
   <h2 class="text-center text-muted py-3">{{propiedades['title']}}</h2>
-  <div *ngFor="let mascota of agenda; trackBy: trackByFn">
-    <h3>{{mascota.nombre}}</h3>
-    <hr>
-    <!-- timeline item 1 -->
-    <div class="row" *ngFor="let cita of mascota.citas; trackBy: trackByFn" (mouseover)="changeStyleRow(cita)" (click)="goToViewEvent(cita, mascota.id)">
-      <!-- timeline item 1 left dot -->
-      <div class="col-auto text-center flex-column d-none d-sm-flex">
-        <div class="row h-50">
-          <div class="col border-right">&nbsp;</div>
-          <div class="col">&nbsp;</div>
-        </div>
-        <h5 class="m-2">
+  <hr/>
+  <div class="col-12 text-center" *ngIf="avisoAgendaCrear == null; else eventos">
+    <h1>{{propiedades['message.no.agenda']}}</h1>
+    <img class="img-fluid" [src]="propiedades['url.image.no.agenda']">
+  </div>
+  <ng-template #eventos>
+    <div *ngFor="let mascota of agenda; trackBy: trackByFn">
+      <h3>{{mascota.nombre}}</h3>
+      <hr>
+      <div class="row" *ngFor="let cita of mascota.citas; trackBy: trackByFn" (mouseover)="changeStyleRow(cita)" (click)="goToViewEvent(cita, mascota.id)">
+        <div class="col-auto text-center flex-column d-none d-sm-flex">
+          <div class="row h-50">
+            <div class="col border-right">&nbsp;</div>
+            <div class="col">&nbsp;</div>
+          </div>
+          <h5 class="m-2">
           <span class="badge badge-pill" [ngClass]="{'bg-success': (cita.id == idEvento && cita.fecha == fechaEvento),
                 'bg-light border': (!(cita.id == idEvento) || !(cita.fecha == fechaEvento))}">&nbsp;</span>
-        </h5>
-        <div class="row h-50">
-          <div class="col border-right">&nbsp;</div>
-          <div class="col">&nbsp;</div>
+          </h5>
+          <div class="row h-50">
+            <div class="col border-right">&nbsp;</div>
+            <div class="col">&nbsp;</div>
+          </div>
         </div>
-      </div>
-      <!-- timeline item 1 event content -->
-      <div class="col py-2">
-        <div class="card" [ngClass]="{'border-success shadow': (cita.id == idEvento && cita.fecha == fechaEvento),
+        <div class="col py-2">
+          <div class="card" [ngClass]="{'border-success shadow': (cita.id == idEvento && cita.fecha == fechaEvento),
                 '': (!(cita.id == idEvento) || !(cita.fecha == fechaEvento))}">
-          <div class="card-body">
-            <div class="float-right" [ngClass]="{'text-success': (cita.id == idEvento && cita.fecha == fechaEvento),
+            <div class="card-body">
+              <div class="float-right" [ngClass]="{'text-success': (cita.id == idEvento && cita.fecha == fechaEvento),
                 'text-muted': (!(cita.id == idEvento) || !(cita.fecha == fechaEvento))}">{{cita.fecha}}</div>
-            <h4 class="card-title" [ngClass]="{'text-success': (cita.id == idEvento && cita.fecha == fechaEvento),
+              <h4 class="card-title" [ngClass]="{'text-success': (cita.id == idEvento && cita.fecha == fechaEvento),
                 'text-muted': (!(cita.id == idEvento) || !(cita.fecha == fechaEvento))}">{{cita.nombre}}</h4>
-            <p>{{propiedades['message.location']}} {{cita.ubicacion}}</p>
-            <p>{{propiedades['message.description']}} {{cita.descripcionEvento}}</p>
+              <p>{{propiedades['message.location']}} {{cita.ubicacion}}</p>
+              <p>{{propiedades['message.description']}} {{cita.descripcionEvento}}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-template>
   <button (click)="goToCreateEvent()" class="btn btn-default btn-circle btn-xl float">
     <i class="fa fa-plus my-float"></i>
   </button>

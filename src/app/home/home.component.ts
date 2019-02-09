@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ScrollTopService } from '../services/scroll-top/scroll-top.service';
-import * as HeaderConst from '../constants/header-menu';
+import { ScrollTopService } from '@services/scroll-top/scroll-top.service';
+import * as HeaderConst from '@constants/header-menu';
+import { MessagesUtils} from '@utils/messages-utils';
 import { environment } from '@env/environment';
 
 @Component({
@@ -87,7 +88,7 @@ export class HomeComponent implements OnInit {
       textmuted: 'Como debe ser siempre.'
     }
   ];
-  constructor(private scrollTop: ScrollTopService) { }
+  constructor(private scrollTop: ScrollTopService, private messageService: MessagesUtils) { }
 
   ngOnInit() {
     this.scrollTop.setScrollTop();
@@ -96,5 +97,4 @@ export class HomeComponent implements OnInit {
   trackByFn(index, item) {
     return item.id;
   }
-
 }

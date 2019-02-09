@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { environment } from '@env/environment';
-import * as HeaderConst from '../constants/header-menu';
-import * as LoginConst from '../constants/login';
-import * as MenuConst from '../constants/menu';
+import * as HeaderConst from '@constants/header-menu';
+import * as LoginConst from '@constants/login';
+import * as MenuConst from '@constants/menu';
 
 @Component({
   selector: 'app-header-menu',

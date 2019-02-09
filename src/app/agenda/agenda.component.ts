@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalCreateAgendaComponent } from './modal-create-agenda/modal-create-agenda.component';
 import { ModalAgendaComponent } from './modal-agenda/modal-agenda.component';
-import { ScrollTopService } from '../services/scroll-top/scroll-top.service';
-import { AgendaService } from '../services/agenda/agenda.service';
-import { Cita } from '../models/Cita';
+import { ScrollTopService } from '@services/scroll-top/scroll-top.service';
+import { AgendaService } from '@services/agenda/agenda.service';
+import { Cita } from '@models/Cita';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '@env/environment';
-import * as LoginConst from '../constants/login';
+import * as LoginConst from '@constants/login';
+import * as CommonConst from '@constants/common';
+import { MessagesUtils } from '@utils/messages-utils';
 
 @Component({
   selector: 'app-agenda',
@@ -20,9 +22,11 @@ export class AgendaComponent implements OnInit {
   public fechaEvento: string;
   public agenda: any;
   public propiedades: any;
+  public avisoAgendaCrear: string;
   constructor(private modalService: NgbModal, private scrollTop: ScrollTopService, private agendaService: AgendaService,
-              private spinner: NgxSpinnerService) {
+              private spinner: NgxSpinnerService, private messageServices: MessagesUtils) {
       this.propiedades = environment.components.agenda;
+      this.avisoAgendaCrear = null;
   }
 
   ngOnInit() {
@@ -30,12 +34,25 @@ export class AgendaComponent implements OnInit {
     const usuarioAutentificado = JSON.parse(localStorage.getItem(LoginConst.USER_SESSION));
     this.spinner.show();
     this.agendaService.getAllAgenda(usuarioAutentificado.id).subscribe(
-      (data) => {
-        this.agenda = data;
+      (result: any) => {
+        if(result.code === CommonConst.SUCCESS_CODE) {
+          this.agenda = result.result;
+          this.avisoAgendaCrear = null;
+          for(let i = 0; i < result.result.length; i ++) {
+            let temp: any = result.result[i];
+            if(temp.citas.length > 0) {
+              this.avisoAgendaCrear = '';
+              break;
+            }
+          }
+        } else {
+          this.messageServices.showMessageError(null, result.description);
+        }
         this.spinner.hide();
       }, (error) => {
         this.spinner.hide();
         console.error(error);
+        this.messageServices.showMessageError();
       }
     );
   }

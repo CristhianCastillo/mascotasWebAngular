@@ -1,9 +1,9 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import * as UrlNoTokenServicesConst from '../url-services/url-no-token-services';
+import * as UrlNoTokenServicesConst from '@services/url-services/url-no-token-services';
 import { environment } from '@env/environment';
-import * as LoginConst from '../../constants/login';
+import * as LoginConst from '@constants/login';
 
 @Injectable()
 export  class AuthInterceptor implements HttpInterceptor {
@@ -21,14 +21,14 @@ export  class AuthInterceptor implements HttpInterceptor {
       // Token
       req = req.clone({
         setHeaders: {
+          'Authorization': usuarioAutentificado.token,
           'Content.Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': usuarioAutentificado.token
+          'Accept': 'application/json'
         }
       });
     }
     return next.handle(req).do(
-      succ => console.log(succ),
+      succ => console.log('Succes'),
       err => {
         if(err.status === 401) {
           console.error('YOU ARE NOT AUTHENTICATED.');

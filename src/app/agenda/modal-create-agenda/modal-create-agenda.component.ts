@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MessagesUtils } from '../../utils/messages-utils';
+import { MessagesUtils } from '@utils/messages-utils';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { AgendaService } from '../../services/agenda/agenda.service';
+import { AgendaService } from '@services/agenda/agenda.service';
 import { environment } from '@env/environment';
-import { DateUtils } from '../../utils/date-utils';
-import { ValidationsUtils } from '../../utils/validations-utils';
+import { DateUtils } from '@utils/date-utils';
+import { ValidationsUtils } from '@utils/validations-utils';
+import * as CommonConst from '@constants/common';
 
 @Component({
   selector: 'app-modal-create-agenda',
@@ -30,9 +31,14 @@ export class ModalCreateAgendaComponent implements OnInit {
   ngOnInit() {
     this.agendaService.getServicesType().subscribe(
       (result: any) => {
-        this.services = result;
+        if(result.code === CommonConst.SUCCESS_CODE) {
+          this.services = result.result;
+        } else {
+          this.messageService.showMessageError(null, result.description);
+        }
       }, (error) => {
         console.error(error);
+        this.messageService.showMessageError();
       }
     );
     this.agendaForm = this.createForm();
@@ -65,14 +71,13 @@ export class ModalCreateAgendaComponent implements OnInit {
   getData() {
     if(this.agendaForm.valid) {
       let fechaJ = this.agendaForm.value['fecha'];
-      let horaJ = this.agendaForm.value['hora'];
-      let fechaDate: Date = DateUtils.dateHourToDate(fechaJ, horaJ);
+      let fechaDate: Date = DateUtils.dateJsonToDate(fechaJ);
       let evento = {
         idMascota: this.agendaForm.value['idMascota'],
         nombre: this.agendaForm.value['nombre'],
         ubicacion: this.agendaForm.value['ubicacion'],
         idTipo: this.agendaForm.value['tipo'],
-        fecha: fechaDate.toISOString().slice(0, 10) + ' ' + fechaDate.toISOString().slice(11, 16),
+        fecha: fechaDate.toISOString().slice(0, 10) + ' ' + this.agendaForm.value['hora'],
         descripcion: this.agendaForm.value['descripcion']
       }
       this.createEvent(evento);
@@ -84,11 +89,14 @@ export class ModalCreateAgendaComponent implements OnInit {
   createEvent(evento) {
     this.agendaService.createEvent(evento).subscribe(
       (result: any) => {
-        if (result.status) {
-          this.messageService.showMessage(this.propiedades.components.agenda['modal-create'].title, this.propiedades.components.agenda['modal-create']['create.message.correct']);
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          this.messageService.showMessageSucces(this.propiedades.components.agenda['modal-create'].title, this.propiedades.components.agenda['modal-create']['create.message.correct']);
         } else {
-          this.messageService.showMessage(this.propiedades.components.agenda['modal-create'].title, this.propiedades.components.agenda['modal-create']['create.message.incorrect']);
+          this.messageService.showMessageError(this.propiedades.components.agenda['modal-create'].title, this.propiedades.components.agenda['modal-create']['create.message.incorrect']);
         }
+      }, (error) => {
+        console.error(error);
+        this.messageService.showMessageError();
       }
     );
   }

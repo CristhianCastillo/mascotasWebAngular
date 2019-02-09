@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegisterRoutingModule } from './register-routing.module';
 import { RegisterComponent } from './register.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FormsModule,
     ReactiveFormsModule,
     RegisterRoutingModule,
+    NgxCaptchaModule,
     NgbModule,
     NgxSpinnerModule
   ],

@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Cita } from '../../models/Cita';
+import { Cita } from '@models/Cita';
 import { catchError } from 'rxjs/operators';
 import { environment } from '@env/environment';
-import * as UrlServicesConst from '../url-services/url-services';
+import * as UrlServicesConst from '@services/url-services/url-services';
 import 'rxjs/Rx';
-import { GlobalErrorHandler } from '../error-global/global-error-handler.service';
+import { GlobalErrorHandler } from '@services/error-global/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class AgendaService {
   }
 
   getAllAgenda(usuario: string) {
-    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_REST}/${usuario}`).map(
+    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_RETRIVE_REST}/${usuario}`).map(
       (response) => {
         return response;
       }, err => {
@@ -48,7 +48,7 @@ export class AgendaService {
   }
 
   createEvent(data: Cita): Observable<any> {
-    return this.http.post<any>(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_REST}`, data).map(
+    return this.http.post<any>(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_CREATE_REST}`, data).map(
       (response) => {
         return response;
       }, err => {
@@ -58,7 +58,7 @@ export class AgendaService {
   }
 
   updateEvent(id: string, data: Cita): Observable<any> {
-    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_REST}/${id}`, data).map(
+    return this.http.put<any>(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_UPDATE_REST}/${id}`, data).map(
       (response) => {
         return response;
       }, err => {
@@ -68,7 +68,7 @@ export class AgendaService {
   }
 
   deleteEvent(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_REST}/${id}`).map(
+    return this.http.delete<any>(`${this.URL}${UrlServicesConst.SERVICE_AGENDA_DELETE_REST}/${id}`).map(
       (response) => {
         return response;
       }, err => {

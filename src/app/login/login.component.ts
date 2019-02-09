@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from '../services/login/login.service';
-import { ScrollTopService } from '../services/scroll-top/scroll-top.service';
+import { LoginService } from '@services/login/login.service';
+import { ScrollTopService } from '@services/scroll-top/scroll-top.service';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime}  from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
-import * as UserConst from '../constants/login';
-import * as HeaderConst from '../constants/header-menu';
+import * as UserConst from '@constants/login';
+import * as HeaderConst from '@constants/header-menu';
 import { environment } from '@env/environment';
-import {ValidationsUtils} from '../utils/validations-utils';
+import {ValidationsUtils} from '@utils/validations-utils';
+import * as CommonConst from '@constants/common';
+import { MessagesUtils } from '@utils/messages-utils';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +28,7 @@ export class LoginComponent implements OnInit {
   public variables: any;
   public urls: any;
   constructor(private router: Router, public serviceLogin: LoginService, private formBuilder: FormBuilder,
-              private scrollTop: ScrollTopService, private spinner: NgxSpinnerService) {
+              private scrollTop: ScrollTopService, private spinner: NgxSpinnerService, private messageService: MessagesUtils) {
     this.loginForm = this.createForm();
     this.propiedades = environment.components.login;
     this.variables = environment;
@@ -42,6 +44,14 @@ export class LoginComponent implements OnInit {
     ).subscribe(() => this.dangerMessage = null);
   }
 
+  handleReset() {}
+
+  handleExpire() {}
+
+  handleLoad() {}
+
+  handleSuccess(event){}
+
   isValidCheck(field: string){
     return ValidationsUtils.isValidCheck(field, this.loginForm);
   }
@@ -50,10 +60,15 @@ export class LoginComponent implements OnInit {
     return ValidationsUtils.isValidInput(field, this.loginForm);
   }
 
+  isCheckCaptcha(field: string){
+    return ValidationsUtils.isCheckCaptcha(field, this.loginForm);
+  }
+
   private createForm() {
     return this.formBuilder.group({
       usuario: ['', Validators.required],
       password: ['', Validators.required],
+      recaptcha: ['', Validators.required],
       recordarPassword : false
     });
   }
@@ -74,26 +89,30 @@ export class LoginComponent implements OnInit {
     this.spinner.show();
     this.serviceLogin.loginUser(data).subscribe(
       (result: any) => {
-        if (result.status) {
+        this.spinner.hide();
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          let resultFilter = result.result;
           const usuarioEnter = {
-            id: result.message,
+            id: resultFilter.user,
             usuario: data.usuario,
             password: data.password,
-            tipoUsuario: result.root,
-            token: result.token
+            tipoUsuario: resultFilter.root,
+            token: resultFilter.token
           }
           localStorage.setItem(UserConst.USER_SESSION, JSON.stringify( usuarioEnter )) ;
-          if(result.root === UserConst.USER_PET_OWNER){
+          if(resultFilter.root === UserConst.USER_PET_OWNER){
             this.router.navigate([HeaderConst.URL_MASCOTAS_USUARIO]).then(()=>{});
           }
-          else if(result.root === UserConst.USER_ESTABLISHMENT_OWNER){
+          else if(resultFilter.root === UserConst.USER_ESTABLISHMENT_OWNER){
             this.router.navigate([HeaderConst.URL_ESTABLISHMENT]).then(()=>{});
           }
-          this.spinner.hide();
         } else {
-          this.spinner.hide();
-          this.succes.next(this.propiedades['login.message.incorrect']);
+          this.succes.next(result.description);
         }
+      }, (error) => {
+        this.spinner.hide();
+        console.error(error);
+        this.messageService.showMessageError();
       }
     );
   }

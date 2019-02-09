@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import { environment } from '@env/environment';
-import * as UrlServicesConst from '../url-services/url-services';
+import * as UrlServicesConst from '@services/url-services/url-services';
 import 'rxjs/Rx';
-import { GlobalErrorHandler } from '../error-global/global-error-handler.service';
+import { GlobalErrorHandler } from '@services/error-global/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class RequestsService {
   constructor(public http: HttpClient) { }
 
   getTopRequests(idUsuario: string){
-    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_REQUEST_OWNER_TOP_REST}/${idUsuario}`).map(
+    return this.http.get(`${this.URL}${UrlServicesConst.SERVICE_REQUEST_OWNER_TOP_REST}/${idUsuario}/${UrlServicesConst.SERVICE_REQUEST_TOP_COUNT}`).map(
       (response) => {
         return response;
       }, err => {

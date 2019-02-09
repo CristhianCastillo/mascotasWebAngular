@@ -20,13 +20,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 /**
  * Services
  */
-import { LoginService } from './services/login/login.service';
-import { PetService } from './services/pets/pet.service';
-import { GlobalErrorHandler } from './services/error-global/global-error-handler.service';
-import { ScrollTopService } from './services/scroll-top/scroll-top.service';
-import { AuthInterceptor } from './services/http-interceptor/AuthInterceptor';
+import { LoginService } from '@services/login/login.service';
+import { PetService } from '@services/pets/pet.service';
+import { GlobalErrorHandler } from '@services/error-global/global-error-handler.service';
+import { ScrollTopService } from '@services/scroll-top/scroll-top.service';
+import { AuthInterceptor } from '@services/http-interceptor/auth-interceptor';
 import { LoginGuard } from './guards/login.guard';
-import { MessagesUtils } from './utils/messages-utils';
+import { MessagesUtils } from '@utils/messages-utils';
 import { NotfoundComponent } from './not-found/notfound.component';
 
 

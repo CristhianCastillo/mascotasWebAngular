@@ -27,7 +27,8 @@
     <div class="form-group">
       <label for="tipoMascota">{{propiedades['label.tipo.mascota']}}</label>
       <i [ngClass]="isValidCheck('tipoMascota')"></i>
-      <select formControlName="tipoMascota" class="form-control" id="tipoMascota" [ngClass]="isValidInput('tipoMascota')">
+      <select formControlName="tipoMascota" class="form-control" id="tipoMascota" [ngClass]="isValidInput('tipoMascota')">}
+        <option value="" selected>{{variables.common.select['default.option']}}</option>
         <option *ngFor="let type of typePets; trackBy: trackByFn" [value]="type.id">{{type.nombre}}</option>
       </select>
       <div class="invalid-feedback">{{propiedades['label.tipo.mascota.invalid']}}</div>
@@ -37,6 +38,7 @@
       <i [ngClass]="isValidCheck('genero')"></i>
       <select formControlName="genero" class="form-control" id="generoMascota"
               [ngClass]="isValidInput('genero')">
+        <option value="" selected>{{variables.common.select['default.option']}}</option>
         <option *ngFor="let genero of listaGeneros; trackBy: trackByFn" [value]="genero.value">{{genero.value}}</option>
       </select>
       <div class="invalid-feedback">{{propiedades['label.genero.invalid']}}</div>
@@ -65,6 +67,7 @@
       <label for="mascotaEsterilizada">{{propiedades['label.esterilizado']}}</label>
       <i [ngClass]="isValidCheck('esterilizado')"></i>
       <select formControlName="esterilizado" class="form-control" id="mascotaEsterilizada" [ngClass]="isValidInput('esterilizado')">
+        <option value="" selected>{{variables.common.select['default.option']}}</option>
         <option *ngFor="let opcion of listaSiNo; trackBy: trackByFn" [value]="opcion.value">{{opcion.value}}</option>
       </select>
       <div class="invalid-feedback">{{propiedades['label.esterilizado.invalid']}}</div>

@@ -1,5 +1,5 @@
-import {DateConvert} from '../models/DateConvert';
-import {HourConvert} from '../models/HourConvert';
+import {DateConvert} from '@models/DateConvert';
+import {HourConvert} from '@models/HourConvert';
 
 export class DateUtils {
 
@@ -35,5 +35,9 @@ export class DateUtils {
     hourConvert.hour = Number(parts[0]);
     hourConvert.minute = Number(parts[1]);
     return hourConvert;
+  }
+
+  static dateStringToHourString(date: string): string {
+    return date.slice(11, 16);
   }
 }

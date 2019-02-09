@@ -10,6 +10,7 @@ import { environment } from '@env/environment';
 export class ModalOutMessageComponent implements OnInit {
   @Input() tituloMensaje = environment.common.messages['message.title.default'];
   @Input() contenidoMensaje = environment.common.messages['message.body.default'];
+  @Input() imagen =  '';
 
   public variables: any;
   constructor(public activeModal: NgbActiveModal,  public config: NgbModalConfig) {

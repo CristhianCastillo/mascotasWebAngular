@@ -3,6 +3,7 @@
     <p style="font-size: 20px; color: white">{{propiedades['message.spinner']}}</p>
   </ngx-spinner>
   <h2 class="text-center text-muted py-3">{{propiedades['title']}}</h2>
+  <hr/>
   <form [formGroup]="formAdmin" (ngSubmit)="search()">
     <div class="form-row">
       <div class="form-group col-md-6">
@@ -35,24 +36,30 @@
     </div>
   </form>
   <div>
-    <ngb-accordion [closeOthers]="true">
-      <ngb-panel *ngFor="let request of requests; trackBy: trackByFn" [ngSwitch]="request.estado">
-        <ng-template ngbPanelTitle>
-          <i class="fa fa-calendar-check-o" *ngSwitchCase="true" style="font-size:30px;color:blue"></i>
-          <i class="fa fa-calendar-times-o" *ngSwitchCase="false" style="font-size:30px;color:red"></i>
-          <span> &bull; <b>{{request.fecha}}</b></span> - {{request.usuario}}
-        </ng-template>
-        <ng-template ngbPanelContent>
-          <h5>{{propiedades['label.tipo.actividad'].replace('{0}', request.tipoActividad)}}</h5>
-          <strong>{{propiedades['label.mensaje']}} </strong>{{request.mensaje}}
-          <br>
-          <strong *ngIf="request.respuesta != ''">{{propiedades['label.respuesta']}} </strong>{{request.respuesta}}
-          <button type="button" *ngIf="!request.estado" class="btn btn-success" (click)="openModalSendResponse(content, request)">
-            {{variables.common.buttons['button.response']}}
-          </button>
-        </ng-template>
-      </ngb-panel>
-    </ngb-accordion>
+    <div class="col-12 text-center" *ngIf="avisoSolicitudes == null; else solicitudes">
+      <h1>{{propiedades['message.no.solicitudes']}}</h1>
+      <img class="img-fluid" [src]="propiedades['url.image.no.solicitudes']">
+    </div>
+    <ng-template #solicitudes>
+      <ngb-accordion [closeOthers]="true">
+        <ngb-panel *ngFor="let request of requests; trackBy: trackByFn" [ngSwitch]="request.estado">
+          <ng-template ngbPanelTitle>
+            <i class="fa fa-calendar-check-o" *ngSwitchCase="true" style="font-size:30px;color:blue"></i>
+            <i class="fa fa-calendar-times-o" *ngSwitchCase="false" style="font-size:30px;color:red"></i>
+            <span> &bull; <b>{{request.fecha}}</b></span> - {{request.usuario}}
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <h5>{{propiedades['label.tipo.actividad'].replace('{0}', request.tipoActividad)}}</h5>
+            <strong>{{propiedades['label.mensaje']}} </strong>{{request.mensaje}}
+            <br>
+            <strong *ngIf="request.respuesta != ''">{{propiedades['label.respuesta']}} </strong>{{request.respuesta}}
+            <button type="button" *ngIf="!request.estado" class="btn btn-success" (click)="openModalSendResponse(content, request)">
+              {{variables.common.buttons['button.response']}}
+            </button>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </ng-template>
   </div>
 </div>
 

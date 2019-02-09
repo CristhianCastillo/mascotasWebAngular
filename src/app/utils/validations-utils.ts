@@ -26,6 +26,14 @@ export class ValidationsUtils {
     }
   }
 
+  static isCheckCaptcha(field: string, formGroup: FormGroup) {
+    if(formGroup.get(field).errors && formGroup.get(field).touched){
+      return true
+    } else {
+      return false;
+    }
+  }
+
   static validateAllFormFields(formGroup: FormGroup) {
     Object.keys(formGroup.controls).forEach(field => {
       const control = formGroup.get(field);

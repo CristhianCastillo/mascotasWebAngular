@@ -11,6 +11,7 @@
       <i [ngClass]="isValidCheck('tipoSuministro')"></i>
       <select formControlName="tipoSuministro" class="form-control" id="tipoSiministro"
               [ngClass]="isValidInput('tipoSuministro')">
+        <option value="" selected>{{variables.common.select['default.option']}}</option>
         <option *ngFor="let supplie of typeSupplies; trackBy: trackByFn" [value]="supplie.id">{{supplie.nombre}}</option>
       </select>
       <div class="invalid-feedback">{{propiedades['label.tipo.suministro.invalid']}}</div>
@@ -34,6 +35,7 @@
       <i [ngClass]="isValidCheck('unidad')"></i>
       <select formControlName="unidad" class="form-control" id="unidadDeMedida"
               [ngClass]="isValidInput('unidad')">
+        <option value="" selected>{{variables.common.select['default.option']}}</option>
         <option *ngFor="let unidad of listaUnidades; trackBy: trackByFn" [value]="unidad.value">{{unidad.value}}</option>
       </select>
       <div class="invalid-feedback">{{propiedades['label.unidad.medida.invalid']}}</div>

@@ -2,18 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MessagesUtils } from '../../utils/messages-utils';
+import { MessagesUtils } from '@utils/messages-utils';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { PetService } from '../../services/pets/pet.service';
-import { Mascota } from '../../models/Mascota';
-import { DateConvert } from '../../models/DateConvert';
-import * as CommonConst from '../../constants/common';
-import { DateUtils } from '../../utils/date-utils';
+import { PetService } from '@services/pets/pet.service';
+import { Mascota } from '@models/Mascota';
+import { DateConvert } from '@models/DateConvert';
+import * as CommonConst from '@constants/common';
+import { DateUtils } from '@utils/date-utils';
 import { environment } from '@env/environment';
-import { EnumUtils } from '../../utils/enum-utils';
-import { EnumGeneros } from '../../constants/common';
-import { EnumEsterilizado } from '../../constants/common';
-import {ValidationsUtils} from '../../utils/validations-utils';
+import { EnumUtils } from '@utils/enum-utils';
+import { EnumGeneros } from '@constants/common';
+import { EnumEsterilizado } from '@constants/common';
+import {ValidationsUtils} from '@utils/validations-utils';
 
 @Component({
   selector: 'app-modal-pet',
@@ -47,11 +47,16 @@ export class ModalPetComponent implements OnInit {
 
   ngOnInit() {
     this.servicePet.getTypePets().subscribe(
-      (data) => {
-        this.typePets = data;
+      (result: any) => {
+        if(result.code === CommonConst.SUCCESS_CODE){
+          this.typePets = result.result;
+        } else {
+          this.serviceMessage.showMessageError(null, result.description);
+        }
       },
       (error) => {
         console.error(error);
+        this.serviceMessage.showMessageError();
       }
     );
     this.fechaNacimiento = new DateConvert();
@@ -129,11 +134,13 @@ export class ModalPetComponent implements OnInit {
   updatePet(data) {
     this.servicePet.updatePet(this.mascota.id, data).subscribe(
       (result: any ) => {
-        if (result.status) {
-          this.serviceMessage.showMessage(this.propiedades['modal-search']['update.message.title'], this.propiedades['modal-search']['update.message.correct']);
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          this.serviceMessage.showMessageSucces(this.propiedades['modal-search']['update.message.title'], this.propiedades['modal-search']['update.message.correct']);
         } else {
-          this.serviceMessage.showMessage(this.propiedades['modal-search']['update.message.title'], this.propiedades['modal-search']['update.message.incorrect']);
+          this.serviceMessage.showMessageError(this.propiedades['modal-search']['update.message.title'], this.propiedades['modal-search']['update.message.incorrect']);
         }
+      }, (error) => {
+        this.serviceMessage.showMessageError();
       }
     );
   }
@@ -141,11 +148,13 @@ export class ModalPetComponent implements OnInit {
   openModalDelete() {
     this.servicePet.deletePet(this.mascota.id).subscribe(
       (result: any) => {
-        if (result.status) {
-          this.serviceMessage.showMessage(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.correct']);
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          this.serviceMessage.showMessageSucces(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.correct']);
         } else {
-          this.serviceMessage.showMessage(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.incorrect']);
+          this.serviceMessage.showMessageError(this.propiedades['modal-search']['delete.message.title'], this.propiedades['modal-search']['delete.message.incorrect']);
         }
+      }, (error) => {
+        this.serviceMessage.showMessageError();
       }
     );
   }

@@ -1,4 +1,4 @@
-<div class="album py-5 bg-light text-center">
+<div class="container album py-2 text-center">
   <ngx-spinner
     bdColor="rgba(51,51,51,0.8)"
     size="medium"
@@ -6,11 +6,11 @@
     type="ball-scale-multiple">
     <p style="font-size: 20px; color: white">{{propiedades['message.spinner']}}</p>
   </ngx-spinner>
-  <h2>{{propiedades['title']}}</h2>
-  <hr />
+  <h2 class="text-center text-muted py-3">{{propiedades['title']}}</h2>
+  <hr/>
   <div class="container">
     <div class="row">
-      <div class="col-12" *ngIf="avisoCrearMascotas === null">
+      <div class="col-12" *ngIf="avisoCrearMascotas == null">
         <h1>{{propiedades['message.no.pets']}}</h1>
         <img class="img-fluid" [src]="propiedades['url.image.no.pets']">
       </div>

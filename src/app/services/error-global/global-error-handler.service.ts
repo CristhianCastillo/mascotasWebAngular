@@ -1,7 +1,7 @@
 import { ErrorHandler, Injectable, Injector} from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import * as HeaderConst from '../../constants/header-menu';
+import * as HeaderConst from '@constants/header-menu';
 import {throwError} from 'rxjs';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     } else {
       console.error('And error ocurred:', error.message);
     }
-    router.navigate([HeaderConst.ROUTING_URL_ERROR]).then(() =>{});
+    router.navigate([HeaderConst.URL_ERROR]).then(() =>{});
   }
 
   static handleErrorRequest(error: HttpErrorResponse) {

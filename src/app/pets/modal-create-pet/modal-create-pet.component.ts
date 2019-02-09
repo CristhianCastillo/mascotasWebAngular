@@ -3,15 +3,15 @@ import { NgbActiveModal, NgbModalConfig, NgbCalendar } from '@ng-bootstrap/ng-bo
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { PetService } from '../../services/pets/pet.service';
-import * as CommonConst from '../../constants/common';
-import * as LoginConst from '../../constants/login';
-import { DateUtils } from '../../utils/date-utils';
-import { EnumUtils } from '../../utils/enum-utils';
+import { PetService } from '@services/pets/pet.service';
+import * as CommonConst from '@constants/common';
+import * as LoginConst from '@constants/login';
+import { DateUtils } from '@utils/date-utils';
+import { EnumUtils } from '@utils/enum-utils';
 import { environment } from '@env/environment';
-import {EnumEsterilizado, EnumGeneros} from '../../constants/common';
-import {ValidationsUtils} from '../../utils/validations-utils';
-import { MessagesUtils } from '../../utils/messages-utils';
+import {EnumEsterilizado, EnumGeneros} from '@constants/common';
+import {ValidationsUtils} from '@utils/validations-utils';
+import { MessagesUtils } from '@utils/messages-utils';
 
 @Component({
   selector: 'app-modal-create-pet',
@@ -46,11 +46,16 @@ export class ModalCreatePetComponent implements OnInit {
 
   ngOnInit() {
     this.servicePet.getTypePets().subscribe(
-      (data) => {
-        this.typePets = data;
+      (result: any) => {
+        if(result.code === CommonConst.SUCCESS_CODE){
+          this.typePets = result.result;
+        } else {
+          this.serviceMessage.showMessageError(null, result.description);
+        }
       },
       (error) => {
         console.error(error);
+        this.serviceMessage.showMessageError();
       }
     );
   }
@@ -123,11 +128,14 @@ export class ModalCreatePetComponent implements OnInit {
   createPet(data) {
     this.servicePet.createPet(data).subscribe(
       (result: any) => {
-        if (result.status) {
-          this.serviceMessage.showMessage(this.propiedades['modal-create']['create.message.title'], this.propiedades['modal-create']['create.message.correct']);
+        if (result.code === CommonConst.SUCCESS_CODE) {
+          this.serviceMessage.showMessageSucces(this.propiedades['modal-create']['create.message.title'], this.propiedades['modal-create']['create.message.correct']);
         } else {
-          this.serviceMessage.showMessage(this.propiedades['modal-create']['create.message.title'], this.propiedades['modal-create']['create.message.incorrect']);
+          this.serviceMessage.showMessageError(this.propiedades['modal-create']['create.message.title'], this.propiedades['modal-create']['create.message.incorrect']);
         }
+      }, (error) => {
+        console.log(error);
+        this.serviceMessage.showMessageError();
       }
     );
   }
